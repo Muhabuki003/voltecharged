@@ -1,415 +1,879 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>voltecharged — The Pink Blender</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
-  <style>
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body {
-      font-family: 'DM Sans', system-ui, sans-serif;
-      background: #fdf6f8;
-      color: #4a3f44;
-      -webkit-font-smoothing: antialiased;
-      overflow-x: hidden;
-    }
-    img { max-width: 100%; display: block; }
-    a { color: inherit; text-decoration: none; }
-    .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>voltecharged — Portable Blender · Blend in color, live in motion</title>
+<meta name="description" content="The voltecharged portable blender. 200W of ice-crushing power, USB-C rechargeable, 400ml of pure color. Blend anywhere, sip anywhere.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+/* ============ RESET / TOKENS ============ */
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --cream:#fdf6f8;
+  --blush:#f0b3c1;
+  --blush-soft:#fce4e9;
+  --rose:#d47287;
+  --rose-deep:#b85a6f;
+  --ink:#3d2c32;
+  --muted:#8a7a80;
+  --line:rgba(232,203,210,.35);
+  --hero-bg:#eba8b7;
+  --hero-ink:#3d2c32;
+  --hero-sub:rgba(61,44,50,.72);
+  --ease:cubic-bezier(.4,0,.2,1);
+  --ease-out:cubic-bezier(.16,1,.3,1);
+}
+html{scroll-behavior:smooth}
+html.lenis{height:auto;scroll-behavior:auto}
+.lenis.lenis-smooth{scroll-behavior:auto}
+body{
+  font-family:'DM Sans',system-ui,sans-serif;
+  background:var(--cream);
+  color:var(--ink);
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+::selection{background:var(--rose);color:#fff}
+section{scroll-margin-top:70px}
 
-    /* Navigation */
-    nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      padding: 16px 24px; display: flex; align-items: center;
-      justify-content: space-between;
-      background: rgba(253, 246, 248, 0.92);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid rgba(232, 203, 210, 0.3);
-    }
-    nav .logo {
-      font-family: 'Playfair Display', serif;
-      font-size: 22px; font-weight: 600; color: #d47287;
-      letter-spacing: -0.01em;
-    }
-    nav .links { display: flex; gap: 28px; align-items: center; }
-    nav .links a {
-      font-size: 13px; font-weight: 500; color: #8a7a80;
-      letter-spacing: 0.06em; text-transform: uppercase;
-      transition: color 0.2s;
-    }
-    nav .links a:hover { color: #d47287; }
-    nav .cart-btn {
-      padding: 8px 20px; border-radius: 20px;
-      background: linear-gradient(135deg, #f0b3c1, #d47287);
-      color: #fff; font-size: 12px; font-weight: 600;
-      letter-spacing: 0.06em; text-transform: uppercase;
-      border: none; cursor: pointer; transition: all 0.2s;
-      font-family: inherit;
-    }
-    nav .cart-btn:hover { transform: scale(1.03); box-shadow: 0 4px 16px rgba(212, 114, 135, 0.35); }
+/* ============ GRAIN ============ */
+.grain{
+  position:fixed;inset:0;pointer-events:none;z-index:200;opacity:.35;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
+  background-size:200px 200px;
+}
 
-    /* Hero */
-    .hero {
-      min-height: 100vh; display: flex; align-items: center;
-      padding: 100px 24px 80px;
-      background: linear-gradient(180deg, #fdf6f8 0%, #fce4e9 40%, #fdf6f8 100%);
-      position: relative; overflow: hidden;
-    }
-    .hero::before {
-      content: ''; position: absolute; width: 600px; height: 600px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(240, 179, 193, 0.15) 0%, transparent 70%);
-      top: -200px; right: -200px;
-    }
-    .hero .container { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; position: relative; z-index: 1; }
-    .hero-text .tag {
-      display: inline-block; font-size: 11px; font-weight: 600;
-      letter-spacing: 0.2em; text-transform: uppercase; color: #d47287;
-      margin-bottom: 16px; padding: 6px 14px;
-      background: rgba(212, 114, 135, 0.08); border-radius: 20px;
-    }
-    .hero-text h1 {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(36px, 4.5vw, 52px); font-weight: 400; line-height: 1.15;
-      color: #3d2c32; margin-bottom: 16px;
-    }
-    .hero-text h1 em { font-style: italic; color: #d47287; }
-    .hero-text p {
-      font-size: 16px; color: #8a7a80; line-height: 1.7;
-      margin-bottom: 28px; max-width: 440px;
-    }
-    .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
-    .btn {
-      display: inline-flex; align-items: center; gap: 8px;
-      padding: 16px 32px; border-radius: 30px;
-      font-size: 13px; font-weight: 600; font-family: inherit;
-      letter-spacing: 0.06em; text-transform: uppercase;
-      border: none; cursor: pointer; transition: all 0.25s;
-    }
-    .btn-primary { background: linear-gradient(135deg, #f0b3c1, #d47287); color: #fff; }
-    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(212, 114, 135, 0.35); }
-    .btn-outline {
-      background: transparent; color: #d47287;
-      border: 1.5px solid #d47287;
-    }
-    .btn-outline:hover { background: rgba(212, 114, 135, 0.06); }
-    .hero-image { position: relative; display: flex; align-items: center; justify-content: center; }
-    .hero-image img {
-      width: 100%; max-width: 420px; border-radius: 24px;
-      box-shadow: 0 20px 60px rgba(212, 114, 135, 0.15);
-      transform: rotate(-3deg); transition: transform 0.4s ease;
-    }
-    .hero-image img:hover { transform: rotate(0deg) scale(1.02); }
-    .hero-badge {
-      position: absolute; top: -10px; right: 10px;
-      background: #fff; border-radius: 50%;
-      width: 80px; height: 80px; display: flex; align-items: center;
-      justify-content: center; flex-direction: column;
-      box-shadow: 0 4px 20px rgba(212, 114, 135, 0.2);
-    }
-    .hero-badge .price {
-      font-family: 'Playfair Display', serif;
-      font-size: 20px; font-weight: 600; color: #d47287; line-height: 1;
-    }
-    .hero-badge .sub {
-      font-size: 9px; color: #8a7a80; letter-spacing: 0.05em;
-    }
+/* ============ NAV ============ */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:150;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:18px clamp(18px,4vw,44px);
+  color:var(--hero-ink);
+  transition:background .45s var(--ease),color .65s var(--ease),box-shadow .45s var(--ease),padding .45s var(--ease);
+}
+nav.solid{
+  background:rgba(253,246,248,.88);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  color:var(--ink);
+  box-shadow:0 1px 0 var(--line);
+  padding-top:12px;padding-bottom:12px;
+}
+nav .logo{font-family:'Playfair Display',serif;font-size:23px;font-weight:600;letter-spacing:-.01em}
+nav .logo em{font-style:italic;opacity:.65}
+nav .links{display:flex;gap:30px;align-items:center}
+nav .links a{
+  font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;
+  opacity:.72;transition:opacity .2s;position:relative;
+}
+nav .links a:hover{opacity:1}
+nav .links a::after{
+  content:'';position:absolute;left:0;bottom:-5px;height:1.5px;width:0;
+  background:currentColor;transition:width .3s var(--ease-out);
+}
+nav .links a:hover::after{width:100%}
+nav .cart-btn{
+  padding:10px 22px;border-radius:24px;
+  background:linear-gradient(135deg,var(--blush),var(--rose));
+  color:#fff;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  transition:transform .2s,box-shadow .2s;box-shadow:0 4px 18px rgba(212,114,135,.3);
+}
+nav .cart-btn:hover{transform:scale(1.05);box-shadow:0 8px 26px rgba(212,114,135,.45)}
+@media(max-width:820px){nav .links a{display:none}}
 
-    /* Features */
-    .features {
-      padding: 80px 0; background: #fff;
-    }
-    .features-grid {
-      display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px;
-      background: rgba(232, 203, 210, 0.3);
-    }
-    .feature-card {
-      background: #fff; padding: 48px 32px; text-align: center;
-    }
-    .feature-icon { font-size: 36px; margin-bottom: 16px; }
-    .feature-card h3 {
-      font-size: 16px; font-weight: 600; color: #3d2c32; margin-bottom: 8px;
-    }
-    .feature-card p {
-      font-size: 14px; color: #8a7a80; line-height: 1.6;
-    }
+/* ============ HERO ============ */
+.hero{
+  position:relative;width:100%;height:100vh;min-height:620px;overflow:hidden;
+  background:var(--hero-bg);
+  transition:background-color .65s var(--ease);
+}
+.hero .ghost{
+  position:absolute;inset-inline:0;top:13%;
+  display:flex;justify-content:center;pointer-events:none;user-select:none;z-index:2;
+  font-family:'Anton',sans-serif;
+  font-size:clamp(90px,23vw,330px);
+  line-height:1;text-transform:uppercase;letter-spacing:-.02em;white-space:nowrap;
+  color:#fff;
+  transition:opacity .3s var(--ease);
+}
+.hero .ghost.swap{opacity:0}
+.hero .carousel{position:absolute;inset:0;z-index:3}
+.hero .item{
+  position:absolute;
+  transform-origin:50% 100%;
+  transition:left .65s var(--ease),bottom .65s var(--ease),height .65s var(--ease),
+             transform .65s var(--ease),filter .65s var(--ease),opacity .65s var(--ease);
+  will-change:transform,filter,opacity,left;
+}
+.hero .item img{
+  height:100%;width:auto;object-fit:contain;object-position:bottom center;
+  -webkit-user-drag:none;user-select:none;
+  filter:drop-shadow(0 34px 44px rgba(61,30,38,.28));
+}
+.hero .item[data-role="center"]{left:50%;bottom:0;height:72%;transform:translateX(-50%) scale(1.28);filter:blur(0);opacity:1;z-index:20}
+.hero .item[data-role="left"]{left:29%;bottom:11%;height:25%;transform:translateX(-50%) scale(1);filter:blur(2px);opacity:.9;z-index:10}
+.hero .item[data-role="right"]{left:71%;bottom:11%;height:25%;transform:translateX(-50%) scale(1);filter:blur(2px);opacity:.9;z-index:10}
+.hero .hud{
+  position:absolute;z-index:60;color:var(--hero-ink);
+  transition:color .65s var(--ease);
+}
+.hero .hud-tl{top:96px;left:clamp(18px,4vw,44px);font-size:11px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;opacity:.85}
+.hero .hud-bl{bottom:clamp(22px,7vh,72px);left:clamp(18px,4vw,64px);max-width:340px}
+.hero .hud-bl .kick{font-size:11px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;opacity:.7;margin-bottom:8px}
+.hero .hud-bl h2{
+  font-family:'Anton',sans-serif;font-weight:400;
+  font-size:clamp(26px,3.4vw,44px);line-height:1.02;text-transform:uppercase;letter-spacing:-.01em;
+  margin-bottom:10px;
+}
+.hero .hud-bl p{font-size:13.5px;line-height:1.65;color:var(--hero-sub);margin-bottom:20px;transition:color .65s var(--ease)}
+.hero .controls{display:flex;align-items:center;gap:14px}
+.hero .arrow{
+  width:52px;height:52px;border-radius:50%;
+  border:2px solid currentColor;display:flex;align-items:center;justify-content:center;
+  transition:transform .15s,background-color .15s,color .65s var(--ease);
+}
+.hero .arrow:hover{transform:scale(1.1);background:rgba(255,255,255,.16)}
+.hero .arrow:active{transform:scale(.96)}
+.hero .swatches{display:flex;gap:10px;margin-top:18px}
+.hero .swatch{
+  width:26px;height:26px;border-radius:50%;border:2px solid rgba(255,255,255,.85);
+  box-shadow:0 2px 8px rgba(0,0,0,.18);position:relative;
+  transition:transform .2s;
+}
+.hero .swatch:hover{transform:scale(1.15)}
+.hero .swatch.on::after{
+  content:'';position:absolute;inset:-6px;border-radius:50%;
+  border:1.5px solid currentColor;
+}
+.hero .hud-br{
+  bottom:clamp(22px,7vh,72px);right:clamp(18px,4vw,64px);
+  display:flex;flex-direction:column;align-items:flex-end;gap:6px;text-align:right;
+}
+.hero .shop-link{
+  display:inline-flex;align-items:center;gap:12px;
+  font-family:'Anton',sans-serif;font-size:clamp(24px,3.6vw,52px);
+  text-transform:uppercase;letter-spacing:-.02em;line-height:1;
+  opacity:.95;transition:opacity .2s,transform .2s;
+}
+.hero .shop-link:hover{opacity:1;transform:translateX(6px)}
+.hero .shop-link svg{transition:transform .2s}
+.hero .shop-link:hover svg{transform:translateX(5px)}
+.hero .price-note{font-size:12px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--hero-sub);transition:color .65s var(--ease)}
+.hero .scroll-cue{
+  position:absolute;bottom:18px;left:50%;transform:translateX(-50%);z-index:60;
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+  color:var(--hero-ink);opacity:.65;transition:color .65s var(--ease);
+  font-size:9px;font-weight:700;letter-spacing:.3em;text-transform:uppercase;
+}
+.hero .scroll-cue .line{width:1.5px;height:34px;background:currentColor;overflow:hidden;position:relative}
+.hero .scroll-cue .line::after{
+  content:'';position:absolute;left:0;top:-100%;width:100%;height:100%;
+  background:var(--rose);animation:cue 1.8s var(--ease) infinite;
+}
+@keyframes cue{0%{top:-100%}55%{top:0}100%{top:100%}}
+@media(max-width:640px){
+  .hero .ghost{top:15%}
+  .hero .item[data-role="center"]{height:56%;bottom:24%;transform:translateX(-50%) scale(1.12)}
+  .hero .item[data-role="left"]{left:18%;bottom:36%;height:15%}
+  .hero .item[data-role="right"]{left:82%;bottom:36%;height:15%}
+  .hero .hud-bl{max-width:250px;bottom:20px}
+  .hero .hud-bl p{display:none}
+  .hero .hud-br{bottom:20px}
+  .hero .scroll-cue{display:none}
+  .hero .arrow{width:46px;height:46px}
+}
 
-    /* Gallery */
-    .gallery {
-      padding: 80px 0;
-      background: linear-gradient(180deg, #fff 0%, #fdf6f8 100%);
-    }
-    .gallery .section-title {
-      text-align: center; margin-bottom: 40px;
-    }
-    .section-title .label {
-      font-size: 11px; font-weight: 600; letter-spacing: 0.2em;
-      text-transform: uppercase; color: #d47287; margin-bottom: 8px;
-    }
-    .section-title h2 {
-      font-family: 'Playfair Display', serif;
-      font-size: 32px; font-weight: 400; color: #3d2c32;
-    }
-    .gallery-grid {
-      display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
-    }
-    .gallery-grid img {
-      width: 100%; aspect-ratio: 1; object-fit: cover;
-      border-radius: 16px; transition: transform 0.3s ease;
-    }
-    .gallery-grid img:hover { transform: scale(1.02); }
-    .gallery-grid .wide { grid-column: span 2; }
+/* ============ MARQUEE ============ */
+.marquee{
+  background:var(--ink);color:var(--cream);overflow:hidden;
+  padding:16px 0;position:relative;z-index:5;
+}
+.marquee .track{
+  display:flex;width:max-content;gap:0;
+  animation:mq 26s linear infinite;
+}
+.marquee span{
+  font-family:'Anton',sans-serif;font-size:clamp(15px,1.6vw,20px);
+  text-transform:uppercase;letter-spacing:.08em;white-space:nowrap;padding:0 26px;
+  display:flex;align-items:center;gap:26px;
+}
+.marquee span i{font-style:normal;color:var(--blush)}
+@keyframes mq{to{transform:translateX(-50%)}}
 
-    /* Product details */
-    .details {
-      padding: 80px 0; background: #fff;
-    }
-    .details-grid {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center;
-    }
-    .details-image img {
-      width: 100%; border-radius: 20px;
-      box-shadow: 0 12px 40px rgba(212, 114, 135, 0.1);
-    }
-    .details h2 {
-      font-family: 'Playfair Display', serif;
-      font-size: 28px; font-weight: 400; color: #3d2c32; margin-bottom: 16px;
-    }
-    .details h2 em { color: #d47287; font-style: italic; }
-    .details p {
-      font-size: 15px; color: #8a7a80; line-height: 1.7; margin-bottom: 16px;
-    }
-    .details ul { list-style: none; padding: 0; margin-bottom: 24px; }
-    .details ul li {
-      padding: 10px 0; border-bottom: 1px solid rgba(232, 203, 210, 0.3);
-      font-size: 14px; color: #5a4a50; display: flex; align-items: center; gap: 10px;
-    }
-    .details ul li::before { content: '✦'; color: #d47287; font-size: 12px; }
+/* ============ SECTIONS SHARED ============ */
+.section{padding:clamp(70px,10vh,120px) 0}
+.container{max-width:1200px;margin:0 auto;padding:0 clamp(18px,4vw,40px)}
+.label{
+  font-size:11px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;
+  color:var(--rose);margin-bottom:10px;display:flex;align-items:center;gap:10px;
+}
+.label::before{content:'';width:26px;height:1.5px;background:var(--rose)}
+.section-title{
+  font-family:'Playfair Display',serif;font-weight:400;
+  font-size:clamp(30px,4vw,46px);line-height:1.12;color:var(--ink);
+}
+.section-title em{font-style:italic;color:var(--rose)}
+[data-reveal]{opacity:0;transform:translateY(36px);transition:opacity .9s ease var(--d,0s),transform .9s var(--ease-out) var(--d,0s)}
+[data-reveal].in{opacity:1;transform:none}
 
-    /* Reviews */
-    .reviews {
-      padding: 80px 0; background: #fdf6f8;
-    }
-    .reviews-grid {
-      display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
-    }
-    .review-card {
-      background: #fff; padding: 28px; border-radius: 16px;
-      border: 1px solid rgba(232, 203, 210, 0.2);
-    }
-    .review-stars { color: #f0b3c1; font-size: 14px; margin-bottom: 10px; }
-    .review-card blockquote {
-      font-size: 14px; color: #5a4a50; line-height: 1.6; font-style: italic;
-      margin-bottom: 12px;
-    }
-    .review-author { font-size: 12px; font-weight: 600; color: #8a7a80; }
+/* ============ FEATURES ============ */
+.features{background:#fff}
+.features .head{max-width:560px;margin-bottom:56px}
+.features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--line);border:1px solid var(--line)}
+.f-card{
+  background:#fff;padding:46px 34px;position:relative;overflow:hidden;
+  transition:background .3s;
+}
+.f-card::after{
+  content:'';position:absolute;left:0;bottom:0;height:3px;width:0;
+  background:linear-gradient(90deg,var(--blush),var(--rose));
+  transition:width .45s var(--ease-out);
+}
+.f-card:hover{background:var(--cream)}
+.f-card:hover::after{width:100%}
+.f-card .icon{
+  width:52px;height:52px;border-radius:16px;margin-bottom:20px;
+  background:linear-gradient(135deg,var(--blush-soft),#fff);
+  border:1px solid var(--line);
+  display:flex;align-items:center;justify-content:center;color:var(--rose);
+  transition:transform .3s var(--ease-out);
+}
+.f-card:hover .icon{transform:translateY(-4px) rotate(-6deg)}
+.f-card h3{font-size:16px;font-weight:700;margin-bottom:8px}
+.f-card p{font-size:14px;color:var(--muted);line-height:1.65}
+@media(max-width:900px){.features-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){.features-grid{grid-template-columns:1fr}}
 
-    /* CTA */
-    .cta {
-      padding: 80px 24px; text-align: center;
-      background: linear-gradient(135deg, #fce4e9, #fdf6f8);
-    }
-    .cta h2 {
-      font-family: 'Playfair Display', serif;
-      font-size: 32px; font-weight: 400; color: #3d2c32; margin-bottom: 10px;
-    }
-    .cta h2 em { color: #d47287; font-style: italic; }
-    .cta p {
-      font-size: 15px; color: #8a7a80; margin-bottom: 28px;
-    }
-    .cta .price-badge {
-      display: inline-block; font-size: 28px; font-weight: 600;
-      color: #d47287; margin-bottom: 20px;
-    }
+/* ============ VIDEO DEMO (scroll scrub) ============ */
+.demo{position:relative;height:340vh;background:var(--ink)}
+.demo-sticky{
+  position:sticky;top:0;height:100vh;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;
+}
+.demo-ghost{
+  position:absolute;inset-inline:0;top:8%;text-align:center;
+  font-family:'Anton',sans-serif;font-size:clamp(60px,13vw,190px);
+  text-transform:uppercase;letter-spacing:-.02em;line-height:1;white-space:nowrap;
+  color:transparent;-webkit-text-stroke:1.5px rgba(253,246,248,.16);
+  pointer-events:none;user-select:none;will-change:transform,opacity;
+}
+.demo-frame{
+  position:relative;width:min(1020px,92vw);aspect-ratio:16/9;
+  border-radius:26px;overflow:hidden;z-index:3;
+  box-shadow:0 40px 120px rgba(0,0,0,.5);
+  will-change:transform,border-radius;background:#000;
+}
+.demo-frame video{width:100%;height:100%;object-fit:cover;display:block}
+.demo-frame .sound{
+  position:absolute;right:16px;bottom:16px;z-index:5;
+  display:flex;align-items:center;gap:8px;
+  padding:10px 18px;border-radius:22px;
+  background:rgba(20,12,15,.55);backdrop-filter:blur(8px);
+  color:#fff;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  border:1px solid rgba(255,255,255,.25);
+  transition:background .2s,transform .2s;
+}
+.demo-frame .sound:hover{background:rgba(212,114,135,.75);transform:scale(1.04)}
+.demo-steps{
+  position:absolute;right:clamp(18px,4vw,60px);top:50%;transform:translateY(-50%);
+  z-index:6;display:flex;flex-direction:column;gap:26px;color:var(--cream);
+}
+.demo-steps .step{max-width:190px;opacity:.28;transition:opacity .4s;position:relative;padding-left:20px}
+.demo-steps .step::before{
+  content:'';position:absolute;left:0;top:6px;bottom:6px;width:2px;
+  background:rgba(253,246,248,.35);border-radius:2px;
+}
+.demo-steps .step.on{opacity:1}
+.demo-steps .step.on::before{background:var(--blush)}
+.demo-steps .num{font-family:'Anton',sans-serif;font-size:13px;letter-spacing:.1em;color:var(--blush)}
+.demo-steps h4{font-size:15px;font-weight:700;margin:2px 0 4px}
+.demo-steps p{font-size:12px;line-height:1.55;color:rgba(253,246,248,.65)}
+.demo-progress{
+  position:absolute;left:clamp(18px,4vw,60px);top:50%;transform:translateY(-50%);
+  width:3px;height:180px;background:rgba(253,246,248,.18);border-radius:3px;z-index:6;overflow:hidden;
+}
+.demo-progress i{
+  position:absolute;left:0;top:0;width:100%;height:0%;
+  background:linear-gradient(180deg,var(--blush),var(--rose));border-radius:3px;
+}
+@media(max-width:900px){
+  .demo-steps{
+    right:auto;left:50%;transform:translateX(-50%);top:auto;bottom:22px;
+    flex-direction:row;gap:14px;max-width:92vw;
+  }
+  .demo-steps .step{max-width:none;padding-left:0;padding-top:12px}
+  .demo-steps .step::before{left:0;right:0;top:0;bottom:auto;width:auto;height:2px}
+  .demo-steps .step p{display:none}
+  .demo-steps .step{opacity:.35}
+  .demo-progress{left:auto;right:16px;height:120px}
+}
 
-    /* Footer */
-    footer {
-      padding: 40px 24px; text-align: center;
-      background: #3d2c32; color: rgba(255,255,255,0.6);
-      font-size: 12px; line-height: 1.8;
-    }
-    footer strong { color: rgba(255,255,255,0.8); }
+/* ============ GALLERY ============ */
+.gallery{background:linear-gradient(180deg,#fff 0%,var(--cream) 100%);overflow:hidden}
+.gallery .head{text-align:center;margin-bottom:54px}
+.gallery .head .label{justify-content:center}
+.gallery .head .label::before{display:none}
+.mosaic{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;align-items:start}
+.mosaic .col{display:flex;flex-direction:column;gap:18px;will-change:transform}
+.mosaic .ph{
+  border-radius:18px;overflow:hidden;position:relative;
+  box-shadow:0 14px 40px rgba(212,114,135,.12);
+}
+.mosaic .ph img{width:100%;aspect-ratio:1;object-fit:cover;transition:transform .6s var(--ease-out)}
+.mosaic .ph:hover img{transform:scale(1.06)}
+.mosaic .ph.tall img{aspect-ratio:.78}
+.mosaic .ph .tag{
+  position:absolute;left:12px;bottom:12px;padding:6px 12px;border-radius:14px;
+  background:rgba(253,246,248,.85);backdrop-filter:blur(6px);
+  font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--rose-deep);
+}
+@media(max-width:700px){.mosaic{grid-template-columns:repeat(2,1fr)}.mosaic .col:nth-child(3){display:none}}
 
-    /* Responsive */
-    @media (max-width: 768px) {
-      .hero .container { grid-template-columns: 1fr; text-align: center; }
-      .hero-text p { margin: 0 auto 28px; }
-      .hero-actions { justify-content: center; }
-      .hero-image { order: -1; }
-      .hero-image img { max-width: 280px; }
-      .features-grid { grid-template-columns: 1fr; }
-      .gallery-grid { grid-template-columns: 1fr 1fr; }
-      .gallery-grid .wide { grid-column: span 1; }
-      .details-grid { grid-template-columns: 1fr; }
-      .reviews-grid { grid-template-columns: 1fr; }
-      nav .links a:not(.cart-btn) { display: none; }
-    }
-  </style>
+/* ============ DETAILS ============ */
+.details{background:#fff}
+.details-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(36px,6vw,80px);align-items:center}
+.details .img-wrap{position:relative}
+.details .img-wrap img{width:100%;border-radius:22px;box-shadow:0 24px 70px rgba(212,114,135,.16)}
+.details .img-wrap .chip{
+  position:absolute;top:-18px;right:18px;width:96px;height:96px;border-radius:50%;
+  background:#fff;box-shadow:0 10px 30px rgba(212,114,135,.25);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  animation:float 4s ease-in-out infinite;
+}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+.details .img-wrap .chip b{font-family:'Playfair Display',serif;font-size:24px;color:var(--rose);line-height:1}
+.details .img-wrap .chip span{font-size:9px;font-weight:700;letter-spacing:.1em;color:var(--muted);text-transform:uppercase}
+.details h2{font-family:'Playfair Display',serif;font-weight:400;font-size:clamp(26px,3vw,36px);margin-bottom:16px}
+.details h2 em{color:var(--rose);font-style:italic}
+.details p{font-size:15px;color:var(--muted);line-height:1.75;margin-bottom:18px}
+.spec-list{list-style:none;margin-bottom:28px}
+.spec-list li{
+  padding:12px 0;border-bottom:1px solid var(--line);
+  font-size:14px;color:#5a4a50;display:flex;align-items:center;gap:12px;
+}
+.spec-list li::before{content:'✦';color:var(--rose);font-size:12px}
+@media(max-width:820px){.details-grid{grid-template-columns:1fr}}
+
+/* ============ REVIEWS ============ */
+.reviews{background:var(--cream)}
+.reviews .head{text-align:center;margin-bottom:50px}
+.reviews .head .label{justify-content:center}
+.reviews .head .label::before{display:none}
+.reviews-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.r-card{
+  background:#fff;padding:30px;border-radius:18px;border:1px solid var(--line);
+  transition:transform .3s var(--ease-out),box-shadow .3s;
+}
+.r-card:hover{transform:translateY(-6px);box-shadow:0 18px 44px rgba(212,114,135,.14)}
+.r-card .stars{color:var(--blush);font-size:15px;letter-spacing:2px;margin-bottom:12px}
+.r-card blockquote{font-size:14.5px;color:#5a4a50;line-height:1.7;font-style:italic;margin-bottom:14px}
+.r-card .who{font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.06em}
+@media(max-width:820px){.reviews-grid{grid-template-columns:1fr}}
+
+/* ============ CTA ============ */
+.cta{
+  position:relative;overflow:hidden;text-align:center;
+  padding:clamp(90px,14vh,150px) 24px;
+  background:linear-gradient(135deg,var(--blush-soft),var(--cream));
+}
+.cta .big-ghost{
+  position:absolute;inset-inline:0;top:50%;transform:translateY(-50%);
+  font-family:'Anton',sans-serif;font-size:clamp(80px,17vw,260px);
+  text-transform:uppercase;line-height:1;white-space:nowrap;
+  color:rgba(212,114,135,.07);pointer-events:none;user-select:none;
+}
+.cta .price{
+  font-family:'Playfair Display',serif;font-size:clamp(34px,4vw,50px);
+  color:var(--rose);margin-bottom:6px;
+}
+.cta h2{font-family:'Playfair Display',serif;font-weight:400;font-size:clamp(28px,3.6vw,42px);margin-bottom:12px}
+.cta h2 em{color:var(--rose);font-style:italic}
+.cta p{font-size:14px;color:var(--muted);letter-spacing:.04em;margin-bottom:30px}
+.btn{
+  display:inline-flex;align-items:center;gap:10px;
+  padding:17px 38px;border-radius:32px;
+  font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  transition:transform .25s var(--ease-out),box-shadow .25s;
+}
+.btn-primary{
+  background:linear-gradient(135deg,var(--blush),var(--rose));color:#fff;
+  box-shadow:0 10px 30px rgba(212,114,135,.35);
+}
+.btn-primary:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 16px 40px rgba(212,114,135,.45)}
+.btn-outline{background:transparent;color:var(--rose);border:1.5px solid var(--rose)}
+.btn-outline:hover{background:rgba(212,114,135,.07)}
+
+/* ============ FOOTER ============ */
+footer{background:var(--ink);color:rgba(253,246,248,.55);padding:54px 24px 34px;text-align:center}
+footer .f-logo{font-family:'Playfair Display',serif;font-size:26px;color:var(--cream);margin-bottom:6px}
+footer .f-tag{font-size:12px;font-style:italic;font-family:'Playfair Display',serif;color:var(--blush);margin-bottom:26px}
+footer .f-links{display:flex;justify-content:center;gap:26px;margin-bottom:26px;flex-wrap:wrap}
+footer .f-links a{font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;opacity:.6;transition:opacity .2s}
+footer .f-links a:hover{opacity:1}
+footer small{display:block;font-size:11px;line-height:1.9;opacity:.5}
+
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
+  [data-reveal]{opacity:1;transform:none}
+}
+</style>
 </head>
 <body>
 
-<nav>
-  <div class="logo">voltecharged</div>
+<div class="grain"></div>
+
+<nav id="nav">
+  <a class="logo" href="#top">volte<em>charged</em></a>
   <div class="links">
     <a href="#features">Features</a>
+    <a href="#demo">Demo</a>
     <a href="#gallery">Gallery</a>
     <a href="#details">Details</a>
     <a href="#reviews">Reviews</a>
-    <button class="cart-btn" onclick="checkout()">Shop Now — $49.99</button>
+    <button class="cart-btn" data-buy>Shop Now — $49.99</button>
   </div>
 </nav>
 
-<!-- Hero -->
-<section class="hero">
+<!-- ================= HERO : 3-image shuffle carousel ================= -->
+<section class="hero" id="top">
+  <div class="ghost" id="ghost">BLUSH</div>
+  <div class="carousel" id="carousel">
+    <div class="item" data-key="pink"><img src="assets/blender-pink.png" alt="voltecharged blender — blush pink" draggable="false"></div>
+    <div class="item" data-key="white"><img src="assets/blender-white.png" alt="voltecharged blender — porcelain white" draggable="false"></div>
+    <div class="item" data-key="green"><img src="assets/blender-green.png" alt="voltecharged blender — forest green" draggable="false"></div>
+  </div>
+
+  <div class="hud hud-tl">Portable Blender · 400ml · USB-C</div>
+
+  <div class="hud hud-bl">
+    <div class="kick" id="heroKick">Voltecharged Blender</div>
+    <h2 id="heroName">Blush Pink</h2>
+    <p id="heroLine">The original blush. Pretty enough to live on your desk — powerful enough to crush ice, frozen fruit and greens in ten seconds flat.</p>
+    <div class="controls">
+      <button class="arrow" id="prevBtn" aria-label="Previous color">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+      </button>
+      <button class="arrow" id="nextBtn" aria-label="Next color">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+      </button>
+    </div>
+    <div class="swatches" id="swatches"></div>
+  </div>
+
+  <div class="hud hud-br">
+    <button class="shop-link" data-buy>
+      Shop Now
+      <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+    </button>
+    <div class="price-note">$49.99 · Free Shipping</div>
+  </div>
+
+  <div class="scroll-cue"><span>Scroll</span><span class="line"></span></div>
+</section>
+
+<!-- ================= MARQUEE ================= -->
+<div class="marquee" aria-hidden="true">
+  <div class="track" id="mqTrack">
+    <span>USB-C Rechargeable <i>✦</i> 10-Second Blend <i>✦</i> 400ml Capacity <i>✦</i> Leak-Proof Lid <i>✦</i> Self-Cleaning <i>✦</i> BPA-Free <i>✦</i> 200W Motor <i>✦</i> Free Shipping <i>✦</i></span>
+    <span>USB-C Rechargeable <i>✦</i> 10-Second Blend <i>✦</i> 400ml Capacity <i>✦</i> Leak-Proof Lid <i>✦</i> Self-Cleaning <i>✦</i> BPA-Free <i>✦</i> 200W Motor <i>✦</i> Free Shipping <i>✦</i></span>
+  </div>
+</div>
+
+<!-- ================= FEATURES ================= -->
+<section class="section features" id="features">
   <div class="container">
-    <div class="hero-text">
-      <div class="tag">New Arrival ✦ Portable Blender</div>
-      <h1>Sip, blend, <em>go</em>.<br>Your smoothie<br>anywhere.</h1>
-      <p>The voltecharged Portable Electric Juice Blender Cup — 400ml of pure power in a pretty package. Blend fresh smoothies, protein shakes, and juices in seconds, then sip straight from the cup.</p>
-      <div class="hero-actions">
-        <button class="btn btn-primary" onclick="checkout()">Shop Now — $49.99</button>
-        <a href="#gallery" class="btn btn-outline">See More</a>
+    <div class="head">
+      <div class="label" data-reveal>Why voltecharged</div>
+      <h2 class="section-title" data-reveal style="--d:.08s">Small cup. <em>Serious</em> power.</h2>
+    </div>
+    <div class="features-grid">
+      <div class="f-card" data-reveal style="--d:0s">
+        <div class="icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="16" height="10" rx="2"/><line x1="22" y1="11" x2="22" y2="13"/><path d="M11 9l-2 3h3l-2 3"/></svg></div>
+        <h3>USB-C Rechargeable</h3><p>Charge anywhere — laptop, power bank, car. 10+ blends per charge.</p>
+      </div>
+      <div class="f-card" data-reveal style="--d:.07s">
+        <div class="icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
+        <h3>10-Second Blend</h3><p>Powerful 200W motor pulverizes ice, frozen fruit, and greens in seconds.</p>
+      </div>
+      <div class="f-card" data-reveal style="--d:.14s">
+        <div class="icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3h10l-1.2 18H8.2L7 3z"/><line x1="9" y1="8" x2="15" y2="8"/></svg></div>
+        <h3>400ml Capacity</h3><p>Perfect single-serve size. Blend, sip, and go — one less dish to wash.</p>
+      </div>
+      <div class="f-card" data-reveal style="--d:.21s">
+        <div class="icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2s6 6.6 6 11a6 6 0 0 1-12 0c0-4.4 6-11 6-11z"/><path d="M9.5 13.5a2.5 2.5 0 0 0 2.5 2.5"/></svg></div>
+        <h3>Self-Cleaning</h3><p>Add water + a drop of soap, blend 10 seconds, rinse. That's it.</p>
+      </div>
+      <div class="f-card" data-reveal style="--d:.28s">
+        <div class="icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8h12l-1.2 13H7.2L6 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg></div>
+        <h3>Leak-Proof Lid</h3><p>Toss it in your bag with zero worries. Double-seal silicone ring.</p>
+      </div>
+      <div class="f-card" data-reveal style="--d:.35s">
+        <div class="icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.2"/><circle cx="6.5" cy="14.5" r="3.2"/><circle cx="17.5" cy="14.5" r="3.2"/></svg></div>
+        <h3>Three Colorways</h3><p>Blush, porcelain, forest. Matte finish, soft-touch grip, desk-worthy.</p>
       </div>
     </div>
-    <div class="hero-image">
-      <img id="heroImg" src="https://cdn.shopify.com/s/files/1/1010/2482/5658/files/670a8efe-ce6b-46e3-9892-9396abea22b8.jpg?v=1784389752" alt="voltecharged pink blender">
-      <div class="hero-badge">
-        <span class="price">$49</span>
-        <span class="sub">Free Ship</span>
+  </div>
+</section>
+
+<!-- ================= VIDEO DEMO : scroll-scrubbed ================= -->
+<section class="demo" id="demo">
+  <div class="demo-sticky">
+    <div class="demo-ghost" id="demoGhost">Watch it work</div>
+    <div class="demo-progress"><i id="demoBar"></i></div>
+    <div class="demo-frame" id="demoFrame">
+      <video id="demoVideo" src="assets/demo.mp4" poster="assets/demo-poster.jpg" muted playsinline preload="auto"></video>
+      <button class="sound" id="soundBtn">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg>
+        <span id="soundLabel">Play with sound</span>
+      </button>
+    </div>
+    <div class="demo-steps" id="demoSteps">
+      <div class="step on"><div class="num">01</div><h4>Drop it in</h4><p>Fruit, ice, protein — whatever you're craving.</p></div>
+      <div class="step"><div class="num">02</div><h4>10-second blend</h4><p>200W of torque turns it silky, no chunks left behind.</p></div>
+      <div class="step"><div class="num">03</div><h4>Sip &amp; go</h4><p>Flip the lid, drink straight from the cup. Done.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= GALLERY : parallax mosaic ================= -->
+<section class="section gallery" id="gallery">
+  <div class="container">
+    <div class="head">
+      <div class="label" data-reveal>Gallery</div>
+      <h2 class="section-title" data-reveal style="--d:.08s">See it <em>in action</em></h2>
+    </div>
+    <div class="mosaic">
+      <div class="col" data-plx="0.06">
+        <div class="ph" data-reveal><img src="https://cdn.shopify.com/s/files/1/1010/2482/5658/files/6d80387e-1b1c-4223-b699-e20acf64003b.jpg?v=1784389753" alt="Blender in use" loading="lazy"><span class="tag">In the wild</span></div>
+        <div class="ph" data-reveal style="--d:.08s"><img src="assets/tile-brand.jpg" alt="blend in color — voltecharged" loading="lazy"></div>
+      </div>
+      <div class="col" data-plx="-0.08">
+        <div class="ph tall" data-reveal style="--d:.12s"><img src="https://cdn.shopify.com/s/files/1/1010/2482/5658/files/3452ef32-2bb4-45eb-b70e-d3ad4888d5a5.jpg?v=1784389752" alt="Porcelain white studio shot" loading="lazy"><span class="tag">Studio</span></div>
+        <div class="ph" data-reveal style="--d:.18s"><img src="https://cdn.shopify.com/s/files/1/1010/2482/5658/files/670a8efe-ce6b-46e3-9892-9396abea22b8.jpg?v=1784389752" alt="Blush pink blender duo" loading="lazy"><span class="tag">Blush</span></div>
+      </div>
+      <div class="col" data-plx="0.1">
+        <div class="ph" data-reveal style="--d:.2s"><img src="assets/demo-poster.jpg" alt="Blender on the counter" loading="lazy"><span class="tag">From the demo</span></div>
+        <div class="ph tall" data-reveal style="--d:.26s"><img src="https://cdn.shopify.com/s/files/1/1010/2482/5658/files/f0076711-9044-4764-87c9-a52bc013293d.jpg?v=1784389753" alt="Blender with packaging" loading="lazy"><span class="tag">Unboxed</span></div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- Features -->
-<section class="features" id="features">
-  <div class="features-grid" style="margin:0 24px;">
-    <div class="feature-card">
-      <div class="feature-icon">🔋</div>
-      <h3>USB-C Rechargeable</h3>
-      <p>Charge anywhere — laptop, power bank, car. 10+ blends per charge.</p>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon">⚡</div>
-      <h3>10-Second Blend</h3>
-      <p>Powerful 200W motor pulverizes ice, frozen fruit, and greens in seconds.</p>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon">🧊</div>
-      <h3>400ml Capacity</h3>
-      <p>Perfect single-serve size. Blend, sip, and go — one less dish to wash.</p>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon">🪥</div>
-      <h3>Self-Cleaning</h3>
-      <p>Add water + drop of soap, blend 10 seconds, rinse. That's it.</p>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon">👜</div>
-      <h3>Leak-Proof Lid</h3>
-      <p>Toss it in your bag with zero worries. Double-seal silicone ring.</p>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon">🌸</div>
-      <h3>Blush Pink Design</h3>
-      <p>Pretty enough to leave on your desk. Matte finish, soft-touch grip.</p>
-    </div>
-  </div>
-</section>
-
-<!-- Gallery -->
-<section class="gallery" id="gallery">
-  <div class="container">
-    <div class="section-title">
-      <div class="label">Gallery</div>
-      <h2>See it in action</h2>
-    </div>
-    <div class="gallery-grid">
-      <img src="https://cdn.shopify.com/s/files/1/1010/2482/5658/files/6d80387e-1b1c-4223-b699-e20acf64003b.jpg?v=1784389753" alt="Blender in use">
-      <img src="https://cdn.shopify.com/s/files/1/1010/2482/5658/files/f0076711-9044-4764-87c9-a52bc013293d.jpg?v=1784389753" alt="Blender product shot">
-      <img src="https://cdn.shopify.com/s/files/1/1010/2482/5658/files/93f7b183-615c-487b-9f11-3e90fb157a89.jpg?v=1784389753" alt="Blender with ingredients">
-      <img class="wide" src="https://cdn.shopify.com/s/files/1/1010/2482/5658/files/3452ef32-2bb4-45eb-b70e-d3ad4888d5a5.jpg?v=1784389752" alt="Blender lifestyle">
-    </div>
-  </div>
-</section>
-
-<!-- Details -->
-<section class="details" id="details">
+<!-- ================= DETAILS ================= -->
+<section class="section details" id="details">
   <div class="container">
     <div class="details-grid">
-      <div class="details-image">
-        <img src="https://cdn.shopify.com/s/files/1/1010/2482/5658/files/6d80387e-1b1c-4223-b699-e20acf64003b.jpg?v=1784389753" alt="Blender detail">
+      <div class="img-wrap" data-reveal>
+        <img src="https://cdn.shopify.com/s/files/1/1010/2482/5658/files/670a8efe-ce6b-46e3-9892-9396abea22b8.jpg?v=1784389752" alt="voltecharged blender detail" loading="lazy">
+        <div class="chip"><b>$49</b><span>Free ship</span></div>
       </div>
       <div>
-        <h2>Designed for the <em>on-the-go</em> life</h2>
-        <p>Whether you're rushing to work, hitting the gym, or blending a post-yoga smoothie — the voltecharged blender fits your rhythm. 400ml of bold color, serious power, and zero fuss.</p>
-        <ul>
-          <li>200W high-torque motor — crushes ice and frozen fruit</li>
-          <li>400ml Tritan copolyester cup — BPA-free, shatter-resistant</li>
-          <li>USB-C rechargeable — up to 15 blends per charge</li>
-          <li>IPX5 water-resistant — rinse without worry</li>
-          <li>Includes recipe booklet with 15 smoothie ideas</li>
-          <li>Matte blush finish — looks as good as it blends</li>
+        <div class="label" data-reveal>The details</div>
+        <h2 data-reveal style="--d:.06s">Designed for the <em>on-the-go</em> life</h2>
+        <p data-reveal style="--d:.12s">Whether you're rushing to work, hitting the gym, or blending a post-yoga smoothie — the voltecharged blender fits your rhythm. 400ml of bold color, serious power, and zero fuss.</p>
+        <ul class="spec-list">
+          <li data-reveal style="--d:.14s">200W high-torque motor — crushes ice and frozen fruit</li>
+          <li data-reveal style="--d:.18s">400ml Tritan copolyester cup — BPA-free, shatter-resistant</li>
+          <li data-reveal style="--d:.22s">USB-C rechargeable — up to 15 blends per charge</li>
+          <li data-reveal style="--d:.26s">IPX5 water-resistant — rinse without worry</li>
+          <li data-reveal style="--d:.3s">Includes recipe booklet with 15 smoothie ideas</li>
+          <li data-reveal style="--d:.34s">Matte soft-touch finish — looks as good as it blends</li>
         </ul>
-        <button class="btn btn-primary" onclick="checkout()">Add to Cart — $49.99</button>
+        <button class="btn btn-primary" data-buy data-reveal style="--d:.38s">Add to Cart — $49.99</button>
       </div>
     </div>
   </div>
 </section>
 
-<!-- Reviews -->
-<section class="reviews" id="reviews">
+<!-- ================= REVIEWS ================= -->
+<section class="section reviews" id="reviews">
   <div class="container">
-    <div class="section-title">
-      <div class="label">Reviews</div>
-      <h2>What people are saying</h2>
+    <div class="head">
+      <div class="label" data-reveal>Reviews</div>
+      <h2 class="section-title" data-reveal style="--d:.08s">What people are <em>saying</em></h2>
     </div>
     <div class="reviews-grid">
-      <div class="review-card">
-        <div class="review-stars">★★★★★</div>
+      <div class="r-card" data-reveal style="--d:0s">
+        <div class="stars">★★★★★</div>
         <blockquote>"Obsessed with the color! I keep it on my desk at work and my smoothies are ready before my morning coffee. Game changer."</blockquote>
-        <div class="review-author">— Morgan K.</div>
+        <div class="who">— Morgan K.</div>
       </div>
-      <div class="review-card">
-        <div class="review-stars">★★★★★</div>
+      <div class="r-card" data-reveal style="--d:.1s">
+        <div class="stars">★★★★★</div>
         <blockquote>"I've tried 4 portable blenders. This one actually blends frozen fruit without chunks. The blush pink is adorable too."</blockquote>
-        <div class="review-author">— Jessa T.</div>
+        <div class="who">— Jessa T.</div>
       </div>
-      <div class="review-card">
-        <div class="review-stars">★★★★★</div>
+      <div class="r-card" data-reveal style="--d:.2s">
+        <div class="stars">★★★★★</div>
         <blockquote>"Bought for my girlfriend — she uses it every single day. The USB-C charging is clutch, no more hunting for weird cables."</blockquote>
-        <div class="review-author">— David R.</div>
+        <div class="who">— David R.</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- CTA -->
-<section class="cta">
-  <div class="price-badge">$49.99</div>
-  <h2>Ready to <em>blend in style</em>?</h2>
-  <p>Free shipping • 30-day money-back guarantee • Ships from Texas</p>
-  <button class="btn btn-primary" onclick="checkout()" style="font-size:15px;padding:18px 40px;">Shop Now</button>
+<!-- ================= CTA ================= -->
+<section class="cta" id="shop">
+  <div class="big-ghost">Blend in style</div>
+  <div class="price" data-reveal>$49.99</div>
+  <h2 data-reveal style="--d:.06s">Ready to <em>blend in style</em>?</h2>
+  <p data-reveal style="--d:.12s">Free shipping &nbsp;•&nbsp; 30-day money-back guarantee &nbsp;•&nbsp; Ships from Texas</p>
+  <button class="btn btn-primary" data-buy data-reveal style="--d:.18s;font-size:15px;padding:19px 46px">Shop Now</button>
 </section>
 
 <footer>
-  <div class="container">
-    <strong>voltecharged</strong> — blend in color, live in motion.<br>
-    &copy; 2026 voltecharged. All rights reserved. Powered by Shopify.
+  <div class="f-logo">voltecharged</div>
+  <div class="f-tag">blend in color, live in motion.</div>
+  <div class="f-links">
+    <a href="#features">Features</a>
+    <a href="#demo">Demo</a>
+    <a href="#gallery">Gallery</a>
+    <a href="#reviews">Reviews</a>
+    <a href="#shop">Shop</a>
   </div>
+  <small>&copy; 2026 voltecharged. All rights reserved. Powered by Shopify.<br>Secure checkout via Shopify — Apple Pay, Shop Pay &amp; all major cards accepted.</small>
 </footer>
 
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.14/dist/lenis.min.js"></script>
 <script>
-  function checkout() {
-    // Redirect to Shopify checkout with the correct variant
-    const variantId = '53762550366522'; // Pink / 380ml — default variant
-    const domain = 'ehh05e-7q.myshopify.com';
-    window.location.href = `https://${domain}/cart/${variantId}:1`;
-  }
-</script>
+/* ============================================================
+   SHOPIFY CHECKOUT WIRING
+   domain + variant IDs — swap in the real white/green variant
+   IDs from your Shopify admin when you have them.
+============================================================ */
+const SHOPIFY_DOMAIN = 'ehh05e-7q.myshopify.com';
+const VARIANT_IDS = {
+  pink:  '53762550366522',   // Blush Pink (confirmed)
+  white: '53762550366522',   // TODO: replace with Porcelain White variant ID
+  green: '53762550366522'    // TODO: replace with Forest Green variant ID
+};
+function checkout(key){
+  const v = VARIANT_IDS[key] || VARIANT_IDS.pink;
+  window.location.href = `https://${SHOPIFY_DOMAIN}/cart/${v}:1`;
+}
 
+/* ============================================================
+   HERO — 3-image shuffle carousel
+============================================================ */
+const VARIANTS = [
+  { key:'pink',  name:'Blush Pink',      ghost:'BLUSH',
+    line:'The original blush. Pretty enough to live on your desk — powerful enough to crush ice, frozen fruit and greens in ten seconds flat.',
+    bg:'#eba8b7', ink:'#3d2c32', sub:'rgba(61,44,50,.72)', swatch:'#f2b6c2' },
+  { key:'white', name:'Porcelain White', ghost:'CLOUD',
+    line:'Clean porcelain white. Minimal on the counter, maximal in the cup — same 200W bite, zero visual noise.',
+    bg:'#e8e1d6', ink:'#443b33', sub:'rgba(68,59,51,.68)', swatch:'#f4f1ec' },
+  { key:'green', name:'Forest Green',    ghost:'FOREST',
+    line:'Deep forest green. Bold color, same ice-crushing motor — for the one who never orders the plain latte.',
+    bg:'#2e4a3a', ink:'#f6f0e6', sub:'rgba(246,240,230,.7)', swatch:'#2e4a3a' }
+];
+
+const heroEl    = document.querySelector('.hero');
+const items     = [...document.querySelectorAll('.hero .item')];
+const ghostEl   = document.getElementById('ghost');
+const nameEl    = document.getElementById('heroName');
+const lineEl    = document.getElementById('heroLine');
+const swWrap    = document.getElementById('swatches');
+const nav       = document.getElementById('nav');
+const ANIM_MS   = 650;
+
+let activeIndex = 0;
+let isAnimating = false;
+let autoTimer   = null;
+let idleTimer   = null;
+
+/* preload */
+VARIANTS.forEach(v => { const im = new Image(); im.src = `assets/blender-${v.key}.png`; });
+
+/* swatches */
+VARIANTS.forEach((v, i) => {
+  const b = document.createElement('button');
+  b.className = 'swatch' + (i === 0 ? ' on' : '');
+  b.style.background = v.swatch;
+  b.setAttribute('aria-label', v.name);
+  b.addEventListener('click', () => { goTo(i); userInteracted(); });
+  swWrap.appendChild(b);
+});
+
+function roles(){
+  return {
+    center: activeIndex,
+    left:  (activeIndex + VARIANTS.length - 1) % VARIANTS.length,
+    right: (activeIndex + 1) % VARIANTS.length
+  };
+}
+
+function apply(){
+  const r = roles();
+  items.forEach((el, i) => {
+    el.dataset.role =
+      i === r.center ? 'center' :
+      i === r.left   ? 'left'   : 'right';
+  });
+  const v = VARIANTS[activeIndex];
+  heroEl.style.background = v.bg;
+  document.documentElement.style.setProperty('--hero-ink', v.ink);
+  document.documentElement.style.setProperty('--hero-sub', v.sub);
+  ghostEl.classList.add('swap');
+  setTimeout(() => { ghostEl.textContent = v.ghost; ghostEl.classList.remove('swap'); }, 240);
+  nameEl.textContent = v.name;
+  lineEl.textContent = v.line;
+  [...swWrap.children].forEach((s, i) => s.classList.toggle('on', i === activeIndex));
+}
+
+function navigate(dir){
+  if (isAnimating) return;
+  isAnimating = true;
+  activeIndex = (activeIndex + (dir === 'next' ? 1 : VARIANTS.length - 1)) % VARIANTS.length;
+  apply();
+  setTimeout(() => { isAnimating = false; }, ANIM_MS);
+}
+function goTo(i){
+  if (isAnimating || i === activeIndex) return;
+  isAnimating = true;
+  activeIndex = i;
+  apply();
+  setTimeout(() => { isAnimating = false; }, ANIM_MS);
+}
+
+document.getElementById('prevBtn').addEventListener('click', () => { navigate('prev'); userInteracted(); });
+document.getElementById('nextBtn').addEventListener('click', () => { navigate('next'); userInteracted(); });
+window.addEventListener('keydown', e => {
+  if (e.key === 'ArrowLeft')  { navigate('prev'); userInteracted(); }
+  if (e.key === 'ArrowRight') { navigate('next'); userInteracted(); }
+});
+
+/* gentle auto-rotate, backs off when the user takes over */
+function startAuto(){ autoTimer = setInterval(() => navigate('next'), 6000); }
+function userInteracted(){
+  clearInterval(autoTimer); clearTimeout(idleTimer);
+  idleTimer = setTimeout(startAuto, 14000);
+}
+apply();
+startAuto();
+
+/* buy buttons use the color currently on stage */
+document.querySelectorAll('[data-buy]').forEach(b =>
+  b.addEventListener('click', () => checkout(VARIANTS[activeIndex].key))
+);
+
+/* ============================================================
+   SMOOTH SCROLL (Lenis) + reveals + parallax + video scrub
+============================================================ */
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+let lenis = null;
+if (!reduceMotion && window.Lenis) {
+  lenis = new Lenis({ lerp: 0.11, smoothWheel: true });
+}
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const t = document.querySelector(a.getAttribute('href'));
+    if (!t) return;
+    e.preventDefault();
+    if (lenis) lenis.scrollTo(t, { offset: -60 });
+    else t.scrollIntoView({ behavior: 'smooth' });
+  });
+});
+
+/* nav solid state */
+function navState(){
+  nav.classList.toggle('solid', window.scrollY > window.innerHeight * 0.82);
+}
+
+/* reveal on scroll */
+const io = new IntersectionObserver(es => {
+  es.forEach(en => { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } });
+}, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
+document.querySelectorAll('[data-reveal]').forEach(el => io.observe(el));
+
+/* parallax + video scrub, one rAF loop */
+const plxEls   = [...document.querySelectorAll('[data-plx]')];
+const demoSec  = document.querySelector('.demo');
+const frame    = document.getElementById('demoFrame');
+const ghostD   = document.getElementById('demoGhost');
+const bar      = document.getElementById('demoBar');
+const steps    = [...document.querySelectorAll('#demoSteps .step')];
+const video    = document.getElementById('demoVideo');
+const soundBtn = document.getElementById('soundBtn');
+const soundLbl = document.getElementById('soundLabel');
+let scrubbed = 0;      // smoothed progress 0..1
+let manualPlay = false;
+
+function clamp01(x){ return Math.min(1, Math.max(0, x)); }
+function easeOut(x){ return 1 - Math.pow(1 - x, 3); }
+
+function demoProgress(){
+  const r = demoSec.getBoundingClientRect();
+  const total = r.height - window.innerHeight;
+  return clamp01(-r.top / total);
+}
+
+function tick(time){
+  if (lenis) lenis.raf(time);
+  navState();
+
+  /* parallax columns */
+  if (!reduceMotion) {
+    const vh = window.innerHeight;
+    plxEls.forEach(el => {
+      const r = el.getBoundingClientRect();
+      const d = (r.top + r.height / 2) - vh / 2;
+      el.style.transform = `translateY(${(-d * parseFloat(el.dataset.plx)).toFixed(1)}px)`;
+    });
+  }
+
+  /* video scrub */
+  const p = demoProgress();
+  scrubbed += (p - scrubbed) * 0.14;
+
+  const grow = easeOut(clamp01(scrubbed / 0.32));
+  const scale = 0.82 + 0.18 * grow;
+  frame.style.transform = `scale(${scale.toFixed(4)})`;
+  frame.style.borderRadius = `${(30 - 14 * grow).toFixed(1)}px`;
+  ghostD.style.transform = `translateY(${((0.5 - scrubbed) * 46).toFixed(1)}vh)`;
+  ghostD.style.opacity = (0.5 + 0.5 * Math.sin(Math.min(scrubbed / 0.25, 1) * Math.PI)).toFixed(2);
+  bar.style.height = `${(scrubbed * 100).toFixed(1)}%`;
+
+  const si = scrubbed < 0.36 ? 0 : scrubbed < 0.7 ? 1 : 2;
+  steps.forEach((s, i) => s.classList.toggle('on', i === si));
+
+  if (!manualPlay && !reduceMotion && video.duration) {
+    const target = scrubbed * Math.max(video.duration - 0.08, 0);
+    if (Math.abs(video.currentTime - target) > 0.03) {
+      try { video.currentTime = target; } catch (e) {}
+    }
+  }
+  requestAnimationFrame(tick);
+}
+requestAnimationFrame(tick);
+
+/* tap-to-play with real audio; hands control back to the user */
+soundBtn.addEventListener('click', () => {
+  if (!manualPlay) {
+    manualPlay = true;
+    video.muted = false;
+    video.controls = true;
+    video.play();
+    soundLbl.textContent = 'Back to scroll mode';
+  } else {
+    manualPlay = false;
+    video.pause();
+    video.controls = false;
+    video.muted = true;
+    soundLbl.textContent = 'Play with sound';
+  }
+});
+
+/* if reduced motion: make the demo a normal tap-to-play block */
+if (reduceMotion) {
+  demoSec.style.height = 'auto';
+  video.controls = true;
+  frame.style.transform = 'none';
+}
+</script>
 </body>
 </html>
