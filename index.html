@@ -23,6 +23,14 @@
   --hero-bg:#eba8b7;
   --hero-ink:#3d2c32;
   --hero-sub:rgba(61,44,50,.72);
+  /* tri-tone palette pulled straight from the hero's panning backgrounds */
+  --forest:#2e4a3a;
+  --forest-mid:#3f6b52;
+  --forest-soft:#e3ece5;
+  --forest-ink:#f6f0e6;
+  --sand:#e8e1d6;
+  --sand-soft:#f2ede4;
+  --sand-deep:#a98a63;
   --ease:cubic-bezier(.4,0,.2,1);
   --ease-out:cubic-bezier(.16,1,.3,1);
 }
@@ -190,7 +198,7 @@ nav .cart-btn:hover{transform:scale(1.05);box-shadow:0 8px 26px rgba(212,114,135
 
 /* ============ MARQUEE ============ */
 .marquee{
-  background:var(--ink);color:var(--cream);overflow:hidden;
+  background:var(--forest);color:var(--forest-ink);overflow:hidden;
   padding:16px 0;position:relative;z-index:5;
 }
 .marquee .track{
@@ -221,6 +229,146 @@ nav .cart-btn:hover{transform:scale(1.05);box-shadow:0 8px 26px rgba(212,114,135
 [data-reveal]{opacity:0;transform:translateY(36px);transition:opacity .9s ease var(--d,0s),transform .9s var(--ease-out) var(--d,0s)}
 [data-reveal].in{opacity:1;transform:none}
 
+/* ============ PRODUCT SHOWROOM (carousel + details) ============ */
+.showroom{
+  position:relative;overflow:hidden;
+  padding:clamp(64px,9vh,110px) 0;
+  background:linear-gradient(180deg,#fff 0%,var(--pr-wash,var(--cream)) 100%);
+  transition:background .8s var(--ease);
+}
+.showroom .container{position:relative;z-index:2}
+.showroom .word{
+  position:absolute;left:50%;top:clamp(8px,3vh,34px);transform:translateX(-50%);
+  font-family:'Anton',sans-serif;font-size:clamp(74px,17vw,250px);line-height:1;
+  text-transform:uppercase;letter-spacing:-.03em;white-space:nowrap;
+  pointer-events:none;user-select:none;z-index:1;
+  color:var(--pr-ghost,rgba(212,114,135,.07));transition:color .8s var(--ease);
+}
+.shop-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(30px,5vw,66px);align-items:center}
+
+/* ---- gallery side ---- */
+.pr-gallery{display:flex;flex-direction:column;gap:16px}
+.pr-stage{
+  position:relative;border-radius:28px;overflow:hidden;aspect-ratio:1/1;
+  display:flex;align-items:center;justify-content:center;
+  background:var(--pr-panel,#fbe6ec);
+  box-shadow:0 34px 90px rgba(61,30,38,.16);
+  transition:background-color .8s var(--ease);
+}
+.pr-stage::before{
+  content:'';position:absolute;width:74%;aspect-ratio:1;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,255,255,.65),transparent 70%);
+  filter:blur(6px);
+}
+.pr-stage .badge{
+  position:absolute;top:18px;left:18px;z-index:5;
+  padding:8px 15px;border-radius:22px;
+  background:rgba(255,255,255,.82);backdrop-filter:blur(8px);
+  font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--pr-accent,#d47287);transition:color .5s var(--ease);
+}
+.pr-stage .stock{
+  position:absolute;top:18px;right:18px;z-index:5;
+  display:flex;align-items:center;gap:7px;
+  padding:8px 14px;border-radius:22px;
+  background:rgba(255,255,255,.82);backdrop-filter:blur(8px);
+  font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#5a4a50;
+}
+.pr-stage .stock i{width:8px;height:8px;border-radius:50%;background:#4caf7d;box-shadow:0 0 0 0 rgba(76,175,125,.5);animation:pulse 2.2s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(76,175,125,.5)}70%{box-shadow:0 0 0 8px rgba(76,175,125,0)}100%{box-shadow:0 0 0 0 rgba(76,175,125,0)}}
+.pr-main{position:relative;width:80%;height:80%;z-index:3}
+.pr-main img{
+  position:absolute;inset:0;width:100%;height:100%;
+  object-fit:contain;object-position:center;
+  filter:drop-shadow(0 30px 42px rgba(61,30,38,.3));
+  opacity:0;transform:scale(.92) translateY(8px);
+  transition:opacity .5s var(--ease-out),transform .65s var(--ease-out);
+}
+.pr-main img.show{opacity:1;transform:scale(1) translateY(0)}
+.pr-thumbs{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.pr-thumb{
+  position:relative;aspect-ratio:1;border-radius:16px;overflow:hidden;cursor:pointer;
+  background:#fff;border:2px solid var(--line);
+  transition:border-color .3s,transform .3s var(--ease-out),box-shadow .3s;
+}
+.pr-thumb img{width:100%;height:100%;object-fit:cover;transition:transform .5s var(--ease-out)}
+.pr-thumb.prod{background:var(--pr-panel,#fbe6ec);transition:background-color .6s var(--ease),border-color .3s,transform .3s,box-shadow .3s}
+.pr-thumb.prod img{object-fit:contain;padding:14%}
+.pr-thumb:hover{transform:translateY(-4px)}
+.pr-thumb:hover img{transform:scale(1.07)}
+.pr-thumb.on{border-color:var(--pr-accent,#d47287);box-shadow:0 12px 26px rgba(61,30,38,.14)}
+.pr-thumb .lens{position:absolute;inset:0;background:rgba(0,0,0,.28);opacity:0;display:flex;align-items:center;justify-content:center;color:#fff;transition:opacity .25s}
+.pr-thumb:hover .lens{opacity:1}
+
+/* ---- info side ---- */
+.pr-info{max-width:470px}
+.pr-info .eyebrow{
+  font-size:11px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;
+  color:var(--pr-accent,var(--rose));margin-bottom:12px;display:flex;align-items:center;gap:10px;
+  transition:color .5s var(--ease);
+}
+.pr-info .eyebrow::before{content:'';width:26px;height:1.5px;background:currentColor}
+.pr-info h2{
+  font-family:'Playfair Display',serif;font-weight:400;
+  font-size:clamp(30px,4vw,46px);line-height:1.06;color:var(--ink);margin-bottom:6px;
+}
+.pr-info h2 em{font-style:italic;color:var(--pr-accent,var(--rose));transition:color .5s var(--ease)}
+.pr-rating{display:flex;align-items:center;gap:10px;margin-bottom:18px}
+.pr-rating .stars{color:var(--pr-accent,var(--rose));font-size:14px;letter-spacing:2px;transition:color .5s var(--ease)}
+.pr-rating span{font-size:12px;font-weight:600;color:var(--muted);letter-spacing:.03em}
+.pr-price{display:flex;align-items:baseline;gap:12px;margin-bottom:18px}
+.pr-price b{font-family:'Playfair Display',serif;font-weight:600;font-size:clamp(26px,3vw,34px);color:var(--pr-accent,var(--rose));transition:color .5s var(--ease)}
+.pr-price s{font-size:16px;color:var(--muted)}
+.pr-price .save{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--forest-mid);background:var(--forest-soft);padding:5px 10px;border-radius:14px}
+.pr-desc{font-size:14.5px;color:#5a4a50;line-height:1.72;margin-bottom:22px}
+.pr-chips{display:flex;flex-wrap:wrap;gap:9px;margin-bottom:26px}
+.pr-chip{
+  padding:7px 14px;border-radius:20px;border:1px solid var(--line);background:#fff;
+  font-size:11.5px;font-weight:600;letter-spacing:.03em;color:#5a4a50;
+  display:flex;align-items:center;gap:7px;
+}
+.pr-chip svg{color:var(--pr-accent,var(--rose));transition:color .5s var(--ease)}
+.pr-color-row{margin-bottom:24px}
+.pr-color-row .lab{font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
+.pr-color-row .lab b{color:var(--ink);font-weight:700}
+.pr-swatches{display:flex;gap:14px}
+.pr-swatch{
+  position:relative;width:40px;height:40px;border-radius:50%;cursor:pointer;
+  border:2px solid #fff;box-shadow:0 3px 12px rgba(0,0,0,.18);
+  transition:transform .2s var(--ease-out);
+}
+.pr-swatch:hover{transform:scale(1.12)}
+.pr-swatch.on{transform:scale(1.06)}
+.pr-swatch.on::after{content:'';position:absolute;inset:-6px;border-radius:50%;border:2px solid var(--pr-accent,var(--rose));transition:border-color .4s var(--ease)}
+.pr-actions{display:flex;align-items:stretch;gap:14px}
+.qty{display:flex;align-items:center;border:1.5px solid var(--line);border-radius:30px;overflow:hidden;background:#fff}
+.qty button{width:44px;height:100%;font-size:18px;color:var(--ink);transition:background .2s}
+.qty button:hover{background:var(--cream)}
+.qty span{min-width:34px;text-align:center;font-size:15px;font-weight:700}
+.pr-buy{
+  flex:1;display:inline-flex;align-items:center;justify-content:center;gap:10px;
+  padding:16px 30px;border-radius:30px;
+  background:var(--pr-accent,var(--rose));color:#fff;
+  font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+  box-shadow:0 12px 30px var(--pr-shadow,rgba(212,114,135,.4));
+  transition:transform .22s var(--ease-out),box-shadow .22s,background-color .5s var(--ease);
+}
+.pr-buy:hover{transform:translateY(-3px)}
+.pr-buy svg{transition:transform .2s}
+.pr-buy:hover svg{transform:translateX(4px)}
+.pr-note{margin-top:16px;font-size:12px;color:var(--muted);letter-spacing:.02em;display:flex;align-items:center;gap:8px}
+.pr-note svg{color:var(--forest-mid)}
+@media(max-width:900px){
+  .shop-grid{grid-template-columns:1fr;gap:36px}
+  .showroom .word{font-size:clamp(70px,26vw,140px)}
+  .pr-info{max-width:none}
+}
+@media(max-width:480px){
+  .pr-actions{flex-wrap:wrap}
+  .qty{width:100%;justify-content:space-between}
+  .pr-buy{width:100%}
+}
+
 /* ============ FEATURES ============ */
 .features{background:#fff}
 .features .head{max-width:560px;margin-bottom:56px}
@@ -244,6 +392,11 @@ nav .cart-btn:hover{transform:scale(1.05);box-shadow:0 8px 26px rgba(212,114,135
   transition:transform .3s var(--ease-out);
 }
 .f-card:hover .icon{transform:translateY(-4px) rotate(-6deg)}
+/* tri-tone accents rotate through the grid — blush · forest · sand */
+.features-grid .f-card:nth-child(3n+2)::after{background:linear-gradient(90deg,var(--forest-mid),var(--forest))}
+.features-grid .f-card:nth-child(3n+2) .icon{color:var(--forest-mid);background:linear-gradient(135deg,var(--forest-soft),#fff)}
+.features-grid .f-card:nth-child(3n+3)::after{background:linear-gradient(90deg,var(--sand-deep),#8a6f45)}
+.features-grid .f-card:nth-child(3n+3) .icon{color:var(--sand-deep);background:linear-gradient(135deg,var(--sand-soft),#fff)}
 .f-card h3{font-size:16px;font-weight:700;margin-bottom:8px}
 .f-card p{font-size:14px;color:var(--muted);line-height:1.65}
 @media(max-width:900px){.features-grid{grid-template-columns:repeat(2,1fr)}}
@@ -332,6 +485,8 @@ nav .cart-btn:hover{transform:scale(1.05);box-shadow:0 8px 26px rgba(212,114,135
   background:rgba(253,246,248,.85);backdrop-filter:blur(6px);
   font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--rose-deep);
 }
+.mosaic .col:nth-child(2) .ph .tag{color:var(--forest)}
+.mosaic .col:nth-child(3) .ph .tag{color:var(--sand-deep)}
 @media(max-width:700px){.mosaic{grid-template-columns:repeat(2,1fr)}.mosaic .col:nth-child(3){display:none}}
 
 /* ============ DETAILS ============ */
@@ -371,6 +526,8 @@ nav .cart-btn:hover{transform:scale(1.05);box-shadow:0 8px 26px rgba(212,114,135
 }
 .r-card:hover{transform:translateY(-6px);box-shadow:0 18px 44px rgba(212,114,135,.14)}
 .r-card .stars{color:var(--blush);font-size:15px;letter-spacing:2px;margin-bottom:12px}
+.reviews-grid .r-card:nth-child(2) .stars{color:var(--forest-mid)}
+.reviews-grid .r-card:nth-child(3) .stars{color:var(--sand-deep)}
 .r-card blockquote{font-size:14.5px;color:#5a4a50;line-height:1.7;font-style:italic;margin-bottom:14px}
 .r-card .who{font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.06em}
 @media(max-width:820px){.reviews-grid{grid-template-columns:1fr}}
@@ -379,7 +536,7 @@ nav .cart-btn:hover{transform:scale(1.05);box-shadow:0 8px 26px rgba(212,114,135
 .cta{
   position:relative;overflow:hidden;text-align:center;
   padding:clamp(90px,14vh,150px) 24px;
-  background:linear-gradient(135deg,var(--blush-soft),var(--cream));
+  background:linear-gradient(135deg,var(--blush-soft) 0%,var(--sand-soft) 52%,var(--forest-soft) 100%);
 }
 .cta .big-ghost{
   position:absolute;inset-inline:0;top:50%;transform:translateY(-50%);
@@ -430,6 +587,7 @@ footer small{display:block;font-size:11px;line-height:1.9;opacity:.5}
 <nav id="nav">
   <a class="logo" href="#top">volte<em>charged</em></a>
   <div class="links">
+    <a href="#shop-product">Shop</a>
     <a href="#features">Features</a>
     <a href="#demo">Demo</a>
     <a href="#gallery">Gallery</a>
@@ -483,6 +641,67 @@ footer small{display:block;font-size:11px;line-height:1.9;opacity:.5}
     <span>USB-C Rechargeable <i>✦</i> 10-Second Blend <i>✦</i> 400ml Capacity <i>✦</i> Leak-Proof Lid <i>✦</i> Self-Cleaning <i>✦</i> BPA-Free <i>✦</i> 200W Motor <i>✦</i> Free Shipping <i>✦</i></span>
   </div>
 </div>
+
+<!-- ================= PRODUCT SHOWROOM : carousel + details ================= -->
+<section class="showroom" id="shop-product">
+  <div class="word" id="prWord">BLUSH</div>
+  <div class="container">
+    <div class="shop-grid">
+      <!-- gallery / carousel -->
+      <div class="pr-gallery" data-reveal>
+        <div class="pr-stage">
+          <div class="badge" id="prBadge">Blush Pink</div>
+          <div class="stock"><i></i> In stock</div>
+          <div class="pr-main" id="prMain"></div>
+        </div>
+        <div class="pr-thumbs" id="prThumbs"></div>
+      </div>
+
+      <!-- details -->
+      <div class="pr-info" data-reveal style="--d:.1s">
+        <div class="eyebrow">Meet the blender</div>
+        <h2>voltecharged — <em id="prName">Blush Pink</em></h2>
+        <div class="pr-rating">
+          <div class="stars">★★★★★</div>
+          <span>4.9 · 2,300+ five-star blends</span>
+        </div>
+        <div class="pr-price">
+          <b id="prPrice">$49.99</b>
+          <s>$69.99</s>
+          <span class="save">Save 28%</span>
+        </div>
+        <p class="pr-desc" id="prDesc">The original blush. Pretty enough to live on your desk — powerful enough to crush ice, frozen fruit and greens in ten seconds flat.</p>
+
+        <div class="pr-chips">
+          <span class="pr-chip"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg> 200W motor</span>
+          <span class="pr-chip"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="16" height="10" rx="2"/><line x1="22" y1="11" x2="22" y2="13"/></svg> USB-C · 15 blends</span>
+          <span class="pr-chip"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3h10l-1.2 18H8.2L7 3z"/><line x1="9" y1="8" x2="15" y2="8"/></svg> 400ml · BPA-free</span>
+        </div>
+
+        <div class="pr-color-row">
+          <div class="lab">Colorway — <b id="prSwatchName">Blush Pink</b></div>
+          <div class="pr-swatches" id="prSwatches"></div>
+        </div>
+
+        <div class="pr-actions">
+          <div class="qty">
+            <button id="qtyMinus" aria-label="Decrease quantity">−</button>
+            <span id="qtyVal">1</span>
+            <button id="qtyPlus" aria-label="Increase quantity">+</button>
+          </div>
+          <button class="pr-buy" id="prBuy">
+            Add to Cart
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+          </button>
+        </div>
+        <div class="pr-note">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+          Free shipping · 30-day money-back guarantee · Ships in 24h
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
 <!-- ================= FEATURES ================= -->
 <section class="section features" id="features">
@@ -663,13 +882,25 @@ function checkout(key){
 const VARIANTS = [
   { key:'pink',  name:'Blush Pink',      ghost:'BLUSH',
     line:'The original blush. Pretty enough to live on your desk — powerful enough to crush ice, frozen fruit and greens in ten seconds flat.',
-    bg:'#eba8b7', ink:'#3d2c32', sub:'rgba(61,44,50,.72)', swatch:'#f2b6c2' },
+    bg:'#eba8b7', ink:'#3d2c32', sub:'rgba(61,44,50,.72)', swatch:'#f2b6c2',
+    price:'$49.99', accent:'#d47287', panel:'#fbe6ec', wash:'#fdeef2',
+    ghostColor:'rgba(212,114,135,.08)', shadow:'rgba(212,114,135,.42)' },
   { key:'white', name:'Porcelain White', ghost:'CLOUD',
     line:'Clean porcelain white. Minimal on the counter, maximal in the cup — same 200W bite, zero visual noise.',
-    bg:'#e8e1d6', ink:'#443b33', sub:'rgba(68,59,51,.68)', swatch:'#f4f1ec' },
+    bg:'#e8e1d6', ink:'#443b33', sub:'rgba(68,59,51,.68)', swatch:'#f4f1ec',
+    price:'$49.99', accent:'#a98a63', panel:'#f2ede4', wash:'#f7f3ec',
+    ghostColor:'rgba(169,138,99,.1)', shadow:'rgba(169,138,99,.4)' },
   { key:'green', name:'Forest Green',    ghost:'FOREST',
     line:'Deep forest green. Bold color, same ice-crushing motor — for the one who never orders the plain latte.',
-    bg:'#2e4a3a', ink:'#f6f0e6', sub:'rgba(246,240,230,.7)', swatch:'#2e4a3a' }
+    bg:'#2e4a3a', ink:'#f6f0e6', sub:'rgba(246,240,230,.7)', swatch:'#2e4a3a',
+    price:'$49.99', accent:'#3f6b52', panel:'#e3ece5', wash:'#eef4ef',
+    ghostColor:'rgba(46,74,58,.09)', shadow:'rgba(63,107,82,.4)' }
+];
+/* shared lifestyle shots for the carousel thumbnail strip */
+const LIFESTYLE = [
+  { src:'assets/gallery-wild.jpg',    label:'In the wild' },
+  { src:'assets/gallery-demo.jpg',    label:'On the counter' },
+  { src:'assets/gallery-unboxed.jpg', label:'Unboxed' }
 ];
 
 const heroEl    = document.querySelector('.hero');
@@ -760,6 +991,118 @@ startAuto();
 document.querySelectorAll('[data-buy]').forEach(b =>
   b.addEventListener('click', () => checkout(VARIANTS[activeIndex].key))
 );
+
+/* ============================================================
+   PRODUCT SHOWROOM — carousel + details (its own state,
+   echoes the hero's color-pan + crossfade animation language)
+============================================================ */
+const prRoot = document.getElementById('shop-product');
+if (prRoot) {
+  const prMain     = document.getElementById('prMain');
+  const prThumbs   = document.getElementById('prThumbs');
+  const prSwatches = document.getElementById('prSwatches');
+  const prWordEl   = document.getElementById('prWord');
+  const prNameEl   = document.getElementById('prName');
+  const prBadgeEl  = document.getElementById('prBadge');
+  const prPriceEl  = document.getElementById('prPrice');
+  const prDescEl   = document.getElementById('prDesc');
+  const prSwName   = document.getElementById('prSwatchName');
+  const qtyVal     = document.getElementById('qtyVal');
+
+  let prIndex = 0;   // active colorway
+  let qty = 1;
+
+  /* build the thumbnail strip: colorway product shot + 3 lifestyle shots */
+  function views(){
+    const v = VARIANTS[prIndex];
+    return [
+      { src:`assets/blender-${v.key}.png`, label:v.name, prod:true },
+      ...LIFESTYLE
+    ];
+  }
+
+  /* fade a new image onto the main stage (mirrors hero crossfade) */
+  function setMain(src){
+    const img = document.createElement('img');
+    img.src = src; img.alt = 'voltecharged blender';
+    img.draggable = false;
+    prMain.appendChild(img);
+    requestAnimationFrame(() => requestAnimationFrame(() => img.classList.add('show')));
+    // clear out old layers once the new one is in
+    [...prMain.querySelectorAll('img')].forEach(old => {
+      if (old !== img){ old.classList.remove('show');
+        setTimeout(() => old.remove(), 550); }
+    });
+  }
+
+  function renderThumbs(activeView){
+    const vs = views();
+    prThumbs.innerHTML = '';
+    vs.forEach((view, i) => {
+      const t = document.createElement('button');
+      t.className = 'pr-thumb' + (view.prod ? ' prod' : '') + (i === activeView ? ' on' : '');
+      t.innerHTML = `<img src="${view.src}" alt="${view.label}" loading="lazy">`;
+      t.addEventListener('click', () => {
+        setMain(view.src);
+        [...prThumbs.children].forEach((c, ci) => c.classList.toggle('on', ci === i));
+      });
+      prThumbs.appendChild(t);
+    });
+  }
+
+  /* colorway swatches */
+  VARIANTS.forEach((v, i) => {
+    const s = document.createElement('button');
+    s.className = 'pr-swatch' + (i === 0 ? ' on' : '');
+    s.style.background = v.key === 'green'
+      ? v.swatch
+      : `radial-gradient(circle at 32% 28%, #fff5, transparent 55%), ${v.swatch}`;
+    s.setAttribute('aria-label', v.name);
+    s.addEventListener('click', () => selectColor(i));
+    prSwatches.appendChild(s);
+  });
+
+  function paint(){
+    const v = VARIANTS[prIndex];
+    prRoot.style.setProperty('--pr-accent', v.accent);
+    prRoot.style.setProperty('--pr-panel',  v.panel);
+    prRoot.style.setProperty('--pr-wash',   v.wash);
+    prRoot.style.setProperty('--pr-ghost',  v.ghostColor);
+    prRoot.style.setProperty('--pr-shadow', v.shadow);
+    prNameEl.textContent  = v.name;
+    prBadgeEl.textContent = v.name;
+    prPriceEl.textContent = v.price;
+    prDescEl.textContent  = v.line;
+    prSwName.textContent  = v.name;
+    prWordEl.classList.add('swap');
+    prWordEl.textContent  = v.ghost;
+    [...prSwatches.children].forEach((s, i) => s.classList.toggle('on', i === prIndex));
+  }
+
+  function selectColor(i){
+    if (i === prIndex) return;
+    prIndex = i;
+    paint();
+    setMain(`assets/blender-${VARIANTS[i].key}.png`);
+    renderThumbs(0);
+  }
+
+  /* quantity stepper */
+  document.getElementById('qtyMinus').addEventListener('click', () => { qty = Math.max(1, qty - 1); qtyVal.textContent = qty; });
+  document.getElementById('qtyPlus').addEventListener('click', () => { qty = Math.min(9, qty + 1); qtyVal.textContent = qty; });
+
+  /* add-to-cart → Shopify cart with the chosen quantity */
+  document.getElementById('prBuy').addEventListener('click', () => {
+    const v = VARIANTS[prIndex];
+    const id = VARIANT_IDS[v.key] || VARIANT_IDS.pink;
+    window.location.href = `https://${SHOPIFY_DOMAIN}/cart/${id}:${qty}`;
+  });
+
+  /* init */
+  paint();
+  renderThumbs(0);
+  setMain(`assets/blender-${VARIANTS[0].key}.png`);
+}
 
 /* ============================================================
    SMOOTH SCROLL (Lenis) + reveals + parallax + video scrub
