@@ -111,7 +111,7 @@ nav .cart-btn:hover{transform:scale(1.05);box-shadow:0 8px 26px rgba(212,114,135
   will-change:transform,filter,opacity,left;
 }
 .hero .item img{
-  height:100%;width:auto;max-width:none;object-fit:contain;object-position:bottom center;
+  height:100%;width:auto;object-fit:contain;object-position:bottom center;
   -webkit-user-drag:none;user-select:none;
   filter:drop-shadow(0 34px 44px rgba(61,30,38,.28));
 }
@@ -177,74 +177,15 @@ nav .cart-btn:hover{transform:scale(1.05);box-shadow:0 8px 26px rgba(212,114,135
 }
 @keyframes cue{0%{top:-100%}55%{top:0}100%{top:100%}}
 @media(max-width:640px){
-  nav .cart-btn{display:none}
-  .hero .hud-tl{display:none}
   .hero .ghost{top:15%}
-  .hero .item[data-role="center"]{height:64%;bottom:15%;transform:translateX(-50%) scale(1.3)}
-  .hero .item[data-role="left"]{left:14%;bottom:38%;height:14%}
-  .hero .item[data-role="right"]{left:86%;bottom:38%;height:14%}
+  .hero .item[data-role="center"]{height:56%;bottom:24%;transform:translateX(-50%) scale(1.12)}
+  .hero .item[data-role="left"]{left:18%;bottom:36%;height:15%}
+  .hero .item[data-role="right"]{left:82%;bottom:36%;height:15%}
   .hero .hud-bl{max-width:250px;bottom:20px}
   .hero .hud-bl p{display:none}
   .hero .hud-br{bottom:20px}
   .hero .scroll-cue{display:none}
   .hero .arrow{width:46px;height:46px}
-}
-
-/* ============ STORY : full-bleed scroll film ============ */
-.story{position:relative;height:380vh;background:var(--ink)}
-.story-sticky{
-  position:sticky;top:0;height:100vh;overflow:hidden;
-  display:flex;align-items:center;justify-content:center;
-}
-.story-media{
-  position:absolute;inset:0;overflow:hidden;background:#000;
-  transform-origin:50% 50%;will-change:transform,border-radius;
-}
-.story-media video{width:100%;height:100%;object-fit:cover;display:block}
-.story-media::after{
-  content:'';position:absolute;inset:0;pointer-events:none;
-  background:linear-gradient(180deg,rgba(20,12,15,.35) 0%,rgba(20,12,15,.08) 40%,rgba(20,12,15,.45) 100%);
-}
-.story-cap{
-  position:absolute;z-index:5;color:var(--cream);
-  opacity:0;pointer-events:none;user-select:none;
-  max-width:min(640px,86vw);
-  will-change:transform,opacity,filter;
-  transform:translateY(var(--capY,46px));
-  filter:blur(var(--capB,0px));
-}
-.story-cap .kick{
-  font-size:11px;font-weight:700;letter-spacing:.26em;text-transform:uppercase;
-  color:var(--blush);margin-bottom:14px;
-}
-.story-cap h3{
-  font-family:'Anton',sans-serif;font-weight:400;
-  font-size:clamp(42px,7.5vw,110px);line-height:.98;
-  text-transform:uppercase;letter-spacing:-.01em;
-  text-shadow:0 6px 40px rgba(20,12,15,.4);
-}
-.story-cap h3 em{
-  font-family:'Playfair Display',serif;font-style:italic;
-  text-transform:none;letter-spacing:0;color:var(--blush);
-}
-.story-cap p{
-  font-size:clamp(13px,1.3vw,16px);line-height:1.7;margin-top:16px;
-  color:rgba(253,246,248,.86);max-width:400px;
-}
-.story-cap[data-pos="center"]{
-  left:50%;top:50%;text-align:center;
-  transform:translate(-50%,calc(-50% + var(--capY,46px)));
-}
-.story-cap[data-pos="center"] p{margin-inline:auto}
-.story-cap[data-pos="left"]{left:clamp(20px,7vw,110px);bottom:16%}
-.story-cap[data-pos="right"]{right:clamp(20px,7vw,110px);bottom:16%;text-align:right}
-.story-cap[data-pos="right"] p{margin-left:auto}
-@media(max-width:640px){
-  .story{height:300vh}
-  .story-cap[data-pos="left"],.story-cap[data-pos="right"]{
-    left:24px;right:24px;bottom:13%;text-align:left;
-  }
-  .story-cap[data-pos="right"] p{margin-left:0}
 }
 
 /* ============ MARQUEE ============ */
@@ -479,11 +420,6 @@ footer small{display:block;font-size:11px;line-height:1.9;opacity:.5}
 @media(prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
   [data-reveal]{opacity:1;transform:none}
-  .story{height:auto;padding:40px 0 64px}
-  .story-sticky{position:static;height:auto;display:block}
-  .story-media{position:relative;max-width:1020px;margin:0 auto;border-radius:22px}
-  .story-cap[data-pos]{position:static;opacity:1;transform:none;filter:none;text-align:center;margin:34px auto 0}
-  .story-cap[data-pos] p{margin-inline:auto}
 }
 </style>
 </head>
@@ -538,30 +474,6 @@ footer small{display:block;font-size:11px;line-height:1.9;opacity:.5}
   </div>
 
   <div class="scroll-cue"><span>Scroll</span><span class="line"></span></div>
-</section>
-
-<!-- ================= STORY : full-bleed scroll-scrubbed film ================= -->
-<section class="story" id="story" aria-label="voltecharged in motion">
-  <div class="story-sticky">
-    <div class="story-media" id="storyMedia">
-      <video id="storyVideo" poster="assets/demo-poster.jpg" muted playsinline preload="auto"></video>
-    </div>
-    <div class="story-cap" data-pos="center" data-win="0.05,0.34">
-      <div class="kick">Blend in color</div>
-      <h3>Made to <em>move</em></h3>
-      <p>200W of ice-crushing power in a cup that goes wherever your day does.</p>
-    </div>
-    <div class="story-cap" data-pos="left" data-win="0.38,0.65">
-      <div class="kick">Ten seconds flat</div>
-      <h3>Frozen to <em>silky</em></h3>
-      <p>Ice, frozen fruit, greens — pulverized before your coffee even brews.</p>
-    </div>
-    <div class="story-cap" data-pos="right" data-win="0.69,0.96">
-      <div class="kick">Zero fuss</div>
-      <h3>Sip &amp; <em>go</em></h3>
-      <p>Flip the lid, drink straight from the cup. One less dish to wash.</p>
-    </div>
-  </div>
 </section>
 
 <!-- ================= MARQUEE ================= -->
@@ -900,65 +812,9 @@ function demoProgress(){
   return clamp01(-r.top / total);
 }
 
-/* ============================================================
-   STORY — full-bleed scroll-scrubbed film under the hero
-============================================================ */
-const STORY_SRC  = 'assets/demo_scroll.mp4';
-const storySec   = document.getElementById('story');
-const storyMedia = document.getElementById('storyMedia');
-const storyVideo = document.getElementById('storyVideo');
-const storyCaps  = [...document.querySelectorAll('.story-cap')].map(el => {
-  const [a, b] = el.dataset.win.split(',').map(Number);
-  return { el, a, b };
-});
-let storyP = 0;
-
-/* buffer the whole film up front so seeking never waits on the network */
-if (reduceMotion) {
-  storyVideo.src = STORY_SRC;
-} else {
-  fetch(STORY_SRC)
-    .then(r => r.ok ? r.blob() : Promise.reject(r.status))
-    .then(b => { storyVideo.src = URL.createObjectURL(b); })
-    .catch(() => { storyVideo.src = STORY_SRC; });
-}
-
-function storyScrub(){
-  const vh = window.innerHeight;
-  const r = storySec.getBoundingClientRect();
-  if (r.bottom < -vh || r.top > vh * 2) return;
-  const p = clamp01(-r.top / (r.height - vh));
-  storyP += (p - storyP) * 0.14;
-
-  /* card → full-bleed as the film takes over */
-  const grow = easeOut(clamp01(storyP / 0.16));
-  storyMedia.style.transform = `scale(${(0.9 + 0.1 * grow).toFixed(4)})`;
-  storyMedia.style.borderRadius = `${(34 * (1 - grow)).toFixed(1)}px`;
-
-  /* scrub the film */
-  if (storyVideo.duration) {
-    const t = clamp01((storyP - 0.02) / 0.92) * Math.max(storyVideo.duration - 0.05, 0);
-    if (Math.abs(storyVideo.currentTime - t) > 0.02) {
-      try { storyVideo.currentTime = t; } catch (e) {}
-    }
-  }
-
-  /* captions enter, hold, dissolve — each inside its scroll window */
-  storyCaps.forEach(c => {
-    const t = (storyP - c.a) / (c.b - c.a);
-    if (t <= 0 || t >= 1) { c.el.style.opacity = 0; return; }
-    const enter = easeOut(clamp01(t / 0.3));
-    const exit  = clamp01((t - 0.72) / 0.28);
-    c.el.style.opacity = (enter * (1 - exit)).toFixed(3);
-    c.el.style.setProperty('--capY', `${((1 - enter) * 46 - exit * 46).toFixed(1)}px`);
-    c.el.style.setProperty('--capB', `${(exit * 5).toFixed(2)}px`);
-  });
-}
-
 function tick(time){
   if (lenis) lenis.raf(time);
   navState();
-  if (!reduceMotion) storyScrub();
 
   /* parallax columns */
   if (!reduceMotion) {
@@ -1012,12 +868,11 @@ soundBtn.addEventListener('click', () => {
   }
 });
 
-/* if reduced motion: make the demo + story normal tap-to-play blocks */
+/* if reduced motion: make the demo a normal tap-to-play block */
 if (reduceMotion) {
   demoSec.style.height = 'auto';
   video.controls = true;
   frame.style.transform = 'none';
-  storyVideo.controls = true;
 }
 </script>
 </body>
