@@ -186,9 +186,9 @@ nav .cart-btn:hover{transform:scale(1.05);box-shadow:0 8px 26px rgba(212,114,135
 @keyframes cue{0%{top:-100%}55%{top:0}100%{top:100%}}
 @media(max-width:640px){
   .hero .ghost{top:15%}
-  .hero .item[data-role="center"]{height:56%;bottom:24%;transform:translateX(-50%) scale(1.12)}
-  .hero .item[data-role="left"]{left:18%;bottom:36%;height:15%}
-  .hero .item[data-role="right"]{left:82%;bottom:36%;height:15%}
+  .hero .item[data-role="center"]{height:70%;bottom:16%;transform:translateX(-50%) scale(1.12)}
+  .hero .item[data-role="left"]{left:18%;bottom:34%;height:20%}
+  .hero .item[data-role="right"]{left:82%;bottom:34%;height:20%}
   .hero .hud-bl{max-width:250px;bottom:20px}
   .hero .hud-bl p{display:none}
   .hero .hud-br{bottom:20px}
@@ -916,6 +916,7 @@ let activeIndex = 0;
 let isAnimating = false;
 let autoTimer   = null;
 let idleTimer   = null;
+let activeShowroomSync = null; // set below once the product showroom defines selectColor
 
 /* preload */
 VARIANTS.forEach(v => { const im = new Image(); im.src = `assets/blender-${v.key}.png`; });
@@ -954,6 +955,7 @@ function apply(){
   nameEl.textContent = v.name;
   lineEl.textContent = v.line;
   [...swWrap.children].forEach((s, i) => s.classList.toggle('on', i === activeIndex));
+  if (activeShowroomSync) activeShowroomSync(activeIndex);
 }
 
 function navigate(dir){
@@ -1085,7 +1087,9 @@ if (prRoot) {
     paint();
     setMain(`assets/blender-${VARIANTS[i].key}.png`);
     renderThumbs(0);
+    goTo(i); // keep hero carousel in sync
   }
+  activeShowroomSync = selectColor; // let the hero side push updates in here too
 
   /* quantity stepper */
   document.getElementById('qtyMinus').addEventListener('click', () => { qty = Math.max(1, qty - 1); qtyVal.textContent = qty; });
