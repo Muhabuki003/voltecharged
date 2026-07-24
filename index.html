@@ -441,6 +441,31 @@ nav .cart-btn:hover{transform:scale(1.05);box-shadow:0 8px 26px rgba(212,114,135
 .mosaic .col:nth-child(3) .ph .tag{color:var(--sand-deep)}
 @media(max-width:700px){.mosaic{grid-template-columns:repeat(2,1fr)}.mosaic .col:nth-child(3){display:none}}
 
+/* ============ UGC VIDEO CAROUSEL ============ */
+#ugc{padding:72px 0 96px;overflow:hidden;text-align:center;background:var(--cream)}
+#ugc .eyebrow{margin-bottom:12px;font-size:11px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;color:var(--rose);display:inline-flex;align-items:center;gap:10px}
+#ugc .eyebrow::before{content:'';width:26px;height:1.5px;background:var(--rose)}
+#ugc h2{font-size:clamp(26px,3.4vw,40px);margin:0 0 8px;font-family:'Playfair Display',serif;font-weight:400}
+#ugc h2 em{font-style:italic;color:var(--rose)}
+#ugc .ugc-sub{color:var(--muted);max-width:460px;margin:0 auto 40px;line-height:1.6}
+.ugc-stage{position:relative;height:540px;max-width:1200px;margin:0 auto}
+.ugc-card{position:absolute;top:50%;left:50%;width:300px;height:500px;border-radius:22px;overflow:hidden;background:var(--ink);box-shadow:0 24px 55px rgba(212,114,135,.28);transform:translate(-50%,-50%);transform-origin:center;transition:transform .6s cubic-bezier(.22,1,.36,1),opacity .5s ease,box-shadow .6s;cursor:pointer;will-change:transform}
+.ugc-card video{width:100%;height:100%;object-fit:cover;display:block;background:var(--ink)}
+.ugc-card .ugc-scrim{position:absolute;inset:0;background:linear-gradient(to top,rgba(61,44,50,.55),rgba(61,44,50,0) 42%);pointer-events:none}
+.ugc-controls{position:absolute;top:14px;right:14px;display:flex;flex-direction:column;gap:10px;opacity:0;transition:opacity .4s ease;pointer-events:none}
+.ugc-card.active .ugc-controls{opacity:1;pointer-events:auto}
+.ugc-btn{width:40px;height:40px;border-radius:999px;border:none;background:rgba(61,44,50,.5);backdrop-filter:blur(6px);color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .2s;padding:0}
+.ugc-btn:hover{background:rgba(212,114,135,.82)}
+.ugc-btn svg{width:17px;height:17px;display:block;fill:#fff}
+.ugc-product{position:absolute;left:12px;right:12px;bottom:12px;display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.94);backdrop-filter:blur(8px);border-radius:14px;padding:8px;box-shadow:0 6px 16px rgba(212,114,135,.18);text-align:left;cursor:pointer}
+.ugc-product img{width:46px;height:46px;border-radius:10px;object-fit:cover;flex:0 0 auto;background:var(--cream);border:1px solid var(--line)}
+.ugc-product .info{flex:1;min-width:0}
+.ugc-product .pname{display:block;font-size:13px;font-weight:600;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.25}
+.ugc-product .pprice{display:block;font-size:13px;color:var(--rose);margin-top:2px}
+.ugc-product .padd{width:30px;height:30px;border-radius:999px;background:linear-gradient(135deg,var(--blush),var(--rose));color:#fff;border:none;font-size:18px;line-height:1;flex:0 0 auto;cursor:pointer;transition:transform .2s,box-shadow .2s;display:flex;align-items:center;justify-content:center}
+.ugc-product .padd:hover{transform:scale(1.1);box-shadow:0 4px 14px rgba(212,114,135,.4)}
+@media(max-width:640px){.ugc-stage{height:470px}.ugc-card{width:230px;height:410px}}
+
 /* ============ REVIEWS ============ */
 .reviews{background:var(--cream)}
 .reviews .head{text-align:center;margin-bottom:50px}
@@ -590,7 +615,9 @@ footer small{display:block;font-size:11px;line-height:1.9;opacity:.5}
   <div class="links">
     <a href="#shop-product">Shop</a>
     <a href="#features">Features</a>
+    <a href="#demo">Demo</a>
     <a href="#gallery">Gallery</a>
+    <a href="#ugc">#voltecharged</a>
     <a href="#reviews">Reviews</a>
     <button class="cart-btn" data-buy>Shop Now — $49.99</button>
   </div>
@@ -768,6 +795,14 @@ footer small{display:block;font-size:11px;line-height:1.9;opacity:.5}
       </div>
     </div>
   </div>
+</section>
+
+<!-- ================= UGC VIDEO CAROUSEL ================= -->
+<section id="ugc">
+  <p class="eyebrow">#voltecharged</p>
+  <h2>Real blends. <em>Real people.</em></h2>
+  <p class="ugc-sub">Tap a clip to bring it front and center — or just watch them roll.</p>
+  <div class="ugc-stage" id="ugcStage"></div>
 </section>
 
 <!-- ================= REVIEWS ================= -->
@@ -1250,5 +1285,148 @@ document.getElementById('cdCheckout').addEventListener('click', () => {
 
 renderCart();
 </script>
+
+<script>
+/* ---- UGC video carousel (center-focus shuffle, Shopify checkout) ---- */
+(function(){
+  "use strict";
+
+  var ITEMS = [
+    { video: 'assets/ugc/ugc1.mp4', variant: 'pink' },
+    { video: 'assets/ugc/ugc2.mp4', variant: 'white' },
+    { video: 'assets/ugc/ugc3.mp4', variant: 'green' },
+    { video: 'assets/ugc/ugc4.mp4', variant: 'pink' },
+    { video: 'assets/ugc/ugc5.mp4', variant: 'white' },
+    { video: 'assets/ugc/ugc6.mp4', variant: 'green' }
+  ];
+
+  var PRODUCTS = {
+    pink:  { img: 'assets/blender-pink.png',  title: 'Blush Pink Blender',  price: '$49.99' },
+    white: { img: 'assets/blender-white.png', title: 'Porcelain White Blender', price: '$49.99' },
+    green: { img: 'assets/blender-green.png', title: 'Forest Green Blender', price: '$49.99' }
+  };
+
+  var ICON = {
+    play:  '<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>',
+    pause: '<svg viewBox="0 0 24 24"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>',
+    muted: '<svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3l2.7-2.7-1.4-1.4L15 10.6l-2.8-2.7-1.4 1.4L13.6 12l-2.8 2.7 1.4 1.4L15 13.4l2.8 2.7 1.4-1.4z"/></svg>',
+    unmuted: '<svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13 3a4 4 0 00-2-3.5v7A4 4 0 0016 12zm-2-7.7v2.1a6 6 0 010 11.2v2.1A8 8 0 0014 4.3z"/></svg>'
+  };
+
+  var stage = document.getElementById('ugcStage');
+  if (!stage || !ITEMS.length) return;
+
+  var n = ITEMS.length, active = Math.floor(n / 2), timer = null, cards = [];
+
+  ITEMS.forEach(function(it, i){
+    var card = document.createElement('div');
+    card.className = 'ugc-card';
+
+    var video = document.createElement('video');
+    video.src = it.video;
+    video.muted = true; video.loop = true; video.playsInline = true;
+    video.setAttribute('playsinline', ''); video.setAttribute('muted', '');
+    video.autoplay = true;
+    card.appendChild(video);
+
+    var scrim = document.createElement('div');
+    scrim.className = 'ugc-scrim';
+    card.appendChild(scrim);
+
+    var controls = document.createElement('div');
+    controls.className = 'ugc-controls';
+    var muteBtn = document.createElement('button');
+    muteBtn.className = 'ugc-btn'; muteBtn.type = 'button';
+    muteBtn.innerHTML = ICON.muted;
+    var playBtn = document.createElement('button');
+    playBtn.className = 'ugc-btn'; playBtn.type = 'button';
+    playBtn.innerHTML = ICON.pause;
+    controls.appendChild(muteBtn);
+    controls.appendChild(playBtn);
+    card.appendChild(controls);
+
+    var pInfo = PRODUCTS[it.variant] || PRODUCTS.pink;
+    var prod = document.createElement('div');
+    prod.className = 'ugc-product';
+    prod.innerHTML =
+      '<img alt="" src="' + pInfo.img + '">' +
+      '<span class="info"><span class="pname">' + pInfo.title + '</span>' +
+      '<span class="pprice">' + pInfo.price + '</span></span>' +
+      '<span class="padd" aria-label="Add to cart">+</span>';
+    card.appendChild(prod);
+    stage.appendChild(card);
+
+    var rec = { el: card, video: video, muteBtn: muteBtn, playBtn: playBtn, prod: prod, variant: it.variant };
+    cards.push(rec);
+
+    prod.querySelector('.padd').addEventListener('click', function(e){
+      e.stopPropagation();
+      if (typeof GecomoCart === 'undefined') return;
+      GecomoCart.add({
+        title: pInfo.title, image: pInfo.img, meta: 'Single',
+        price: 49.99, lines: [{ variantId: VARIANT_IDS[rec.variant], qty: 1 }]
+      });
+    });
+
+    prod.querySelector('.info').addEventListener('click', function(e){
+      e.stopPropagation();
+      document.getElementById('shop-product').scrollIntoView({ behavior: 'smooth' });
+    });
+
+    card.addEventListener('click', function(e){
+      if (e.target.closest('.ugc-controls') || e.target.closest('.ugc-product')) return;
+      if (i !== active){ active = i; refresh(); restart(); }
+    });
+
+    muteBtn.addEventListener('click', function(e){
+      e.stopPropagation();
+      var v = cards[active].video;
+      v.muted = !v.muted;
+      muteBtn.innerHTML = v.muted ? ICON.muted : ICON.unmuted;
+    });
+
+    playBtn.addEventListener('click', function(e){
+      e.stopPropagation();
+      var v = cards[active].video;
+      if (v.paused){ v.play(); playBtn.innerHTML = ICON.pause; start(); }
+      else { v.pause(); playBtn.innerHTML = ICON.play; stop(); }
+    });
+  });
+
+  function layout(){
+    var w = cards[0].el.offsetWidth || 300, spacing = w * 0.97;
+    cards.forEach(function(c, i){
+      var o = i - active;
+      if (o > n/2) o -= n; if (o < -n/2) o += n;
+      var lvl = Math.abs(o), scale = lvl === 0 ? 1 : lvl === 1 ? 0.82 : 0.66;
+      c.el.style.transform = 'translate(-50%,-50%) translateX(' + (o * spacing) + 'px) scale(' + scale + ')';
+      c.el.style.opacity = lvl > 2 ? '0' : '1';
+      c.el.style.zIndex = String(20 - lvl);
+      c.el.style.pointerEvents = lvl > 2 ? 'none' : 'auto';
+      c.el.classList.toggle('active', lvl === 0);
+    });
+  }
+
+  function refresh(){
+    layout();
+    cards.forEach(function(c, i){
+      if (i === active){
+        c.playBtn.innerHTML = c.video.paused ? ICON.play : ICON.pause;
+        c.muteBtn.innerHTML = c.video.muted ? ICON.muted : ICON.unmuted;
+        var pr = c.video.play(); if (pr && pr.catch) pr.catch(function(){});
+      } else { c.video.muted = true; }
+    });
+  }
+
+  function next(){ active = (active + 1) % n; refresh(); }
+  function start(){ stop(); timer = setInterval(next, 5000); }
+  function stop(){ if (timer){ clearInterval(timer); timer = null; } }
+  function restart(){ start(); }
+
+  window.addEventListener('resize', layout, { passive: true });
+  refresh();
+  start();
+})();
+</script>
+
 </body>
-</html>
