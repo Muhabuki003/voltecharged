@@ -342,6 +342,20 @@ nav .cart-btn:hover{transform:scale(1.05);box-shadow:0 8px 26px rgba(212,114,135
 .pr-swatch:hover{transform:scale(1.12)}
 .pr-swatch.on{transform:scale(1.06)}
 .pr-swatch.on::after{content:'';position:absolute;inset:-6px;border-radius:50%;border:2px solid var(--pr-accent,var(--rose));transition:border-color .4s var(--ease)}
+.pr-size-row{margin-bottom:24px}
+.pr-size-row .lab{font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
+.pr-size-row .lab b{color:var(--ink);font-weight:700}
+.pr-sizes{display:flex;gap:10px}
+.pr-size{
+  padding:10px 22px;border-radius:24px;border:1.5px solid var(--line);background:#fff;
+  font-size:12px;font-weight:700;letter-spacing:.08em;color:var(--muted);
+  transition:transform .2s var(--ease-out),border-color .3s,color .3s,box-shadow .3s;
+}
+.pr-size:hover{transform:scale(1.05)}
+.pr-size.on{
+  border-color:var(--pr-accent,var(--rose));color:var(--pr-accent,var(--rose));
+  box-shadow:0 4px 14px var(--pr-shadow,rgba(212,114,135,.25));
+}
 .pr-actions{display:flex;align-items:stretch;gap:14px}
 .qty{display:flex;align-items:center;border:1.5px solid var(--line);border-radius:30px;overflow:hidden;background:#fff}
 .qty button{width:44px;height:100%;font-size:18px;color:var(--ink);transition:background .2s}
@@ -586,12 +600,20 @@ footer small{display:block;font-size:11px;line-height:1.9;opacity:.5}
         <div class="pr-chips">
           <span class="pr-chip"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg> 200W motor</span>
           <span class="pr-chip"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="16" height="10" rx="2"/><line x1="22" y1="11" x2="22" y2="13"/></svg> USB-C · 15 blends</span>
-          <span class="pr-chip"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3h10l-1.2 18H8.2L7 3z"/><line x1="9" y1="8" x2="15" y2="8"/></svg> 400ml · BPA-free</span>
+          <span class="pr-chip"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3h10l-1.2 18H8.2L7 3z"/><line x1="9" y1="8" x2="15" y2="8"/></svg> 380/420ml · BPA-free</span>
         </div>
 
         <div class="pr-color-row">
           <div class="lab">Colorway — <b id="prSwatchName">Blush Pink</b></div>
           <div class="pr-swatches" id="prSwatches"></div>
+        </div>
+
+        <div class="pr-size-row">
+          <div class="lab">Size — <b id="prSizeName">380ml</b></div>
+          <div class="pr-sizes" id="prSizes">
+            <button class="pr-size on" data-size="380">380ml</button>
+            <button class="pr-size" data-size="420">420ml</button>
+          </div>
         </div>
 
         <div class="pr-actions">
@@ -733,13 +755,17 @@ footer small{display:block;font-size:11px;line-height:1.9;opacity:.5}
 ============================================================ */
 const SHOPIFY_DOMAIN = 'ehh05e-7q.myshopify.com';
 const VARIANT_IDS = {
-  pink:  '53762550366522',   // Pink / 380ml
-  white: '53762550432058',   // White / 380ml
-  green: '53762550497594'    // Green / 380ml
+  pink:  { '380': '53762550366522', '420': '53762550399290' },
+  white: { '380': '53762550432058', '420': '53762550464826' },
+  green: { '380': '53762550497594', '420': '53762550530362' }
 };
+let selectedSize = '380';
+function variantId(key){
+  const sizes = VARIANT_IDS[key] || VARIANT_IDS.pink;
+  return sizes[selectedSize] || sizes['380'];
+}
 function checkout(key){
-  const v = VARIANT_IDS[key] || VARIANT_IDS.pink;
-  window.location.href = `https://${SHOPIFY_DOMAIN}/cart/${v}:1`;
+  window.location.href = `https://${SHOPIFY_DOMAIN}/cart/${variantId(key)}:1`;
 }
 
 /* ============================================================
@@ -957,15 +983,23 @@ if (prRoot) {
   }
   activeShowroomSync = selectColor; // let the hero side push updates in here too
 
+  /* size selector — feeds the shared selectedSize used by every buy button */
+  const prSizeName = document.getElementById('prSizeName');
+  document.querySelectorAll('#prSizes .pr-size').forEach(btn => {
+    btn.addEventListener('click', () => {
+      selectedSize = btn.dataset.size;
+      prSizeName.textContent = `${selectedSize}ml`;
+      document.querySelectorAll('#prSizes .pr-size').forEach(b => b.classList.toggle('on', b === btn));
+    });
+  });
+
   /* quantity stepper */
   document.getElementById('qtyMinus').addEventListener('click', () => { qty = Math.max(1, qty - 1); qtyVal.textContent = qty; });
   document.getElementById('qtyPlus').addEventListener('click', () => { qty = Math.min(9, qty + 1); qtyVal.textContent = qty; });
 
-  /* add-to-cart → Shopify cart with the chosen quantity */
+  /* add-to-cart → Shopify cart with the chosen color, size, and quantity */
   document.getElementById('prBuy').addEventListener('click', () => {
-    const v = VARIANTS[prIndex];
-    const id = VARIANT_IDS[v.key] || VARIANT_IDS.pink;
-    window.location.href = `https://${SHOPIFY_DOMAIN}/cart/${id}:${qty}`;
+    window.location.href = `https://${SHOPIFY_DOMAIN}/cart/${variantId(VARIANTS[prIndex].key)}:${qty}`;
   });
 
   /* init */
