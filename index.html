@@ -501,6 +501,80 @@ footer .f-links a{font-size:11px;font-weight:600;letter-spacing:.16em;text-trans
 footer .f-links a:hover{opacity:1}
 footer small{display:block;font-size:11px;line-height:1.9;opacity:.5}
 
+/* ============ CART DRAWER ============ */
+.cart-overlay{
+  position:fixed;inset:0;z-index:290;background:rgba(61,44,50,.45);
+  opacity:0;pointer-events:none;transition:opacity .4s var(--ease);
+  backdrop-filter:blur(2px);
+}
+.cart-overlay.open{opacity:1;pointer-events:auto}
+.cart-drawer{
+  position:fixed;top:0;right:0;bottom:0;z-index:300;
+  width:min(400px,94vw);display:flex;flex-direction:column;
+  background:var(--cream);box-shadow:-24px 0 70px rgba(61,30,38,.25);
+  transform:translateX(105%);transition:transform .5s var(--ease-out);
+}
+.cart-drawer.open{transform:translateX(0)}
+.cd-head{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:22px 24px;border-bottom:1px solid var(--line);
+}
+.cd-head h3{font-family:'Playfair Display',serif;font-weight:600;font-size:21px}
+.cd-count{color:var(--rose);font-size:15px}
+.cd-close{
+  width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  color:var(--ink);border:1.5px solid var(--line);transition:transform .2s,background .2s;
+}
+.cd-close:hover{transform:scale(1.08);background:#fff}
+.cd-items{flex:1;overflow-y:auto;padding:18px 24px;display:flex;flex-direction:column;gap:14px}
+.cd-empty{
+  margin:auto;text-align:center;color:var(--muted);font-size:14px;line-height:1.7;
+  display:flex;flex-direction:column;align-items:center;gap:16px;
+}
+.cd-empty .btn-outline{padding:12px 28px;font-size:12px;border-radius:26px}
+.cd-item{
+  display:flex;gap:14px;align-items:center;
+  background:#fff;border:1px solid var(--line);border-radius:16px;padding:12px;
+}
+.cd-item .thumb{
+  width:70px;height:70px;flex:none;border-radius:12px;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;
+}
+.cd-item .thumb img{height:88%;width:auto;object-fit:contain}
+.cd-item .info{flex:1;min-width:0}
+.cd-item .name{font-size:13.5px;font-weight:700;margin-bottom:2px}
+.cd-item .meta{font-size:11.5px;color:var(--muted);letter-spacing:.04em;margin-bottom:8px}
+.cd-item .row{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.cd-qty{display:flex;align-items:center;border:1.5px solid var(--line);border-radius:18px;background:var(--cream)}
+.cd-qty button{width:28px;height:28px;font-size:15px;color:var(--ink);transition:background .2s;border-radius:18px}
+.cd-qty button:hover{background:var(--blush-soft)}
+.cd-qty span{min-width:24px;text-align:center;font-size:13px;font-weight:700}
+.cd-item .price{font-size:13.5px;font-weight:700;color:var(--rose)}
+.cd-item .rm{
+  font-size:10.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--muted);margin-top:6px;transition:color .2s;
+}
+.cd-item .rm:hover{color:var(--rose-deep)}
+.cd-foot{padding:18px 24px 22px;border-top:1px solid var(--line);background:#fff}
+.cd-sub{display:flex;align-items:center;justify-content:space-between;font-size:14px;margin-bottom:8px}
+.cd-sub b{font-family:'Playfair Display',serif;font-size:22px;color:var(--ink)}
+.cd-ship{
+  display:flex;align-items:center;gap:8px;font-size:11.5px;color:var(--muted);
+  letter-spacing:.02em;margin-bottom:16px;
+}
+.cd-ship svg{color:var(--forest-mid);flex:none}
+.cd-checkout{
+  width:100%;display:inline-flex;align-items:center;justify-content:center;gap:10px;
+  padding:17px 30px;border-radius:30px;
+  background:linear-gradient(135deg,var(--blush),var(--rose));color:#fff;
+  font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  box-shadow:0 12px 30px rgba(212,114,135,.35);
+  transition:transform .22s var(--ease-out),box-shadow .22s;
+}
+.cd-checkout:hover{transform:translateY(-2px);box-shadow:0 16px 38px rgba(212,114,135,.45)}
+.cd-checkout svg{transition:transform .2s}
+.cd-checkout:hover svg{transform:translateX(4px)}
+
 @media(prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
   [data-reveal]{opacity:1;transform:none}
@@ -746,6 +820,29 @@ footer small{display:block;font-size:11px;line-height:1.9;opacity:.5}
   <small>&copy; 2026 voltecharged. All rights reserved.<br>Secure checkout — Apple Pay, Shop Pay &amp; all major cards accepted.</small>
 </footer>
 
+<!-- ================= CART DRAWER ================= -->
+<div class="cart-overlay" id="cartOverlay"></div>
+<aside class="cart-drawer" id="cartDrawer" role="dialog" aria-modal="true" aria-label="Shopping cart">
+  <div class="cd-head">
+    <h3>Your cart <span class="cd-count" id="cdCount"></span></h3>
+    <button class="cd-close" id="cdClose" aria-label="Close cart">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round"><path d="M18 6L6 18"/><path d="M6 6l12 12"/></svg>
+    </button>
+  </div>
+  <div class="cd-items" id="cdItems"></div>
+  <div class="cd-foot" id="cdFoot">
+    <div class="cd-sub"><span>Subtotal</span><b id="cdSubtotal">$0.00</b></div>
+    <div class="cd-ship">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+      Free shipping · 30-day money-back guarantee
+    </div>
+    <button class="cd-checkout" id="cdCheckout">
+      Checkout
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+    </button>
+  </div>
+</aside>
+
 <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.14/dist/lenis.min.js"></script>
 <script>
 /* ============================================================
@@ -760,12 +857,10 @@ const VARIANT_IDS = {
   green: { '380': '53762550497594', '420': '53762550530362' }
 };
 let selectedSize = '380';
-function variantId(key){
+const UNIT_PRICE = 49.99;
+function variantId(key, size){
   const sizes = VARIANT_IDS[key] || VARIANT_IDS.pink;
-  return sizes[selectedSize] || sizes['380'];
-}
-function checkout(key){
-  window.location.href = `https://${SHOPIFY_DOMAIN}/cart/${variantId(key)}:1`;
+  return sizes[size] || sizes['380'];
 }
 
 /* ============================================================
@@ -881,9 +976,9 @@ function userInteracted(){
 apply();
 startAuto();
 
-/* buy buttons use the color currently on stage */
+/* buy buttons add the color currently on stage to the cart */
 document.querySelectorAll('[data-buy]').forEach(b =>
-  b.addEventListener('click', () => checkout(VARIANTS[activeIndex].key))
+  b.addEventListener('click', () => addToCart(VARIANTS[activeIndex].key, selectedSize, 1))
 );
 
 /* ============================================================
@@ -997,9 +1092,9 @@ if (prRoot) {
   document.getElementById('qtyMinus').addEventListener('click', () => { qty = Math.max(1, qty - 1); qtyVal.textContent = qty; });
   document.getElementById('qtyPlus').addEventListener('click', () => { qty = Math.min(9, qty + 1); qtyVal.textContent = qty; });
 
-  /* add-to-cart → Shopify cart with the chosen color, size, and quantity */
+  /* add-to-cart → cart drawer with the chosen color, size, and quantity */
   document.getElementById('prBuy').addEventListener('click', () => {
-    window.location.href = `https://${SHOPIFY_DOMAIN}/cart/${variantId(VARIANTS[prIndex].key)}:${qty}`;
+    addToCart(VARIANTS[prIndex].key, selectedSize, qty);
   });
 
   /* init */
@@ -1057,6 +1152,103 @@ function tick(time){
   requestAnimationFrame(tick);
 }
 requestAnimationFrame(tick);
+
+/* ============================================================
+   CART DRAWER — local cart, hands off to Shopify checkout
+============================================================ */
+const cartDrawer  = document.getElementById('cartDrawer');
+const cartOverlay = document.getElementById('cartOverlay');
+const cdItems     = document.getElementById('cdItems');
+const cdCount     = document.getElementById('cdCount');
+const cdSubtotal  = document.getElementById('cdSubtotal');
+const cdFoot      = document.getElementById('cdFoot');
+
+let cart = [];
+try { cart = JSON.parse(localStorage.getItem('vc_cart') || '[]'); } catch(e){ cart = []; }
+cart = Array.isArray(cart)
+  ? cart.filter(i => i && VARIANT_IDS[i.key] && VARIANT_IDS[i.key][i.size] && i.qty > 0)
+  : [];
+
+function saveCart(){ localStorage.setItem('vc_cart', JSON.stringify(cart)); }
+function money(n){ return `$${n.toFixed(2)}`; }
+
+function addToCart(key, size, qty){
+  const found = cart.find(i => i.key === key && i.size === size);
+  if (found) found.qty = Math.min(9, found.qty + qty);
+  else cart.push({ key, size, qty });
+  saveCart(); renderCart(); openCart();
+}
+
+function renderCart(){
+  const count = cart.reduce((s, i) => s + i.qty, 0);
+  cdCount.textContent = count ? `(${count})` : '';
+  cdSubtotal.textContent = money(cart.reduce((s, i) => s + i.qty * UNIT_PRICE, 0));
+  cdFoot.style.display = cart.length ? '' : 'none';
+
+  if (!cart.length){
+    cdItems.innerHTML = `<div class="cd-empty">Your cart is empty.<br>Pick a color you love.<button class="btn btn-outline" id="cdKeep">Keep browsing</button></div>`;
+    document.getElementById('cdKeep').addEventListener('click', closeCart);
+    return;
+  }
+
+  cdItems.innerHTML = '';
+  cart.forEach((item, idx) => {
+    const v = VARIANTS.find(x => x.key === item.key);
+    const el = document.createElement('div');
+    el.className = 'cd-item';
+    el.innerHTML = `
+      <div class="thumb" style="background:${v.panel}"><img src="assets/blender-${v.key}.png" alt="${v.name}"></div>
+      <div class="info">
+        <div class="name">voltecharged — ${v.name}</div>
+        <div class="meta">${item.size}ml · ${money(UNIT_PRICE)} each</div>
+        <div class="row">
+          <div class="cd-qty">
+            <button data-a="minus" aria-label="Decrease quantity">−</button>
+            <span>${item.qty}</span>
+            <button data-a="plus" aria-label="Increase quantity">+</button>
+          </div>
+          <div class="price">${money(item.qty * UNIT_PRICE)}</div>
+        </div>
+        <button class="rm" data-a="rm">Remove</button>
+      </div>`;
+    el.querySelector('[data-a="minus"]').addEventListener('click', () => {
+      if (item.qty > 1) item.qty--; else cart.splice(idx, 1);
+      saveCart(); renderCart();
+    });
+    el.querySelector('[data-a="plus"]').addEventListener('click', () => {
+      item.qty = Math.min(9, item.qty + 1);
+      saveCart(); renderCart();
+    });
+    el.querySelector('[data-a="rm"]').addEventListener('click', () => {
+      cart.splice(idx, 1);
+      saveCart(); renderCart();
+    });
+    cdItems.appendChild(el);
+  });
+}
+
+function openCart(){
+  cartDrawer.classList.add('open');
+  cartOverlay.classList.add('open');
+  if (lenis) lenis.stop(); else document.body.style.overflow = 'hidden';
+}
+function closeCart(){
+  cartDrawer.classList.remove('open');
+  cartOverlay.classList.remove('open');
+  if (lenis) lenis.start(); else document.body.style.overflow = '';
+}
+document.getElementById('cdClose').addEventListener('click', closeCart);
+cartOverlay.addEventListener('click', closeCart);
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeCart(); });
+
+/* checkout hands the whole cart to Shopify as one permalink */
+document.getElementById('cdCheckout').addEventListener('click', () => {
+  if (!cart.length) return;
+  const items = cart.map(i => `${variantId(i.key, i.size)}:${i.qty}`).join(',');
+  window.location.href = `https://${SHOPIFY_DOMAIN}/cart/${items}`;
+});
+
+renderCart();
 </script>
 </body>
 </html>
