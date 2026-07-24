@@ -119,7 +119,7 @@ nav .cart-btn:hover{transform:scale(1.05);box-shadow:0 8px 26px rgba(212,114,135
   will-change:transform,filter,opacity,left;
 }
 .hero .item img{
-  height:100%;width:auto;object-fit:contain;object-position:bottom center;
+  height:100%;width:auto;max-width:none;object-fit:contain;object-position:bottom center;
   -webkit-user-drag:none;user-select:none;
   filter:drop-shadow(0 34px 44px rgba(61,30,38,.28));
 }
@@ -185,6 +185,8 @@ nav .cart-btn:hover{transform:scale(1.05);box-shadow:0 8px 26px rgba(212,114,135
 }
 @keyframes cue{0%{top:-100%}55%{top:0}100%{top:100%}}
 @media(max-width:640px){
+  nav .cart-btn{display:none}
+  .hero .hud-tl{display:none}
   .hero .ghost{top:15%}
   .hero .item[data-role="center"]{height:70%;bottom:16%;transform:translateX(-50%) scale(1.12)}
   .hero .item[data-role="left"]{left:18%;bottom:34%;height:20%}
