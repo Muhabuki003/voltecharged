@@ -402,70 +402,6 @@ nav .cart-btn:hover{transform:scale(1.05);box-shadow:0 8px 26px rgba(212,114,135
 @media(max-width:900px){.features-grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:600px){.features-grid{grid-template-columns:1fr}}
 
-/* ============ VIDEO DEMO (scroll scrub) ============ */
-.demo{position:relative;height:340vh;background:var(--ink)}
-.demo-sticky{
-  position:sticky;top:0;height:100vh;overflow:hidden;
-  display:flex;align-items:center;justify-content:center;
-}
-.demo-ghost{
-  position:absolute;inset-inline:0;top:8%;text-align:center;
-  font-family:'Anton',sans-serif;font-size:clamp(60px,13vw,190px);
-  text-transform:uppercase;letter-spacing:-.02em;line-height:1;white-space:nowrap;
-  color:transparent;-webkit-text-stroke:1.5px rgba(253,246,248,.16);
-  pointer-events:none;user-select:none;will-change:transform,opacity;
-}
-.demo-frame{
-  position:relative;width:min(1020px,92vw);aspect-ratio:16/9;
-  border-radius:26px;overflow:hidden;z-index:3;
-  box-shadow:0 40px 120px rgba(0,0,0,.5);
-  will-change:transform,border-radius;background:#000;
-}
-.demo-frame video{width:100%;height:100%;object-fit:cover;display:block}
-.demo-frame .sound{
-  position:absolute;right:16px;bottom:16px;z-index:5;
-  display:flex;align-items:center;gap:8px;
-  padding:10px 18px;border-radius:22px;
-  background:rgba(20,12,15,.55);backdrop-filter:blur(8px);
-  color:#fff;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
-  border:1px solid rgba(255,255,255,.25);
-  transition:background .2s,transform .2s;
-}
-.demo-frame .sound:hover{background:rgba(212,114,135,.75);transform:scale(1.04)}
-.demo-steps{
-  position:absolute;right:clamp(18px,4vw,60px);top:50%;transform:translateY(-50%);
-  z-index:6;display:flex;flex-direction:column;gap:26px;color:var(--cream);
-}
-.demo-steps .step{max-width:190px;opacity:.28;transition:opacity .4s;position:relative;padding-left:20px}
-.demo-steps .step::before{
-  content:'';position:absolute;left:0;top:6px;bottom:6px;width:2px;
-  background:rgba(253,246,248,.35);border-radius:2px;
-}
-.demo-steps .step.on{opacity:1}
-.demo-steps .step.on::before{background:var(--blush)}
-.demo-steps .num{font-family:'Anton',sans-serif;font-size:13px;letter-spacing:.1em;color:var(--blush)}
-.demo-steps h4{font-size:15px;font-weight:700;margin:2px 0 4px}
-.demo-steps p{font-size:12px;line-height:1.55;color:rgba(253,246,248,.65)}
-.demo-progress{
-  position:absolute;left:clamp(18px,4vw,60px);top:50%;transform:translateY(-50%);
-  width:3px;height:180px;background:rgba(253,246,248,.18);border-radius:3px;z-index:6;overflow:hidden;
-}
-.demo-progress i{
-  position:absolute;left:0;top:0;width:100%;height:0%;
-  background:linear-gradient(180deg,var(--blush),var(--rose));border-radius:3px;
-}
-@media(max-width:900px){
-  .demo-steps{
-    right:auto;left:50%;transform:translateX(-50%);top:auto;bottom:22px;
-    flex-direction:row;gap:14px;max-width:92vw;
-  }
-  .demo-steps .step{max-width:none;padding-left:0;padding-top:12px}
-  .demo-steps .step::before{left:0;right:0;top:0;bottom:auto;width:auto;height:2px}
-  .demo-steps .step p{display:none}
-  .demo-steps .step{opacity:.35}
-  .demo-progress{left:auto;right:16px;height:120px}
-}
-
 /* ============ GALLERY ============ */
 .gallery{background:linear-gradient(180deg,#fff 0%,var(--cream) 100%);overflow:hidden}
 .gallery .head{text-align:center;margin-bottom:54px}
@@ -488,31 +424,6 @@ nav .cart-btn:hover{transform:scale(1.05);box-shadow:0 8px 26px rgba(212,114,135
 .mosaic .col:nth-child(2) .ph .tag{color:var(--forest)}
 .mosaic .col:nth-child(3) .ph .tag{color:var(--sand-deep)}
 @media(max-width:700px){.mosaic{grid-template-columns:repeat(2,1fr)}.mosaic .col:nth-child(3){display:none}}
-
-/* ============ DETAILS ============ */
-.details{background:#fff}
-.details-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(36px,6vw,80px);align-items:center}
-.details .img-wrap{position:relative}
-.details .img-wrap img{width:100%;border-radius:22px;box-shadow:0 24px 70px rgba(212,114,135,.16)}
-.details .img-wrap .chip{
-  position:absolute;top:-18px;right:18px;width:96px;height:96px;border-radius:50%;
-  background:#fff;box-shadow:0 10px 30px rgba(212,114,135,.25);
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  animation:float 4s ease-in-out infinite;
-}
-@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
-.details .img-wrap .chip b{font-family:'Playfair Display',serif;font-size:24px;color:var(--rose);line-height:1}
-.details .img-wrap .chip span{font-size:9px;font-weight:700;letter-spacing:.1em;color:var(--muted);text-transform:uppercase}
-.details h2{font-family:'Playfair Display',serif;font-weight:400;font-size:clamp(26px,3vw,36px);margin-bottom:16px}
-.details h2 em{color:var(--rose);font-style:italic}
-.details p{font-size:15px;color:var(--muted);line-height:1.75;margin-bottom:18px}
-.spec-list{list-style:none;margin-bottom:28px}
-.spec-list li{
-  padding:12px 0;border-bottom:1px solid var(--line);
-  font-size:14px;color:#5a4a50;display:flex;align-items:center;gap:12px;
-}
-.spec-list li::before{content:'✦';color:var(--rose);font-size:12px}
-@media(max-width:820px){.details-grid{grid-template-columns:1fr}}
 
 /* ============ REVIEWS ============ */
 .reviews{background:var(--cream)}
@@ -589,9 +500,7 @@ footer small{display:block;font-size:11px;line-height:1.9;opacity:.5}
   <div class="links">
     <a href="#shop-product">Shop</a>
     <a href="#features">Features</a>
-    <a href="#demo">Demo</a>
     <a href="#gallery">Gallery</a>
-    <a href="#details">Details</a>
     <a href="#reviews">Reviews</a>
     <button class="cart-btn" data-buy>Shop Now — $49.99</button>
   </div>
@@ -739,26 +648,6 @@ footer small{display:block;font-size:11px;line-height:1.9;opacity:.5}
   </div>
 </section>
 
-<!-- ================= VIDEO DEMO : scroll-scrubbed ================= -->
-<section class="demo" id="demo">
-  <div class="demo-sticky">
-    <div class="demo-ghost" id="demoGhost">Watch it work</div>
-    <div class="demo-progress"><i id="demoBar"></i></div>
-    <div class="demo-frame" id="demoFrame">
-      <video id="demoVideo" src="assets/demo.mp4" poster="assets/demo-poster.jpg" muted playsinline preload="auto"></video>
-      <button class="sound" id="soundBtn">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg>
-        <span id="soundLabel">Play with sound</span>
-      </button>
-    </div>
-    <div class="demo-steps" id="demoSteps">
-      <div class="step on"><div class="num">01</div><h4>Drop it in</h4><p>Fruit, ice, protein — whatever you're craving.</p></div>
-      <div class="step"><div class="num">02</div><h4>10-second blend</h4><p>200W of torque turns it silky, no chunks left behind.</p></div>
-      <div class="step"><div class="num">03</div><h4>Sip &amp; go</h4><p>Flip the lid, drink straight from the cup. Done.</p></div>
-    </div>
-  </div>
-</section>
-
 <!-- ================= GALLERY : parallax mosaic ================= -->
 <section class="section gallery" id="gallery">
   <div class="container">
@@ -778,32 +667,6 @@ footer small{display:block;font-size:11px;line-height:1.9;opacity:.5}
       <div class="col" data-plx="0.1">
         <div class="ph" data-reveal style="--d:.2s"><img src="assets/gallery-demo.jpg" alt="Blender on the counter" loading="lazy"><span class="tag">From the demo</span></div>
         <div class="ph tall" data-reveal style="--d:.26s"><img src="assets/gallery-unboxed.jpg" alt="Blender with packaging" loading="lazy"><span class="tag">Unboxed</span></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ================= DETAILS ================= -->
-<section class="section details" id="details">
-  <div class="container">
-    <div class="details-grid">
-      <div class="img-wrap" data-reveal>
-        <img src="assets/details-product.jpg" alt="voltecharged blender detail" loading="lazy">
-        <div class="chip"><b>$49</b><span>Free ship</span></div>
-      </div>
-      <div>
-        <div class="label" data-reveal>The details</div>
-        <h2 data-reveal style="--d:.06s">Designed for the <em>on-the-go</em> life</h2>
-        <p data-reveal style="--d:.12s">Whether you're rushing to work, hitting the gym, or blending a post-yoga smoothie — the voltecharged blender fits your rhythm. 400ml of bold color, serious power, and zero fuss.</p>
-        <ul class="spec-list">
-          <li data-reveal style="--d:.14s">200W high-torque motor — crushes ice and frozen fruit</li>
-          <li data-reveal style="--d:.18s">400ml Tritan copolyester cup — BPA-free, shatter-resistant</li>
-          <li data-reveal style="--d:.22s">USB-C rechargeable — up to 15 blends per charge</li>
-          <li data-reveal style="--d:.26s">IPX5 water-resistant — rinse without worry</li>
-          <li data-reveal style="--d:.3s">Includes recipe booklet with 15 smoothie ideas</li>
-          <li data-reveal style="--d:.34s">Matte soft-touch finish — looks as good as it blends</li>
-        </ul>
-        <button class="btn btn-primary" data-buy data-reveal style="--d:.38s">Add to Cart — $49.99</button>
       </div>
     </div>
   </div>
@@ -850,7 +713,6 @@ footer small{display:block;font-size:11px;line-height:1.9;opacity:.5}
   <div class="f-tag">blend in color, live in motion.</div>
   <div class="f-links">
     <a href="#features">Features</a>
-    <a href="#demo">Demo</a>
     <a href="#gallery">Gallery</a>
     <a href="#reviews">Reviews</a>
     <a href="#shop">Shop</a>
@@ -1137,27 +999,8 @@ const io = new IntersectionObserver(es => {
 }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
 document.querySelectorAll('[data-reveal]').forEach(el => io.observe(el));
 
-/* parallax + video scrub, one rAF loop */
-const plxEls   = [...document.querySelectorAll('[data-plx]')];
-const demoSec  = document.querySelector('.demo');
-const frame    = document.getElementById('demoFrame');
-const ghostD   = document.getElementById('demoGhost');
-const bar      = document.getElementById('demoBar');
-const steps    = [...document.querySelectorAll('#demoSteps .step')];
-const video    = document.getElementById('demoVideo');
-const soundBtn = document.getElementById('soundBtn');
-const soundLbl = document.getElementById('soundLabel');
-let scrubbed = 0;      // smoothed progress 0..1
-let manualPlay = false;
-
-function clamp01(x){ return Math.min(1, Math.max(0, x)); }
-function easeOut(x){ return 1 - Math.pow(1 - x, 3); }
-
-function demoProgress(){
-  const r = demoSec.getBoundingClientRect();
-  const total = r.height - window.innerHeight;
-  return clamp01(-r.top / total);
-}
+/* parallax, one rAF loop */
+const plxEls = [...document.querySelectorAll('[data-plx]')];
 
 function tick(time){
   if (lenis) lenis.raf(time);
@@ -1173,54 +1016,9 @@ function tick(time){
     });
   }
 
-  /* video scrub */
-  const p = demoProgress();
-  scrubbed += (p - scrubbed) * 0.14;
-
-  const grow = easeOut(clamp01(scrubbed / 0.32));
-  const scale = 0.82 + 0.18 * grow;
-  frame.style.transform = `scale(${scale.toFixed(4)})`;
-  frame.style.borderRadius = `${(30 - 14 * grow).toFixed(1)}px`;
-  ghostD.style.transform = `translateY(${((0.5 - scrubbed) * 46).toFixed(1)}vh)`;
-  ghostD.style.opacity = (0.5 + 0.5 * Math.sin(Math.min(scrubbed / 0.25, 1) * Math.PI)).toFixed(2);
-  bar.style.height = `${(scrubbed * 100).toFixed(1)}%`;
-
-  const si = scrubbed < 0.36 ? 0 : scrubbed < 0.7 ? 1 : 2;
-  steps.forEach((s, i) => s.classList.toggle('on', i === si));
-
-  if (!manualPlay && !reduceMotion && video.duration) {
-    const target = scrubbed * Math.max(video.duration - 0.08, 0);
-    if (Math.abs(video.currentTime - target) > 0.03) {
-      try { video.currentTime = target; } catch (e) {}
-    }
-  }
   requestAnimationFrame(tick);
 }
 requestAnimationFrame(tick);
-
-/* tap-to-play with real audio; hands control back to the user */
-soundBtn.addEventListener('click', () => {
-  if (!manualPlay) {
-    manualPlay = true;
-    video.muted = false;
-    video.controls = true;
-    video.play();
-    soundLbl.textContent = 'Back to scroll mode';
-  } else {
-    manualPlay = false;
-    video.pause();
-    video.controls = false;
-    video.muted = true;
-    soundLbl.textContent = 'Play with sound';
-  }
-});
-
-/* if reduced motion: make the demo a normal tap-to-play block */
-if (reduceMotion) {
-  demoSec.style.height = 'auto';
-  video.controls = true;
-  frame.style.transform = 'none';
-}
 </script>
 </body>
 </html>
