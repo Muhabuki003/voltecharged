@@ -663,6 +663,34 @@ footer small{display:block;font-size:11px;line-height:1.9;opacity:.5}
   *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
   [data-reveal]{opacity:1;transform:none}
 }
+}
+
+/* ==========================================================================
+   SHARED ADDITIONS — kept in sync with tools/vc-extra.css (and therefore with
+   assets/vc.css, which the product pages load). One block, two consumers.
+========================================================================== */
+/* ============================================================================
+   VOLTECHARGED — SHARED ADDITIONS
+   Appended to assets/vc.css AND pasted at the end of index.html's inline
+   <style> block (keep both in sync — tools/sync-vc-css.py checks this).
+============================================================================ */
+
+/* ---- product-page link on a product card (2026-09-17 naming fix) -------- */
+.pr-more{
+  display:inline-flex;align-items:center;gap:9px;margin-top:14px;
+  font-size:11.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--pr-accent,var(--rose));
+  transition:opacity .2s,gap .2s var(--ease-out);
+}
+.pr-more:hover{opacity:.75;gap:13px}
+.pr-more svg{flex:none}
+
+/* ---- cart: made-to-order / availability note --------------------------- */
+.pr-stage-note{
+  position:absolute;bottom:16px;left:18px;right:18px;z-index:5;
+  font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--pr-accent,var(--rose));text-align:center;
+}
 </style>
 </head>
 <body>
@@ -675,7 +703,7 @@ footer small{display:block;font-size:11px;line-height:1.9;opacity:.5}
     <a href="#new-product">New Drop</a>
     <a href="#shop-product">Shop</a>
     <a href="#features">Features</a>
-    <a href="#demo">Demo</a>
+    <a href="blender.html#action">Demo</a>
     <a href="#gallery">Gallery</a>
     <a href="#ugc">#voltecharged</a>
     <a href="#reviews">Reviews</a>
@@ -687,15 +715,15 @@ footer small{display:block;font-size:11px;line-height:1.9;opacity:.5}
 <section class="hero" id="top">
   <div class="ghost" id="ghost">BLUSH</div>
   <div class="carousel" id="carousel">
-    <div class="item" data-key="pink"><img src="assets/blender-pink.png" alt="voltecharged blender — blush pink" draggable="false"></div>
-    <div class="item" data-key="white"><img src="assets/blender-white.png" alt="voltecharged blender — porcelain white" draggable="false"></div>
-    <div class="item" data-key="green"><img src="assets/blender-green.png" alt="voltecharged blender — forest green" draggable="false"></div>
+    <div class="item" data-key="pink"><img src="assets/blender-pink.png" alt="Voltecharged Portable Blender — Blush Pink" draggable="false"></div>
+    <div class="item" data-key="white"><img src="assets/blender-white.png" alt="Voltecharged Portable Blender — Porcelain White" draggable="false"></div>
+    <div class="item" data-key="green"><img src="assets/blender-green.png" alt="Voltecharged Portable Blender — Forest Green" draggable="false"></div>
   </div>
 
   <div class="hud hud-tl">Portable Blender · 400ml · USB-C</div>
 
   <div class="hud hud-bl">
-    <div class="kick" id="heroKick">Voltecharged Blender</div>
+    <div class="kick" id="heroKick">Portable Blender</div>
     <h2 id="heroName">Blush Pink</h2>
     <p id="heroLine">The original blush. Pretty enough to live on your desk — powerful enough to crush ice, frozen fruit and greens in ten seconds flat.</p>
     <div class="controls">
@@ -746,7 +774,7 @@ footer small{display:block;font-size:11px;line-height:1.9;opacity:.5}
       <!-- details -->
       <div class="pr-info" data-reveal style="--d:.1s">
         <div class="eyebrow">Meet the blender</div>
-        <h2>voltecharged — <em id="prName">Blush Pink</em></h2>
+        <h2>Portable Blender <em id="prName">— Blush Pink</em></h2>
         <div class="pr-rating">
           <div class="stars">★★★★★</div>
           <span>4.9 · 2,300+ five-star blends</span>
@@ -792,6 +820,9 @@ footer small{display:block;font-size:11px;line-height:1.9;opacity:.5}
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
           Free shipping · 30-day money-back guarantee · Ships in 24h
         </div>
+        <a class="pr-more" href="blender.html">See the full Portable Blender page
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+        </a>
       </div>
     </div>
   </div>
@@ -806,7 +837,7 @@ footer small{display:block;font-size:11px;line-height:1.9;opacity:.5}
       <span class="nd-flag">New</span>
       <div class="nd-banner-txt">
         <p class="nd-banner-main">Just landed — the first of the Voltecharged Kitchen drop.</p>
-        <p class="nd-banner-sub">Countertop Soft Serve Maker · more countertop colour coming soon</p>
+        <p class="nd-banner-sub">Soft Serve Maker · more countertop colour coming soon</p>
       </div>
     </div>
 
@@ -824,7 +855,7 @@ footer small{display:block;font-size:11px;line-height:1.9;opacity:.5}
       <!-- details -->
       <div class="pr-info" data-reveal style="--d:.1s">
         <div class="eyebrow">New arrival · Voltecharged Kitchen</div>
-        <h2>Countertop <em>Soft Serve Maker</em></h2>
+        <h2><em>Soft Serve</em> Maker</h2>
         <div class="pr-price">
           <b id="ndPrice">$49.99</b>
           <s>$65.99</s>
@@ -876,6 +907,9 @@ footer small{display:block;font-size:11px;line-height:1.9;opacity:.5}
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
           Free shipping · 30-day money-back guarantee · US plug
         </div>
+        <a class="pr-more" href="soft-serve.html">See the full Soft Serve Maker page
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+        </a>
 
         <div class="nd-more">
           <span class="nd-more-flag">More coming</span>
@@ -931,17 +965,23 @@ footer small{display:block;font-size:11px;line-height:1.9;opacity:.5}
     </div>
     <div class="mosaic">
       <div class="col" data-plx="0.06">
-        <div class="ph" data-reveal><img src="assets/gallery-wild.jpg" alt="Blender in use" loading="lazy"><span class="tag">In the wild</span></div>
-        <div class="ph" data-reveal style="--d:.08s"><img src="assets/gallery-brand.jpg" alt="blend in color — voltecharged" loading="lazy"></div>
+        <div class="ph" data-reveal><img src="assets/gallery-wild.jpg" alt="Portable Blender in use" loading="lazy"><span class="tag">In the wild</span></div>
+        <div class="ph" data-reveal style="--d:.08s"><img src="assets/gallery-brand.jpg" alt="Blend in color — voltecharged" loading="lazy"></div>
       </div>
       <div class="col" data-plx="-0.08">
         <div class="ph tall" data-reveal style="--d:.12s"><img src="https://cdn.shopify.com/s/files/1/1010/2482/5658/files/3452ef32-2bb4-45eb-b70e-d3ad4888d5a5.jpg?v=1784389752" alt="Porcelain white studio shot" loading="lazy"><span class="tag">Studio</span></div>
-        <div class="ph" data-reveal style="--d:.18s"><img src="assets/gallery-blush.jpg" alt="Blush pink blender duo" loading="lazy"><span class="tag">Blush</span></div>
+        <div class="ph" data-reveal style="--d:.18s"><img src="assets/gallery-blush.jpg" alt="Blush pink Portable Blender duo" loading="lazy"><span class="tag">Blush</span></div>
       </div>
       <div class="col" data-plx="0.1">
-        <div class="ph" data-reveal style="--d:.2s"><img src="assets/gallery-demo.jpg" alt="Blender on the counter" loading="lazy"><span class="tag">From the demo</span></div>
-        <div class="ph tall" data-reveal style="--d:.26s"><img src="assets/gallery-unboxed.jpg" alt="Blender with packaging" loading="lazy"><span class="tag">Unboxed</span></div>
+        <div class="ph" data-reveal style="--d:.2s"><img src="assets/gallery-demo.jpg" alt="Portable Blender on the counter" loading="lazy"><span class="tag">From the demo</span></div>
+        <div class="ph tall" data-reveal style="--d:.26s"><img src="assets/gallery-unboxed.jpg" alt="Portable Blender with packaging" loading="lazy"><span class="tag">Unboxed</span></div>
       </div>
+      <!-- TODO(ugc): once the media agent writes assets/ugc/UGC-SOURCES.json
+           and the ugc-softserve-*.mp4 clips, add ONE tile per KEEP clip here so
+           this mosaic is not 100% blender imagery, e.g.
+             <div class="ph" data-reveal><img src="assets/ugc/ugc-softserve-01.jpg" alt="Soft Serve Maker in use" loading="lazy"><span class="tag">Soft serve</span></div>
+           (a poster still per clip, or drop the still if only the video exists).
+           Rejected clips: never. See UGC-SOURCES.json for the verdicts. -->
     </div>
   </div>
 </section>
@@ -997,6 +1037,8 @@ footer small{display:block;font-size:11px;line-height:1.9;opacity:.5}
   <div class="f-logo">voltecharged</div>
   <div class="f-tag">blend in color, live in motion.</div>
   <div class="f-links">
+    <a href="blender.html">Portable Blender</a>
+    <a href="soft-serve.html">Soft Serve Maker</a>
     <a href="#new-product">New Drop</a>
     <a href="#features">Features</a>
     <a href="#gallery">Gallery</a>
@@ -1025,31 +1067,36 @@ footer small{display:block;font-size:11px;line-height:1.9;opacity:.5}
       Free shipping · 30-day money-back guarantee
     </div>
     <button class="cd-checkout" id="cdCheckout">
-      Checkout
+      <span id="cdCheckoutLabel">Checkout</span>
       <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
     </button>
   </div>
 </aside>
 
 <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.14/dist/lenis.min.js"></script>
+<script src="assets/vc-shop.js"></script>
 <script>
 /* ============================================================
    SHOPIFY CHECKOUT WIRING
    domain + variant IDs — swap in the real white/green variant
    IDs from your Shopify admin when you have them.
 ============================================================ */
-const SHOPIFY_DOMAIN = 'ehh05e-7q.myshopify.com';
-const VARIANT_IDS = {
-  pink:  { '380': '53762550366522', '420': '53762550399290' },
-  white: { '380': '53762550432058', '420': '53762550464826' },
-  green: { '380': '53762550497594', '420': '53762550530362' }
-};
+/* The cart core (products, variant IDs, drawer, checkout permalink) lives in
+   assets/vc-shop.js — ONE source of truth, shared with blender.html and
+   soft-serve.html. Adding a product = one entry in VC.PRODUCTS; see the header
+   of that file for the product-#3 (capsule coffee maker) checklist and the
+   "publish new products to the Online Store channel or checkout 404s" rule.
+
+   variantId() no longer falls back to another colourway or size: an unknown
+   key/size returns null, warns on the console, shows a toast and refuses the
+   add, so the wrong item can never be sold silently. */
+const SHOPIFY_DOMAIN = VC.SHOPIFY_DOMAIN;
+const VARIANT_IDS    = VC.VARIANTS;        // colourKey → { size → variantId } (read-only view)
+const variantId      = VC.variantId;
+const priceOf        = VC.priceOf;
+const addToCart      = VC.addToCart;       // returns false (adds nothing) on a bad key/size
+const UNIT_PRICE     = VC.PRODUCTS.blender.price;
 let selectedSize = '380';
-const UNIT_PRICE = 49.99;
-function variantId(key, size){
-  const sizes = VARIANT_IDS[key] || VARIANT_IDS.pink;
-  return sizes[size] || sizes['380'];
-}
 
 /* ============================================================
    VOLTECHARGED KITCHEN — countertop soft serve maker (new drop)
@@ -1057,7 +1104,7 @@ function variantId(key, size){
    is a LIVE Shopify variant ID for the 4 US-plug SKUs, so the
    existing cart + checkout permalink work untouched.
 ============================================================ */
-const SS_PRICE = 49.99;
+const SS_PRICE = VC.PRODUCTS.softServe.price;
 const SS_SIZE  = 'one';
 const SS_ITEMS = [
   { key:'ss-peach',     name:'Peach',
@@ -1081,16 +1128,24 @@ const SS_ITEMS = [
     ghost:'rgba(65,147,164,.11)', shadow:'rgba(65,147,164,.34)',
     img:'https://cdn.shopify.com/s/files/1/1010/2482/5658/files/29addd380dd047407dda2a126946e68d_43a79067-7910-41d2-beec-df0dd8bbe4f6.jpg?v=1789657829' }
 ];
-/* one size per colourway → fold into the shared variant map so cart
-   validation, variantId() and the checkout permalink all just work */
-SS_ITEMS.forEach(it => { VARIANT_IDS[it.key] = {}; VARIANT_IDS[it.key][SS_SIZE] = it.variantId; });
+/* Soft-serve colourways are declared in assets/vc-shop.js (VC.PRODUCTS.softServe)
+   — this page only holds their presentation data. Fail loudly in the console if
+   the two ever drift apart (a wrong variant id here would sell the wrong item). */
+SS_ITEMS.forEach(it => {
+  const vc = VC.ITEMS[it.key];
+  if (!vc || vc.variants[SS_SIZE] !== it.variantId) {
+    console.error('[voltecharged] soft-serve variant mapping drift', it.key, it.variantId, vc && vc.variants);
+  }
+});
 const SS_SHOTS = [
   { src:'https://cdn.shopify.com/s/files/1/1010/2482/5658/files/29addd380dd047407dda2a126946e68d.jpg?v=1789657821', label:'Top view — one-button start' },
   { src:'https://cdn.shopify.com/s/files/1/1010/2482/5658/files/9ded177371c193f2bd4d629f94213bff.jpg?v=1789657821', label:'Freezing bowl, lid and mixing paddle' },
   { src:'https://cdn.shopify.com/s/files/1/1010/2482/5658/files/5b554311989604d71679e0d3db82eb6a.jpg?v=1789657821', label:'Specs — 500ml · 34 rpm · 12W' }
 ];
 function ssItem(key){ return SS_ITEMS.find(i => i.key === key); }
-function priceOf(key){ return ssItem(key) ? SS_PRICE : UNIT_PRICE; }
+/* priceOf() now comes from assets/vc-shop.js (VC.priceOf) — the old local
+   version only knew "soft-serve or blender", which is exactly the silent
+   fallback this change removes. */
 
 /* ============================================================
    HERO — 3-image shuffle carousel
@@ -1197,8 +1252,16 @@ window.addEventListener('keydown', e => {
 });
 
 /* gentle auto-rotate, backs off when the user takes over */
+let rotationStopped = false;
 function startAuto(){ autoTimer = setInterval(() => navigate('next'), 6000); }
+/* permanent stop — used once the shopper picks a colourway in the showroom, so
+   the hero can never change the product they are looking at / about to buy */
+function stopRotation(){
+  rotationStopped = true;
+  clearInterval(autoTimer); autoTimer = null; clearTimeout(idleTimer);
+}
 function userInteracted(){
+  if (rotationStopped) return;
   clearInterval(autoTimer); clearTimeout(idleTimer);
   idleTimer = setTimeout(startAuto, 14000);
 }
@@ -1242,7 +1305,7 @@ if (prRoot) {
   /* fade a new image onto the main stage (mirrors hero crossfade) */
   function setMain(src){
     const img = document.createElement('img');
-    img.src = src; img.alt = 'voltecharged blender';
+    img.src = src; img.alt = 'Portable Blender';
     img.draggable = false;
     prMain.appendChild(img);
     requestAnimationFrame(() => requestAnimationFrame(() => img.classList.add('show')));
@@ -1276,7 +1339,7 @@ if (prRoot) {
       ? v.swatch
       : `radial-gradient(circle at 32% 28%, #fff5, transparent 55%), ${v.swatch}`;
     s.setAttribute('aria-label', v.name);
-    s.addEventListener('click', () => selectColor(i));
+    s.addEventListener('click', () => selectColor(i, true));
     prSwatches.appendChild(s);
   });
 
@@ -1287,7 +1350,7 @@ if (prRoot) {
     prRoot.style.setProperty('--pr-wash',   v.wash);
     prRoot.style.setProperty('--pr-ghost',  v.ghostColor);
     prRoot.style.setProperty('--pr-shadow', v.shadow);
-    prNameEl.textContent  = v.name;
+    prNameEl.textContent  = '— ' + v.name;
     prBadgeEl.textContent = v.name;
     prPriceEl.textContent = v.price;
     prDescEl.textContent  = v.line;
@@ -1297,20 +1360,26 @@ if (prRoot) {
     [...prSwatches.children].forEach((s, i) => s.classList.toggle('on', i === prIndex));
   }
 
-  function selectColor(i){
+  function selectColor(i, fromUser){
     if (i === prIndex) return;
     prIndex = i;
     paint();
     setMain(`assets/blender-${VARIANTS[i].key}.png`);
     renderThumbs(0);
     goTo(i); // keep hero carousel in sync
+    /* If the SHOPPER picked this colourway, the hero's 6s auto-rotate must stop
+       for good. Otherwise it keeps spinning, drags the showroom with it, and the
+       card changes colour under their finger — so Add to Cart would add a
+       colourway they never chose. */
+    if (fromUser) stopRotation();
   }
-  activeShowroomSync = selectColor; // let the hero side push updates in here too
+  activeShowroomSync = selectColor; // hero → showroom sync (never calls stopRotation)
 
   /* size selector — feeds the shared selectedSize used by every buy button */
   const prSizeName = document.getElementById('prSizeName');
   document.querySelectorAll('#prSizes .pr-size').forEach(btn => {
     btn.addEventListener('click', () => {
+      stopRotation(); // shopper is choosing — freeze the hero so the card can't swap
       selectedSize = btn.dataset.size;
       prSizeName.textContent = `${selectedSize}ml`;
       document.querySelectorAll('#prSizes .pr-size').forEach(b => b.classList.toggle('on', b === btn));
@@ -1323,6 +1392,7 @@ if (prRoot) {
 
   /* add-to-cart → cart drawer with the chosen color, size, and quantity */
   document.getElementById('prBuy').addEventListener('click', () => {
+    stopRotation(); // buying this exact colourway: never let the hero swap it mid-click
     addToCart(VARIANTS[prIndex].key, selectedSize, qty);
   });
 
@@ -1383,107 +1453,12 @@ function tick(time){
 requestAnimationFrame(tick);
 
 /* ============================================================
-   CART DRAWER — local cart, hands off to Shopify checkout
+   CART DRAWER — owned by assets/vc-shop.js (shared with the product pages).
+   The drawer markup above is unchanged; VC.initCart() wired close / overlay /
+   Escape / checkout and paints the items from the shared product map.
+   Lenis has to be handed over so the drawer can stop the page scroll:
 ============================================================ */
-const cartDrawer  = document.getElementById('cartDrawer');
-const cartOverlay = document.getElementById('cartOverlay');
-const cdItems     = document.getElementById('cdItems');
-const cdCount     = document.getElementById('cdCount');
-const cdSubtotal  = document.getElementById('cdSubtotal');
-const cdFoot      = document.getElementById('cdFoot');
-
-let cart = [];
-try { cart = JSON.parse(localStorage.getItem('vc_cart') || '[]'); } catch(e){ cart = []; }
-cart = Array.isArray(cart)
-  ? cart.filter(i => i && VARIANT_IDS[i.key] && VARIANT_IDS[i.key][i.size] && i.qty > 0)
-  : [];
-
-function saveCart(){ localStorage.setItem('vc_cart', JSON.stringify(cart)); }
-function money(n){ return `$${n.toFixed(2)}`; }
-
-function addToCart(key, size, qty){
-  const found = cart.find(i => i.key === key && i.size === size);
-  if (found) found.qty = Math.min(9, found.qty + qty);
-  else cart.push({ key, size, qty });
-  saveCart(); renderCart(); openCart();
-}
-
-function renderCart(){
-  const count = cart.reduce((s, i) => s + i.qty, 0);
-  cdCount.textContent = count ? `(${count})` : '';
-  cdSubtotal.textContent = money(cart.reduce((s, i) => s + i.qty * priceOf(i.key), 0));
-  cdFoot.style.display = cart.length ? '' : 'none';
-
-  if (!cart.length){
-    cdItems.innerHTML = `<div class="cd-empty">Your cart is empty.<br>Pick a color you love.<button class="btn btn-outline" id="cdKeep">Keep browsing</button></div>`;
-    document.getElementById('cdKeep').addEventListener('click', closeCart);
-    return;
-  }
-
-  cdItems.innerHTML = '';
-  cart.forEach((item, idx) => {
-    const bv = VARIANTS.find(x => x.key === item.key);
-    const sv = ssItem(item.key);
-    const cartName  = bv ? `voltecharged — ${bv.name}` : (sv ? `Countertop Soft Serve Maker — ${sv.name}` : 'Voltecharged product');
-    const cartImg   = bv ? `assets/blender-${bv.key}.png` : (sv ? sv.img : '');
-    const cartPanel = bv ? bv.panel : (sv ? sv.panel : '#fbe6ec');
-    const cartSize  = bv ? `${item.size}ml` : 'One size';
-    const cartUnit  = priceOf(item.key);
-    const el = document.createElement('div');
-    el.className = 'cd-item';
-    el.innerHTML = `
-      <div class="thumb${sv ? ' ss' : ''}" style="background:${cartPanel}"><img src="${cartImg}" alt="${cartName}"></div>
-      <div class="info">
-        <div class="name">${cartName}</div>
-        <div class="meta">${cartSize} · ${money(cartUnit)} each</div>
-        <div class="row">
-          <div class="cd-qty">
-            <button data-a="minus" aria-label="Decrease quantity">−</button>
-            <span>${item.qty}</span>
-            <button data-a="plus" aria-label="Increase quantity">+</button>
-          </div>
-          <div class="price">${money(item.qty * cartUnit)}</div>
-        </div>
-        <button class="rm" data-a="rm">Remove</button>
-      </div>`;
-    el.querySelector('[data-a="minus"]').addEventListener('click', () => {
-      if (item.qty > 1) item.qty--; else cart.splice(idx, 1);
-      saveCart(); renderCart();
-    });
-    el.querySelector('[data-a="plus"]').addEventListener('click', () => {
-      item.qty = Math.min(9, item.qty + 1);
-      saveCart(); renderCart();
-    });
-    el.querySelector('[data-a="rm"]').addEventListener('click', () => {
-      cart.splice(idx, 1);
-      saveCart(); renderCart();
-    });
-    cdItems.appendChild(el);
-  });
-}
-
-function openCart(){
-  cartDrawer.classList.add('open');
-  cartOverlay.classList.add('open');
-  if (lenis) lenis.stop(); else document.body.style.overflow = 'hidden';
-}
-function closeCart(){
-  cartDrawer.classList.remove('open');
-  cartOverlay.classList.remove('open');
-  if (lenis) lenis.start(); else document.body.style.overflow = '';
-}
-document.getElementById('cdClose').addEventListener('click', closeCart);
-cartOverlay.addEventListener('click', closeCart);
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeCart(); });
-
-/* checkout hands the whole cart to Shopify as one permalink */
-document.getElementById('cdCheckout').addEventListener('click', () => {
-  if (!cart.length) return;
-  const items = cart.map(i => `${variantId(i.key, i.size)}:${i.qty}`).join(',');
-  window.location.href = `https://${SHOPIFY_DOMAIN}/cart/${items}`;
-});
-
-renderCart();
+VC.useLenis(lenis);
 
 /* ============================================================
    NEW DROP — countertop soft serve maker gallery + Add to Bag
@@ -1507,13 +1482,13 @@ renderCart();
   /* colourway shot first, then the shared studio shots */
   function views(){
     const it = SS_ITEMS[ndIndex];
-    return [{ src: it.img, label: `${it.name} — Countertop Soft Serve Maker`, prod: true }, ...SS_SHOTS];
+    return [{ src: it.img, label: `${it.name} — Soft Serve Maker`, prod: true }, ...SS_SHOTS];
   }
 
   function setMain(src, alt){
     const img = document.createElement('img');
     img.src = src;
-    img.alt = alt || 'Countertop Soft Serve Maker';
+    img.alt = alt || 'Soft Serve Maker';
     img.draggable = false;
     ndMain.appendChild(img);
     requestAnimationFrame(() => requestAnimationFrame(() => img.classList.add('show')));
@@ -1563,7 +1538,7 @@ renderCart();
     if (i === ndIndex) return;
     ndIndex = i;
     paint();
-    setMain(SS_ITEMS[i].img, `${SS_ITEMS[i].name} — Countertop Soft Serve Maker`);
+    setMain(SS_ITEMS[i].img, `${SS_ITEMS[i].name} — Soft Serve Maker`);
     renderThumbs(0);
   }
 
@@ -1579,7 +1554,7 @@ renderCart();
   /* init */
   paint();
   renderThumbs(0);
-  setMain(SS_ITEMS[0].img, 'Peach — Countertop Soft Serve Maker');
+  setMain(SS_ITEMS[0].img, 'Peach — Soft Serve Maker');
 })();
 </script>
 
@@ -1588,20 +1563,63 @@ renderCart();
 (function(){
   "use strict";
 
-  var ITEMS = [
-    { video: 'assets/ugc/ugc1.mp4', variant: 'pink' },
-    { video: 'assets/ugc/ugc2.mp4', variant: 'white' },
-    { video: 'assets/ugc/ugc3.mp4', variant: 'green' },
-    { video: 'assets/ugc/ugc4.mp4', variant: 'pink' },
-    { video: 'assets/ugc/ugc5.mp4', variant: 'white' },
-    { video: 'assets/ugc/ugc6.mp4', variant: 'green' }
+  /* ---------------------------------------------------------------------
+     UGC CLIPS
+     `color` is a colourway key from assets/vc-shop.js — it drives the card's
+     product chip, the quick-add (+) button and the link to the product page.
+
+     Product titles are the REAL product names (Portable Blender / Soft Serve
+     Maker), never the brand + colour, so a card can't read as if "voltecharged"
+     were the product.
+
+     DONE (2026-09-17): the soft-serve harvest is finished. 25 clips were
+     downloaded, 5 kept, 20 rejected (verdicts in
+     assets/ugc/UGC-SOURCES.json). The 3 best KEEP clips are wired to UGC_MIX
+     below and are interleaved between the blender clips by interleave().
+     To wire another KEEP clip, append ONE entry to UGC_MIX, e.g.:
+        { video: 'assets/ugc/ugc-softserve-<n>.mp4', color: 'ss-peach' },
+     Files are numbered 1-5 with NO zero padding, so the real names are
+     ugc-softserve-1.mp4 ... ugc-softserve-5.mp4. (There is no
+     ugc-softserve-01.mp4: that name was an abandoned test artifact, a byte
+     copy of ugc2.mp4 -- never wire it.)
+     Nothing else needs editing: UGC_MIX is interleaved evenly between the
+     blender clips (never replacing them), the chip renders "Soft Serve Maker",
+     the info click opens soft-serve.html and + quick-adds that colourway.
+     NEVER add a clip whose verdict is `reject`.
+  --------------------------------------------------------------------- */
+  var UGC_MIX = [
+    { video: "assets/ugc/ugc-softserve-5.mp4", color: "ss-peach", caption: "Dessert on demand" },
+    { video: "assets/ugc/ugc-softserve-3.mp4", color: "ss-lightblue", caption: "Made in the cup, not the freezer" },
+    { video: "assets/ugc/ugc-softserve-1.mp4", color: "ss-pink", caption: "Every night became dessert night" }
   ];
 
-  var PRODUCTS = {
-    pink:  { img: 'assets/blender-pink.png',  title: 'Blush Pink Blender',  price: '$49.99' },
-    white: { img: 'assets/blender-white.png', title: 'Porcelain White Blender', price: '$49.99' },
-    green: { img: 'assets/blender-green.png', title: 'Forest Green Blender', price: '$49.99' }
-  };
+  var BLENDER_CLIPS = [
+    { video: 'assets/ugc/ugc1.mp4', color: 'pink' },
+    { video: 'assets/ugc/ugc2.mp4', color: 'white' },
+    { video: 'assets/ugc/ugc3.mp4', color: 'green' },
+    { video: 'assets/ugc/ugc4.mp4', color: 'pink' },
+    { video: 'assets/ugc/ugc5.mp4', color: 'white' },
+    { video: 'assets/ugc/ugc6.mp4', color: 'green' }
+  ];
+
+  /* soft-serve clips land BETWEEN the blender clips, spread evenly — never
+     appended as a block at the end */
+  function interleave(base, mix){
+    var m = mix.length;
+    if (!m) return base.slice();
+    var total = base.length + m, slots = {}, i;
+    for (i = 0; i < m; i++){
+      var t = Math.round(((i + 1) * total) / (m + 1)) - 1;   // ideal slot in the final list
+      t = Math.max(0, Math.min(total - 1, t));
+      while (slots[t] !== undefined) t++;                     // never overwrite
+      slots[t] = mix[i];
+    }
+    var out = [], bi = 0;
+    for (var j = 0; j < total; j++) out.push(slots[j] !== undefined ? slots[j] : base[bi++]);
+    return out;
+  }
+  var ITEMS = interleave(BLENDER_CLIPS, UGC_MIX);
+  if (UGC_MIX.length) document.getElementById('ugc').dataset.mixed = '1';
 
   var ICON = {
     play:  '<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>',
@@ -1642,32 +1660,48 @@ renderCart();
     controls.appendChild(playBtn);
     card.appendChild(controls);
 
-    var pInfo = PRODUCTS[it.variant] || PRODUCTS.pink;
+    /* real product data (name, thumb, price, page) from the shared shop core */
+    var pItem  = VC.ITEMS[it.color];
+    var pProd  = pItem ? VC.PRODUCTS[pItem.product] : null;
+    /* a UGC clip whose colour key is not a registered colourway used to render
+       as if it were the blender — say so out loud instead */
+    if (!pItem) console.warn('[voltecharged] UGC clip colour "' + it.color +
+                             '" is not a registered colourway — showing the fallback card.');
+    var pInfo  = pItem
+      ? { img: pItem.img, title: pItem.productTitle,
+          sub: pItem.name + ' \u00b7 $' + pItem.price.toFixed(2), page: pItem.page }
+      : { img: 'assets/blender-pink.png', title: 'Portable Blender', sub: '$49.99', page: 'blender.html' };
     var prod = document.createElement('div');
     prod.className = 'ugc-product';
+    prod.setAttribute('role', 'link');
+    prod.setAttribute('tabindex', '0');
+    prod.setAttribute('aria-label', 'View the ' + pInfo.title + ' product page');
     prod.innerHTML =
       '<img alt="" src="' + pInfo.img + '">' +
       '<span class="info"><span class="pname">' + pInfo.title + '</span>' +
-      '<span class="pprice">' + pInfo.price + '</span></span>' +
-      '<span class="padd" aria-label="Add to cart">+</span>';
+      '<span class="pprice">' + pInfo.sub + '</span></span>' +
+      '<button class="padd" type="button" aria-label="Add ' + pInfo.title + ' to cart">+</button>';
     card.appendChild(prod);
     stage.appendChild(card);
 
-    var rec = { el: card, video: video, muteBtn: muteBtn, playBtn: playBtn, prod: prod, variant: it.variant };
+    var rec = { el: card, video: video, muteBtn: muteBtn, playBtn: playBtn, prod: prod, color: it.color };
     cards.push(rec);
 
+    /* + quick-adds THIS colourway — no navigation, real variant id or nothing */
     prod.querySelector('.padd').addEventListener('click', function(e){
       e.stopPropagation();
-      if (typeof GecomoCart === 'undefined') return;
-      GecomoCart.add({
-        title: pInfo.title, image: pInfo.img, meta: 'Single',
-        price: 49.99, lines: [{ variantId: VARIANT_IDS[rec.variant], qty: 1 }]
-      });
+      if (!pProd) { VC.toast('This product is not orderable yet.'); return; }
+      VC.addToCart(rec.color, pProd.sizes[0].id, 1);
     });
 
-    prod.querySelector('.info').addEventListener('click', function(e){
+    /* the card's product info opens that product's page */
+    function openProductPage(e){
       e.stopPropagation();
-      document.getElementById('shop-product').scrollIntoView({ behavior: 'smooth' });
+      if (pInfo.page) window.location.href = pInfo.page;
+    }
+    prod.querySelector('.info').addEventListener('click', openProductPage);
+    prod.addEventListener('keydown', function(e){
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openProductPage(e); }
     });
 
     card.addEventListener('click', function(e){

@@ -1,0 +1,21 @@
+# --- never publish these (PUBLIC repo, GitHub Pages serves every tracked file) ---
+# internal sourcing / cost data (contains supplier cost_usd, rejected candidates,
+# freight cost, SPU/SKU details) — stays local only
+new-product/
+
+# raw UGC downloads incl. rejected clips from other brands (62 MB)
+assets/ugc/_originals/
+
+# QA screenshots + contact sheets (28 MB of build artifacts, not site assets)
+qa/
+assets/ugc/softserve-contact-sheet.jpg
+
+# build/QA tooling (not part of the served site)
+tools/
+
+# stray GECOMO files committed into this repo by mistake (cross-brand)
+assets/ai-catalog.json
+assets/gecomo-ai.js
+
+# internal reports referencing supplier SKUs
+assets/ugc/UGC-HARVEST-REPORT.md
