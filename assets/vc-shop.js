@@ -1,6 +1,6 @@
 /* ============================================================================
    VOLTECHARGED — SHOP CORE  (assets/vc-shop.js)
-   Shared by index.html, blender.html and soft-serve.html.
+   Shared by index.html, blender.html, soft-serve.html and coffee.html.
 
    Single source of truth for: products, colourways, Shopify variant IDs,
    the cart drawer, and the Shopify checkout permalink.
@@ -34,6 +34,17 @@
    In Shopify admin: Products → <product> → Publishing → Online Store ✓
    (+ autoPublish=true on the Online Store publication so new products inherit it).
    Check with:  curl -sI 'https://<store>/cart/<variantId>:1' | head -1   → 200/302
+
+   ⚠️ AND IN THE REST ADMIN API `published_at: null` UN-PUBLISHES THE PRODUCT.
+   Product #3 published cleanly to Online Store — status active, `publish:
+   {'userErrors': []}` — and every /cart/<variant>:1 still returned **410 Gone**,
+   because the script then sent
+       PUT /products/{id}.json { "status": "active", "published_at": null }
+   which silently removed it from the channel again (only Point of Sale stayed
+   published). So: activate the status FIRST, publish to the channel LAST, then
+   assert `resourcePublicationsV2` really lists Online Store. Re-publishing with
+   `publishablePublish` for gid://shopify/Publication/314115555642 fixed it.
+   Never send published_at:null after publishing.
 
    ⚠️ VARIANTS ARE KEYED EXPLICITLY, PER PRODUCT, PER COLOURWAY, PER SIZE.
    variantId(key, size) NEVER falls back to another product or size: an unknown

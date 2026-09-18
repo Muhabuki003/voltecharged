@@ -277,15 +277,19 @@
       <h2 class="section-title" data-reveal style="--d:.08s">Straight from the <em>community</em>.</h2>
       <p class="ugc-sub" data-reveal style="margin-top:12px;--d:.12s">Coffee-maker clips from the drop are being added — the blender's community clips are a click away in the meantime.</p>
     </div>
-    <!-- TODO(ugc): soft-serve community clips ----------------------------------
-         The media agent downloads real soft-serve UGC to
-         assets/ugc/ugc-softserve-*.mp4 and writes the verdicts to
-         assets/ugc/UGC-SOURCES.json (keep|reject). For every clip marked
-         `keep`, add ONE entry to the PDP.ugc array in the <script> block at the
-         bottom of this page:
-             { "video": "assets/ugc/ugc-softserve-01.mp4", "color": "ss-peach", "caption": "..." }
-         assets/vc-pdp.js then builds the video strip automatically and hides the
-         empty state. NEVER add a clip whose verdict is `reject`.
+    <!-- TODO(ugc): no community clips for THIS product yet ---------------------
+         Nothing is faked and no placeholder box ships: while PDP.ugc is empty
+         assets/vc-pdp.js moves the empty strip out of the DOM and hides this
+         whole section. To wire real clips, download them to
+         assets/ugc/<product>-<n>.mp4, record the verdicts in
+         assets/ugc/UGC-SOURCES.json (keep|reject), then add ONE entry per KEEP
+         clip to the PDP.ugc array in the <script> block at the bottom of this
+         page:
+             { "video": "assets/ugc/<product>-1.mp4", "color": "<colourway key>", "caption": "..." }
+         `color` must be a colourway key from assets/vc-shop.js (the + button
+         adds that exact variant). NEVER add a clip whose verdict is `reject`,
+         and never reference the abandoned ugc-softserve-01.mp4 (a byte copy of
+         ugc2.mp4, not real soft-serve UGC).
     ------------------------------------------------------------------------- -->
     <div class="strip" id="ugcStrip"></div>
   </div>
