@@ -691,6 +691,16 @@ footer small{display:block;font-size:11px;line-height:1.9;opacity:.5}
   font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
   color:var(--pr-accent,var(--rose));text-align:center;
 }
+
+/* ---- coffee maker card + page: the generated shots are full-bleed PHOTOGRAPHS
+   (the silver and black heroes sit on dark backgrounds), so they render as
+   photo cards — cover, rounded, no multiply blend and no product drop-shadow,
+   unlike the blender cut-outs and the soft-serve studio shots. ------------- */
+.nd.coffee .pr-main, .pdp.coffee .pr-main{width:100%;height:100%}
+.nd.coffee .pr-main img, .pdp.coffee .pr-main img{object-fit:cover;border-radius:26px;mix-blend-mode:normal;filter:none}
+.nd.coffee .pr-thumb.prod img, .pdp.coffee .pr-thumb.prod img{object-fit:cover;padding:0}
+/* the coffee card is the third product in the drop: keep its colour rows calm */
+.nd.coffee .pr-swatches{padding-left:0}
 </style>
 </head>
 <body>
@@ -701,6 +711,7 @@ footer small{display:block;font-size:11px;line-height:1.9;opacity:.5}
   <a class="logo" href="#top">volte<em>charged</em></a>
   <div class="links">
     <a href="#new-product">New Drop</a>
+    <a href="#coffee-maker">Coffee</a>
     <a href="#shop-product">Shop</a>
     <a href="#features">Features</a>
     <a href="blender.html#action">Demo</a>
@@ -920,6 +931,109 @@ footer small{display:block;font-size:11px;line-height:1.9;opacity:.5}
   </div>
 </section>
 
+<!-- ================= PRODUCT CARD : capsule coffee maker (product #3) =================
+     COPY THIS BLOCK to add another product. What must change:
+       * the section id / anchor (#coffee-maker), .word, .nd-banner copy
+       * every cf* element id (cfMain / cfThumbs / cfSwatches / cfBadge / cfSwName
+         / cfQtyMinus / cfQtyVal / cfQtyPlus / cfBuy) must be unique on the page
+       * the pr-more link -> the product's own page
+       * the matching IIFE at the bottom of the page: CF_ITEMS (colourway key ->
+         LIVE Shopify variant id, checked against VC.PRODUCTS), CF_SHOTS (gallery)
+     The colourway keys in CF_ITEMS MUST exist in assets/vc-shop.js
+     (VC.PRODUCTS.<product>.colorways) — the drift check below fails loudly if not.
+=============================================================================== -->
+<section class="showroom nd coffee" id="coffee-maker" style="--pr-accent:#a08d7a;--pr-panel:#f4f1ec;--pr-wash:#faf7f2;--pr-ghost:rgba(160,141,122,.1);--pr-shadow:rgba(160,141,122,.36)">
+  <div class="word" id="cfWord">BREW</div>
+  <div class="container">
+
+    <div class="nd-banner" data-reveal>
+      <span class="nd-flag">New</span>
+      <div class="nd-banner-txt">
+        <p class="nd-banner-main">Cordless coffee — hot or cold, brewed straight into your cup.</p>
+        <p class="nd-banner-sub">Capsule Coffee Maker · five colourways · one bracket stand</p>
+      </div>
+    </div>
+
+    <div class="shop-grid">
+      <!-- gallery -->
+      <div class="pr-gallery" data-reveal>
+        <div class="pr-stage">
+          <div class="badge new" id="cfBadge">New · Porcelain White</div>
+          <div class="stock"><i></i> In stock</div>
+          <div class="pr-main" id="cfMain"></div>
+          <div class="pr-stage-note" id="cfStageNote">In stock · Cordless · hot or cold</div>
+        </div>
+        <div class="pr-thumbs" id="cfThumbs"></div>
+      </div>
+
+      <!-- details -->
+      <div class="pr-info" data-reveal style="--d:.1s">
+        <div class="eyebrow">New arrival · Voltecharged Kitchen</div>
+        <h2>Capsule <em>Coffee Maker</em></h2>
+        <div class="pr-price">
+          <b id="cfPrice">$49.99</b>
+          <s>$65.99</s>
+          <span class="save">Save 24%</span>
+        </div>
+        <p class="pr-desc">Cordless, capsule-fed and hot or cold. Set the bracket stand on the table, drop in a capsule, and the pump does the rest — hot extraction for a proper morning shot, cold extraction when the weather says otherwise, all from one touch button and a rechargeable body.</p>
+
+        <div class="pr-chips">
+          <span class="pr-chip"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2s6 6.6 6 11a6 6 0 0 1-12 0c0-4.4 6-11 6-11z"/><path d="M9.5 13.5a2.5 2.5 0 0 0 2.5 2.5"/></svg> Hot &amp; cold extraction</span>
+          <span class="pr-chip"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="16" height="10" rx="2"/><line x1="22" y1="11" x2="22" y2="13"/></svg> Cordless · &le;36&nbsp;V</span>
+          <span class="pr-chip"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3h10l-1.2 18H8.2L7 3z"/><line x1="9" y1="8" x2="15" y2="8"/></svg> 0.5&nbsp;L tank · 6–10 cups</span>
+        </div>
+
+        <div class="pr-color-row">
+          <div class="lab">Colourway — <b id="cfSwName">Porcelain White</b></div>
+          <div class="pr-swatches" id="cfSwatches"></div>
+        </div>
+
+        <div class="nd-steps">
+          <div class="nd-step">
+            <b aria-hidden="true">1</b>
+            <h4>Set the bracket</h4>
+            <p>The stand is a simple aluminium frame that holds the extractor over your cup.</p>
+          </div>
+          <div class="nd-step">
+            <b aria-hidden="true">2</b>
+            <h4>Load it</h4>
+            <p>Drop in a capsule, or use the 5.1&nbsp;cm powder bowl with your own ground coffee.</p>
+          </div>
+          <div class="nd-step">
+            <b aria-hidden="true">3</b>
+            <h4>Pick hot or cold</h4>
+            <p>One touch button switches extraction, then the pump pours straight into the glass.</p>
+          </div>
+        </div>
+
+        <div class="pr-actions">
+          <div class="qty">
+            <button id="cfQtyMinus" aria-label="Decrease quantity">−</button>
+            <span id="cfQtyVal">1</span>
+            <button id="cfQtyPlus" aria-label="Increase quantity">+</button>
+          </div>
+          <button class="pr-buy" id="cfBuy">
+            Add to Bag
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+          </button>
+        </div>
+        <div class="pr-note">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+          Free shipping · 30-day money-back guarantee · 12-month warranty
+        </div>
+        <a class="pr-more" href="coffee.html">See the full Capsule Coffee Maker page
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+        </a>
+
+        <div class="nd-more">
+          <span class="nd-more-flag">Kit</span>
+          <p><b>It ships as a kit.</b> Coffee extractor, bracket stand and the 5.1&nbsp;cm powder bowl — capsules or your own grounds, hot or cold, in five finishes.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ================= FEATURES ================= -->
 <section class="section features" id="features">
   <div class="container">
@@ -1039,6 +1153,7 @@ footer small{display:block;font-size:11px;line-height:1.9;opacity:.5}
   <div class="f-links">
     <a href="blender.html">Portable Blender</a>
     <a href="soft-serve.html">Soft Serve Maker</a>
+    <a href="coffee.html">Capsule Coffee Maker</a>
     <a href="#new-product">New Drop</a>
     <a href="#features">Features</a>
     <a href="#gallery">Gallery</a>
@@ -1074,7 +1189,7 @@ footer small{display:block;font-size:11px;line-height:1.9;opacity:.5}
 </aside>
 
 <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.14/dist/lenis.min.js"></script>
-<script src="assets/vc-shop.js"></script>
+<script src="assets/vc-shop.js?v=2"></script>
 <script>
 /* ============================================================
    SHOPIFY CHECKOUT WIRING
@@ -1556,7 +1671,137 @@ VC.useLenis(lenis);
   renderThumbs(0);
   setMain(SS_ITEMS[0].img, 'Peach — Soft Serve Maker');
 })();
+/* ============================================================
+   PRODUCT CARD #3 — capsule coffee maker (gallery, swatches, Add to Bag)
+   Its own state, the same crossfade language as the other two cards; the bag
+   button hands the item to the exact same Shopify cart / permalink.
+   Every colourway key here MUST exist in assets/vc-shop.js — the drift check
+   below is what stops a wrong variant id ever being sold.
+============================================================ */
+(function(){
+  const cfRoot = document.getElementById('coffee-maker');
+  if (!cfRoot) return;
+
+  const CF_SIZE  = 'one';
+  const CF_PRICE = VC.PRODUCTS.coffeeMaker.price;
+  /* the five KIT colourways (Shopify product 10444968100154, SKUs AI..AM).
+     `variantId` is a LIVE Shopify variant id and is re-checked against VC below. */
+  const CF_ITEMS = [
+    { key:'cm-white',  name:'Porcelain White', sku:'SUHOASA00487-AI', variantId:'54083967385914',
+      swatch:'#f4f1ec', accent:'#a08d7a', panel:'#f4f1ec', wash:'#faf7f2',
+      ghost:'rgba(160,141,122,.1)', shadow:'rgba(160,141,122,.36)', img:'assets/coffee-hero-white.jpg' },
+    { key:'cm-green',  name:'Sage Green',      sku:'SUHOASA00487-AJ', variantId:'54083967418682',
+      swatch:'#7f9a7d', accent:'#5f7d5c', panel:'#eaf0e8', wash:'#f4f8f2',
+      ghost:'rgba(95,125,92,.1)', shadow:'rgba(95,125,92,.34)', img:'assets/coffee-hero-green.jpg' },
+    { key:'cm-silver', name:'Brushed Silver',  sku:'SUHOASA00487-AK', variantId:'54083967451450',
+      swatch:'#c9ccd1', accent:'#6f7883', panel:'#eceef1', wash:'#f6f7f9',
+      ghost:'rgba(111,120,131,.11)', shadow:'rgba(111,120,131,.34)', img:'assets/coffee-hero-silver.jpg' },
+    { key:'cm-black',  name:'Matte Black',     sku:'SUHOASA00487-AL', variantId:'54083967484218',
+      swatch:'#2b2b2e', accent:'#55585e', panel:'#e9e9ec', wash:'#f4f4f6',
+      ghost:'rgba(43,43,46,.09)', shadow:'rgba(43,43,46,.4)', img:'assets/coffee-hero-black.jpg' },
+    { key:'cm-purple', name:'Deep Purple',     sku:'SUHOASA00487-AM', variantId:'54083967516986',
+      swatch:'#5b3f7a', accent:'#6b4a92', panel:'#efe9f5', wash:'#f7f3fb',
+      ghost:'rgba(107,74,146,.11)', shadow:'rgba(107,74,146,.36)', img:'assets/coffee-hero-purple.jpg' }
+  ];
+  CF_ITEMS.forEach(it => {
+    const vc = VC.ITEMS[it.key];
+    if (!vc || vc.variants[CF_SIZE] !== it.variantId) {
+      console.error('[voltecharged] coffee-maker variant mapping drift', it.key, it.variantId, vc && vc.variants);
+    }
+  });
+  /* gallery shots shown after the active colourway's own photo */
+  const CF_SHOTS = [
+    { src:'assets/coffee-detail-macro.jpg',      label:'Touch control and display, up close' },
+    { src:'assets/coffee-lifestyle-outdoor.jpg', label:'On a campsite table' },
+    { src:'assets/coffee-lifestyle-desk.jpg',    label:'At the desk, next to the laptop' }
+  ];
+
+  const cfMain     = document.getElementById('cfMain');
+  const cfThumbs   = document.getElementById('cfThumbs');
+  const cfSwatches = document.getElementById('cfSwatches');
+  const cfBadge    = document.getElementById('cfBadge');
+  const cfSwName   = document.getElementById('cfSwName');
+  const cfQtyVal   = document.getElementById('cfQtyVal');
+
+  let cfIndex = 0;
+  let cfQty   = 1;
+
+  function cfViews(){
+    const it = CF_ITEMS[cfIndex];
+    return [{ src: it.img, label: `${it.name} — Capsule Coffee Maker`, prod: true }, ...CF_SHOTS];
+  }
+
+  function cfSetMain(src, alt){
+    const img = document.createElement('img');
+    img.src = src;
+    img.alt = alt || 'Capsule Coffee Maker';
+    img.draggable = false;
+    cfMain.appendChild(img);
+    requestAnimationFrame(() => requestAnimationFrame(() => img.classList.add('show')));
+    [...cfMain.querySelectorAll('img')].forEach(old => {
+      if (old !== img){ old.classList.remove('show'); setTimeout(() => old.remove(), 550); }
+    });
+  }
+
+  function cfRenderThumbs(activeView){
+    const vs = cfViews();
+    cfThumbs.innerHTML = '';
+    vs.forEach((view, i) => {
+      const t = document.createElement('button');
+      t.className = 'pr-thumb' + (view.prod ? ' prod' : '') + (i === activeView ? ' on' : '');
+      t.innerHTML = `<img src="${view.src}" alt="${view.label}" loading="lazy">`;
+      t.addEventListener('click', () => {
+        cfSetMain(view.src, view.label);
+        [...cfThumbs.children].forEach((c, ci) => c.classList.toggle('on', ci === i));
+      });
+      cfThumbs.appendChild(t);
+    });
+  }
+
+  CF_ITEMS.forEach((it, i) => {
+    const s = document.createElement('button');
+    s.className = 'pr-swatch' + (i === 0 ? ' on' : '');
+    s.style.background = `radial-gradient(circle at 32% 28%, #fff6, transparent 55%), ${it.swatch}`;
+    s.setAttribute('aria-label', `${it.name} — $${CF_PRICE.toFixed(2)}`);
+    s.addEventListener('click', () => cfSelectColor(i));
+    cfSwatches.appendChild(s);
+  });
+
+  function cfPaint(){
+    const it = CF_ITEMS[cfIndex];
+    cfRoot.style.setProperty('--pr-accent', it.accent);
+    cfRoot.style.setProperty('--pr-panel',  it.panel);
+    cfRoot.style.setProperty('--pr-wash',   it.wash);
+    cfRoot.style.setProperty('--pr-ghost',  it.ghost);
+    cfRoot.style.setProperty('--pr-shadow', it.shadow);
+    cfBadge.textContent  = `New · ${it.name}`;
+    cfSwName.textContent = it.name;
+    [...cfSwatches.children].forEach((s, i) => s.classList.toggle('on', i === cfIndex));
+  }
+
+  function cfSelectColor(i){
+    if (i === cfIndex) return;
+    cfIndex = i;
+    cfPaint();
+    cfSetMain(CF_ITEMS[i].img, `${CF_ITEMS[i].name} — Capsule Coffee Maker`);
+    cfRenderThumbs(0);
+  }
+
+  document.getElementById('cfQtyMinus').addEventListener('click', () => { cfQty = Math.max(1, cfQty - 1); cfQtyVal.textContent = cfQty; });
+  document.getElementById('cfQtyPlus').addEventListener('click',  () => { cfQty = Math.min(9, cfQty + 1); cfQtyVal.textContent = cfQty; });
+
+  /* Add to Bag → the existing cart drawer + Shopify checkout permalink.
+     addToCart() refuses (and toasts) if the key/size has no live variant. */
+  document.getElementById('cfBuy').addEventListener('click', () => {
+    addToCart(CF_ITEMS[cfIndex].key, CF_SIZE, cfQty);
+  });
+
+  cfPaint();
+  cfRenderThumbs(0);
+  cfSetMain(CF_ITEMS[0].img, 'Porcelain White — Capsule Coffee Maker');
+})();
 </script>
+
 
 <script>
 /* ---- UGC video carousel (center-focus shuffle, Shopify checkout) ---- */

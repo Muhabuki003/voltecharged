@@ -6,23 +6,25 @@
    the cart drawer, and the Shopify checkout permalink.
 
    ---------------------------------------------------------------------------
-   HOW TO ADD PRODUCT #3 (a portable capsule coffee maker is next) -----------
+   HOW TO ADD ANOTHER PRODUCT (product #3, the portable capsule coffee maker,
+   is DONE — see PRODUCTS.coffeeMaker below) --------------------------------
    1. Add one entry to PRODUCTS below:
-        coffeeMaker: {
-          id:'coffeeMaker', title:'Capsule Coffee Maker',
-          handle:'capsule-coffee-maker',       // the Shopify product handle
-          page:'coffee.html',                  // its own product page
+        newProduct: {
+          id:'newProduct', title:'Thing Maker',
+          handle:'thing-maker',                // the Shopify product handle
+          page:'thing.html',                   // its own product page
           price:49.99, compareAt:65.99,
           sizes:[{id:'one', label:'One size'}],
           colorways:[
-            { key:'cm-cream', name:'Cream', img:'<image url or assets path>',
+            { key:'tm-cream', name:'Cream', img:'<image url or assets path>',
               panel:'#f7f1e6', variants:{ one:'<SHOPIFY VARIANT ID>' } }
           ]
         }
    2. Add the colourway key to the product page's swatch list, and build the
       page with tools/build-pdp.py (add it to that file's SPECS).
    3. Add a card to the landing page (index.html) — copy the
-      `<!-- PRODUCT CARD -->` block and change product/page/labels.
+      `<!-- PRODUCT CARD : capsule coffee maker (product #3) -->` block (and its
+      `cf*` IIFE) and change the section id, the element ids, product/page/labels.
    Nothing else: the cart, the drawer, the permalink and the fail-loud
    validation below all read from PRODUCTS.
 
@@ -83,9 +85,34 @@ window.VC = (function () {
         { key: 'ss-skyblue', name: 'Sky Blue', img: CDN + '29addd380dd047407dda2a126946e68d_43a79067-7910-41d2-beec-df0dd8bbe4f6.jpg?v=1789657829', panel: '#e2f1f4',
           variants: { one: '54081497563450' } }
       ]
-    }
+    },
 
-    /* TODO(product #3): a portable capsule coffee maker goes here (see header). */
+    /* Product #3 — sourced from the supplier listing (SPU SUHOASA00487), hero is
+       the Coffee Extractor + Bracket Stand + 5.1 cm powder bowl KIT in five
+       colourways. Shopify product 10444968100154 / handle `capsule-coffee-maker`,
+       published to the Online Store channel (verified 302 on /cart/<id>:1).
+       Kit SKUs AI/AJ/AK/AL/AM. Images are the 8 generated shots in assets/. */
+    coffeeMaker: {
+      id: 'coffeeMaker',
+      title: 'Capsule Coffee Maker',
+      handle: 'capsule-coffee-maker',
+      page: 'coffee.html',
+      price: 49.99,
+      compareAt: 65.99,
+      sizes: [{ id: 'one', label: 'One size' }],
+      colorways: [
+        { key: 'cm-white', name: 'Porcelain White', img: 'assets/coffee-hero-white.jpg', panel: '#f4f1ec',
+          variants: { one: '54083967385914' } },
+        { key: 'cm-green', name: 'Sage Green', img: 'assets/coffee-hero-green.jpg', panel: '#eaf0e8',
+          variants: { one: '54083967418682' } },
+        { key: 'cm-silver', name: 'Brushed Silver', img: 'assets/coffee-hero-silver.jpg', panel: '#eceef1',
+          variants: { one: '54083967451450' } },
+        { key: 'cm-black', name: 'Matte Black', img: 'assets/coffee-hero-black.jpg', panel: '#e9e9ec',
+          variants: { one: '54083967484218' } },
+        { key: 'cm-purple', name: 'Deep Purple', img: 'assets/coffee-hero-purple.jpg', panel: '#efe9f5',
+          variants: { one: '54083967516986' } }
+      ]
+    }
   };
 
   /* ---- derived lookups (flat colour key → colourway / variant) ----------- */

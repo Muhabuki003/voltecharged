@@ -2,6 +2,7 @@
 # internal sourcing / cost data (contains supplier cost_usd, rejected candidates,
 # freight cost, SPU/SKU details) — stays local only
 new-product/
+product-3/
 
 # raw UGC downloads incl. rejected clips from other brands (62 MB)
 assets/ugc/_originals/

@@ -199,6 +199,9 @@
          the page's PDP.ugc array (see the TODO(ugc) block in the markup) and it
          reveals itself as a video strip with no other change. */
       if (cornerSection) cornerSection.hidden = true;
+      /* ...and drop the empty strip from the DOM, so the page carries no empty
+         shell at all (a hidden-but-empty #ugcStrip is still a dead box) */
+      strip.remove();
     } else {
       clips.forEach(function (clip) {
         var card = document.createElement('figure');
