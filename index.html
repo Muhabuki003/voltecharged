@@ -701,6 +701,37 @@ footer small{display:block;font-size:11px;line-height:1.9;opacity:.5}
 .nd.coffee .pr-thumb.prod img, .pdp.coffee .pr-thumb.prod img{object-fit:cover;padding:0}
 /* the coffee card is the third product in the drop: keep its colour rows calm */
 .nd.coffee .pr-swatches{padding-left:0}
+
+/* ---- HERO product selector (owner, 2026-09-22) — the row lives directly
+   beneath .hero .swatches inside the bottom-left HUD and switches the hero
+   between the store's three products. Same visual language as .swatch (small,
+   rounded, an active ring drawn in currentColor), but a product cut-out
+   thumbnail instead of a flat colour dot. The HUD is a bottom-anchored
+   absolutely-positioned block, so nothing else on the hero moves: the block
+   simply grows upward by this row's height. ------------------------------- */
+.hero .propsel{display:flex;gap:12px;margin-top:14px}
+.hero .pchip{
+  width:32px;height:32px;border-radius:10px;flex:none;overflow:hidden;position:relative;
+  border:2px solid rgba(255,255,255,.6);background:rgba(255,255,255,.22);
+  display:flex;align-items:center;justify-content:center;
+  transition:transform .2s,border-color .2s,background-color .2s;
+}
+.hero .pchip img{width:100%;height:100%;object-fit:contain;padding:2px;-webkit-user-drag:none;user-select:none}
+.hero .pchip:hover{transform:scale(1.12)}
+.hero .pchip.on{border-color:#fff;background:rgba(255,255,255,.45)}
+.hero .pchip.on::after{
+  content:'';position:absolute;inset:-5px;border-radius:14px;
+  border:1.5px solid currentColor;
+}
+/* Very narrow phones (<=380px): the row is trimmed so it never gets closer to
+   the bottom-right CTA than the colour swatch row above it already does — the
+   hud-bl / hud-br collision at that width predates this row (the live site's
+   3rd swatch dot already reaches the CTA), so this row must not widen it. */
+@media(max-width:380px){
+  .hero .propsel{gap:8px;margin-top:12px}
+  .hero .pchip{width:26px;height:26px;border-radius:8px}
+  .hero .pchip.on::after{inset:-4px;border-radius:11px}
+}
 </style>
 </head>
 <body>
@@ -746,6 +777,10 @@ footer small{display:block;font-size:11px;line-height:1.9;opacity:.5}
       </button>
     </div>
     <div class="swatches" id="swatches"></div>
+    <!-- product selector — sits directly BENEATH the colour swatches (owner,
+         2026-09-22). Three compact chips; the active one switches the whole
+         hero to that product and re-maps the swatch row to its colourways. -->
+    <div class="propsel" id="heroProducts" role="group" aria-label="Choose a product"></div>
   </div>
 
   <div class="hud hud-br">
@@ -1289,50 +1324,208 @@ const LIFESTYLE = [
   { src:'assets/gallery-unboxed.jpg', label:'Unboxed' }
 ];
 
+/* ============================================================
+   HERO — one hero, the store's three products (owner, 2026-09-22)
+   "the same way the hero is set up we just want to add a small product
+    selector on the hero that allows us to switch to a different product
+    … I really like that hero and how it's laid out, don't change layout"
+
+   * The blender entry reuses the live VARIANTS objects verbatim, so the
+     default state is exactly the hero that shipped.
+   * The nine new cut-outs are framed identically to the blender's
+     (1270×1240 RGBA, subject top y=76, base y=1123, centre x=0.541 — verified
+     with a PIL alpha bbox), so the subject never jumps when the product
+     switches.
+   * `ghost` is ALWAYS the colourway's colour word (BLUSH / PEACH / PURPLE …),
+     never the product name and never a leftover from another product.
+   * bg / ink / sub per colourway are derived from the palette that product
+     already uses in its own showroom card (SS_ITEMS / CF_ITEMS below):
+     bg  = the colourway's own swatch, tinted toward its own accent until the
+           white ghost word clears the live BLUSH ratio (1.94:1);
+     ink = the accent mixed 90% into near-black for a light bg, or the live
+           Forest-Green cream #f6f0e6 for a dark bg;
+     sub = that ink at .72 alpha (light) / .70 (dark), sized to beat the live
+           BLUSH paragraph ratio (3.72:1).
+     Measured, all nine clear the three live blender states' own worst ratio
+     for every hero element (ghost 1.94 / kick 3.56 / name 6.74 / line 3.72) —
+     the fallback is the same Forest-Green treatment the live site already
+     uses for its dark colourway.
+   * The colourway KEYS are the live Shopify colourway keys from
+     assets/vc-shop.js: the CTA therefore adds the on-stage product and
+     colourway to the very same cart, with the blender keeping the showroom's
+     selectedSize exactly as before.
+============================================================ */
+const heroProducts = [
+  { id:'blender', kick:'Portable Blender', spec:'Portable Blender · 400ml · USB-C',
+    size:null, /* null = the showroom's selectedSize, i.e. today's behaviour */
+    /* the live VARIANTS objects are reused as-is (the showroom below reads the
+       same array); the hero only adds the explicit cut-out path, because the
+       showroom builds `assets/blender-<key>.png` on the fly instead */
+    colors: VARIANTS.map(v => Object.assign({}, v, { img:'assets/blender-' + v.key + '.png' })) },
+  { id:'softServe', kick:'Soft Serve Maker', spec:'Soft Serve Maker · 500ml · 12W',
+    size:'one',
+    colors:[
+      { key:'ss-peach', name:'Peach', ghost:'PEACH', img:'assets/softserve-peach.png',
+        line:'Peach: 500 ml of soft serve in about fifteen minutes. One button, no ice and no rock salt — the gel bowl does the freezing.',
+        swatch:'#d8aac4', bg:'#d8aac4', ink:'#34232c', sub:'rgba(52,35,44,.72)' },
+      { key:'ss-lightblue', name:'Light Blue', ghost:'MINT', img:'assets/softserve-light-blue.png',
+        line:'Light blue: the same 500 ml gel bowl, one button and about fifteen minutes — soft serve, sorbet or frozen yoghurt.',
+        swatch:'#a6c2bd', bg:'#a4c1bc', ink:'#2a272c', sub:'rgba(42,39,44,.72)' },
+      { key:'ss-pink', name:'Pink', ghost:'PINK', img:'assets/softserve-pink.png',
+        line:'Pink: 500 ml a batch at 12 W, churned at about 34 rpm for a scoopable texture. No ice, no rock salt, no parlour run.',
+        swatch:'#dc94ac', bg:'#774250', ink:'#f6f0e6', sub:'rgba(246,240,230,.7)' },
+      { key:'ss-skyblue', name:'Sky Blue', ghost:'SKY', img:'assets/softserve-sky-blue.png',
+        line:'Sky blue: freeze the bowl, add your mix, press one button — about fifteen minutes to 500 ml of soft serve.',
+        swatch:'#67b6c3', bg:'#2c5865', ink:'#f6f0e6', sub:'rgba(246,240,230,.7)' }
+    ] },
+  { id:'coffeeMaker', kick:'Capsule Coffee Maker', spec:'Capsule Coffee Maker · 0.5L · Hot & Cold',
+    size:'one',
+    /* assets/coffee-forest-green.png is the SALON-supplied cut-out of this
+       card's "Sage Green" colourway (cm-green) — the filename is the source
+       render's, the colourway name is the store's. */
+    colors:[
+      { key:'cm-white', name:'Porcelain White', ghost:'PORCELAIN', img:'assets/coffee-porcelain-white.png',
+        line:'Porcelain white: capsule-fed and cordless — hot extraction for the morning shot, cold extraction when the weather says otherwise.',
+        swatch:'#f4f1ec', bg:'#c5b9ac', ink:'#302629', sub:'rgba(48,38,41,.72)' },
+      { key:'cm-green', name:'Sage Green', ghost:'SAGE', img:'assets/coffee-forest-green.png',
+        line:'Sage green: drop in a capsule, or your own grounds in the 5.1 cm powder bowl — the pump pushes the shot straight into the glass.',
+        swatch:'#7f9a7d', bg:'#455744', ink:'#f6f0e6', sub:'rgba(246,240,230,.7)' },
+      { key:'cm-silver', name:'Brushed Silver', ghost:'SILVER', img:'assets/coffee-brushed-silver.png',
+        line:'Brushed silver: aluminium alloy body and a 0.5 litre tank, with the bracket stand holding the extractor over your glass while it pours.',
+        swatch:'#c9ccd1', bg:'#b7bbc1', ink:'#2c232a', sub:'rgba(44,35,42,.72)' },
+      { key:'cm-black', name:'Matte Black', ghost:'BLACK', img:'assets/coffee-matte-black.png',
+        line:'Matte black: rated at 36 V or less, so once it is charged there is no outlet to hunt for. One touch switches hot to cold extraction.',
+        swatch:'#2b2b2e', bg:'#48494f', ink:'#f6f0e6', sub:'rgba(246,240,230,.7)' },
+      { key:'cm-purple', name:'Deep Purple', ghost:'PURPLE', img:'assets/coffee-deep-purple.png',
+        line:'Deep purple: capsule or powder bowl, hot or cold, cordless at 36 V or less — a 0.5 litre tank small enough to live on a desk.',
+        swatch:'#5b3f7a', bg:'#593e79', ink:'#f6f0e6', sub:'rgba(246,240,230,.7)' }
+    ] }
+];
+
 const heroEl    = document.querySelector('.hero');
 const items     = [...document.querySelectorAll('.hero .item')];
 const ghostEl   = document.getElementById('ghost');
 const nameEl    = document.getElementById('heroName');
 const lineEl    = document.getElementById('heroLine');
+const kickEl    = document.getElementById('heroKick');
+const specEl    = document.querySelector('.hero .hud-tl');
+const noteEl    = document.querySelector('.hero .price-note');
 const swWrap    = document.getElementById('swatches');
+const chipWrap  = document.getElementById('heroProducts');
 const nav       = document.getElementById('nav');
 const ANIM_MS   = 650;
 
-let activeIndex = 0;
+let heroP       = 0;   // active product (index into heroProducts)
+let activeIndex = 0;   // active colourway within the active product
 let isAnimating = false;
 let autoTimer   = null;
 let idleTimer   = null;
 let activeShowroomSync = null; // set below once the product showroom defines selectColor
+let syncing     = false;       // true while the showroom below is driving the hero
 
-/* preload */
-VARIANTS.forEach(v => { const im = new Image(); im.src = `assets/blender-${v.key}.png`; });
+const heroProduct = () => heroProducts[heroP];
+const heroColors  = () => heroProduct().colors;
 
-/* swatches */
-VARIANTS.forEach((v, i) => {
+/* drift check — a hero colourway key that the shared shop core does not know
+   would let the hero show a colourway the cart cannot sell; fail loudly, the
+   same way the coffee card below checks its own variant map. */
+heroProducts.forEach(p => p.colors.forEach(c => {
+  const it = VC.ITEMS[c.key];
+  if (!it || it.product !== p.id)
+    console.error('[voltecharged] hero colourway drift — not a colourway of ' + p.id + ':', c.key);
+}));
+
+/* ---- the three-item shuffle ----------------------------------------------
+   With three colourways the live hero rotates the roles between the three DOM
+   items (item k holds colourway k, the item holding "center" moves out to
+   "left", the one on "right" becomes "center"). `slots` says which DOM node
+   currently holds each role, so the same animation works for 3, 4 or 5
+   colourways: right -> center -> left to go forward, the mirror to go back. */
+let slots = { center:0, left:2, right:1 };
+function resetSlots(){ slots = { center:0, left:2, right:1 }; }
+function rotateSlots(dir){
+  const s = slots;
+  slots = dir === 'next'
+    ? { center:s.right, left:s.center, right:s.left }
+    : { center:s.left,  left:s.right,  right:s.center };
+}
+
+/* preload — the blender's three first (as before), the other two products'
+   cut-outs once the page has settled, so the first switch is instant without
+   holding up the landing page's first paint. */
+const preloaded = new Set();
+function preload(p){
+  p.colors.forEach(c => {
+    if (preloaded.has(c.img)) return;
+    preloaded.add(c.img);
+    const im = new Image(); im.src = c.img;
+  });
+}
+preload(heroProducts[0]);
+const warmOtherProducts = () => heroProducts.slice(1).forEach(preload);
+if ('requestIdleCallback' in window) requestIdleCallback(warmOtherProducts, { timeout:4000 });
+else setTimeout(warmOtherProducts, 2000);
+
+/* product chips — same visual language as the colour swatches, but showing the
+   colourway each product is on, so the chip doubles as a "what you'd get" cue */
+const chipEls = heroProducts.map((p, i) => {
   const b = document.createElement('button');
-  b.className = 'swatch' + (i === 0 ? ' on' : '');
-  b.style.background = v.swatch;
-  b.setAttribute('aria-label', v.name);
-  b.addEventListener('click', () => { goTo(i); userInteracted(); });
-  swWrap.appendChild(b);
+  b.type = 'button';
+  b.className = 'pchip' + (i === 0 ? ' on' : '');
+  b.dataset.pid = p.id;
+  b.title = p.kick;
+  b.setAttribute('aria-label', 'Show the ' + p.kick);
+  b.setAttribute('aria-pressed', i === 0 ? 'true' : 'false');
+  const im = document.createElement('img');
+  im.alt = ''; im.draggable = false;
+  im.src = p.colors[0].img;
+  b.appendChild(im);
+  b.addEventListener('click', () => { selectProduct(i); userInteracted(); });
+  b.addEventListener('mouseenter', () => preload(p));
+  b.addEventListener('focus', () => preload(p));
+  chipWrap.appendChild(b);
+  return b;
 });
+function paintChips(){
+  chipEls.forEach((b, i) => {
+    const p = heroProducts[i];
+    const c = p.colors[i === heroP ? activeIndex : (p.chipIdx || 0)];
+    const im = b.querySelector('img');
+    if (im.getAttribute('src') !== c.img) im.setAttribute('src', c.img);
+    b.classList.toggle('on', i === heroP);
+    b.setAttribute('aria-pressed', i === heroP ? 'true' : 'false');
+  });
+}
 
-function roles(){
-  return {
-    center: activeIndex,
-    left:  (activeIndex + VARIANTS.length - 1) % VARIANTS.length,
-    right: (activeIndex + 1) % VARIANTS.length
-  };
+/* the colour dots for whichever product is on stage (3 / 4 / 5 of them) */
+function buildSwatches(){
+  swWrap.innerHTML = '';
+  heroColors().forEach((v, i) => {
+    const b = document.createElement('button');
+    b.className = 'swatch' + (i === activeIndex ? ' on' : '');
+    b.style.background = v.swatch;
+    b.setAttribute('aria-label', v.name);
+    b.addEventListener('click', () => { selectColorway(i); userInteracted(); });
+    swWrap.appendChild(b);
+  });
+}
+
+function paintItem(el, role, color){
+  el.dataset.role = role;
+  const img = el.querySelector('img');
+  if (img.getAttribute('src') !== color.img) img.setAttribute('src', color.img);
+  img.alt = heroProduct().kick + ' — ' + color.name;
 }
 
 function apply(){
-  const r = roles();
-  items.forEach((el, i) => {
-    el.dataset.role =
-      i === r.center ? 'center' :
-      i === r.left   ? 'left'   : 'right';
-  });
-  const v = VARIANTS[activeIndex];
+  const colors = heroColors();
+  const n      = colors.length;
+  const v      = colors[activeIndex];
+  const p      = heroProduct();
+  paintItem(items[slots.center], 'center', v);
+  paintItem(items[slots.left],   'left',   colors[(activeIndex + n - 1) % n]);
+  paintItem(items[slots.right],  'right',  colors[(activeIndex + 1) % n]);
+
   heroEl.style.background = v.bg;
   document.documentElement.style.setProperty('--hero-ink', v.ink);
   document.documentElement.style.setProperty('--hero-sub', v.sub);
@@ -1340,22 +1533,79 @@ function apply(){
   setTimeout(() => { ghostEl.textContent = v.ghost; ghostEl.classList.remove('swap'); }, 240);
   nameEl.textContent = v.name;
   lineEl.textContent = v.line;
+  kickEl.textContent = p.kick;
+  if (specEl) specEl.textContent = p.spec;
+  /* all three products are $49.99 and all three ship free (their own PDPs say
+     so) — the figure is read from the shared shop core, never typed twice */
+  if (noteEl) noteEl.textContent = '$' + VC.PRODUCTS[p.id].price.toFixed(2) + ' · Free Shipping';
   [...swWrap.children].forEach((s, i) => s.classList.toggle('on', i === activeIndex));
-  if (activeShowroomSync) activeShowroomSync(activeIndex);
+  p.chipIdx = activeIndex;   // chips remember the colourway they were left on
+  paintChips();
+  /* the showroom below only ever shows the blender: never let the hero drag it
+     to another colourway while a different product is on stage */
+  if (activeShowroomSync && p.id === 'blender' && !syncing) activeShowroomSync(activeIndex);
 }
 
 function navigate(dir){
   if (isAnimating) return;
   isAnimating = true;
-  activeIndex = (activeIndex + (dir === 'next' ? 1 : VARIANTS.length - 1)) % VARIANTS.length;
+  const n = heroColors().length;
+  activeIndex = (activeIndex + (dir === 'next' ? 1 : n - 1)) % n;
+  rotateSlots(dir);
   apply();
   setTimeout(() => { isAnimating = false; }, ANIM_MS);
 }
-function goTo(i){
+/* colourway picked in the hero's own swatch row */
+function selectColorway(i){
   if (isAnimating || i === activeIndex) return;
   isAnimating = true;
   activeIndex = i;
+  resetSlots();
   apply();
+  setTimeout(() => { isAnimating = false; }, ANIM_MS);
+}
+/* colourway picked in the blender SHOWROOM further down the page (it calls
+   goTo(i)): that also brings the hero back to the blender product, since the
+   showroom's colourways only exist for the blender. */
+function goTo(i){
+  if (isAnimating) return;
+  if (heroP === 0 && activeIndex === i) return;
+  isAnimating = true;
+  heroP = 0;
+  activeIndex = i;
+  resetSlots();
+  buildSwatches();
+  syncing = true; apply(); syncing = false;
+  setTimeout(() => { isAnimating = false; }, ANIM_MS);
+}
+/* product picked in the chip row — the whole hero follows */
+function selectProduct(i){
+  if (isAnimating || i === heroP) return;
+  isAnimating = true;
+  heroProduct().chipIdx = activeIndex;   // remember where we left that product
+  heroP = i;
+  activeIndex = 0;
+  preload(heroProducts[i]);
+  rotateSlots('next');                   // the same shuffle as a colour step
+  buildSwatches();
+  apply();
+  setTimeout(() => { isAnimating = false; }, ANIM_MS);
+}
+/* The blender showroom further down the page is the only card that shares the
+   hero's colourways, so any click in its swatch row brings the hero back to the
+   blender — including a click on the colourway that card is already on, which
+   the card itself treats as a no-op (`if (i === prIndex) return`). The hero
+   takes the colourway that card is showing, so the two can never disagree. */
+function heroBackToBlender(){
+  if (heroP === 0 || isAnimating) return;
+  const on = [...document.querySelectorAll('#prSwatches .pr-swatch')]
+    .findIndex(s => s.classList.contains('on'));
+  isAnimating = true;
+  heroP = 0;
+  if (on >= 0) activeIndex = on;
+  resetSlots();
+  buildSwatches();
+  syncing = true; apply(); syncing = false;
   setTimeout(() => { isAnimating = false; }, ANIM_MS);
 }
 
@@ -1380,12 +1630,20 @@ function userInteracted(){
   clearInterval(autoTimer); clearTimeout(idleTimer);
   idleTimer = setTimeout(startAuto, 14000);
 }
+buildSwatches();
 apply();
 startAuto();
 
-/* buy buttons add the color currently on stage to the cart */
+/* buy buttons add the product + colourway currently on stage to the cart.
+   The size comes from the hero product itself: the blender keeps the
+   showroom's selectedSize (today's behaviour, unchanged), the two single-size
+   products use their only size, and every key below is a live Shopify
+   colourway key from assets/vc-shop.js. */
 document.querySelectorAll('[data-buy]').forEach(b =>
-  b.addEventListener('click', () => addToCart(VARIANTS[activeIndex].key, selectedSize, 1))
+  b.addEventListener('click', () => {
+    const p = heroProduct();
+    addToCart(heroColors()[activeIndex].key, p.size || selectedSize, 1);
+  })
 );
 
 /* ============================================================
@@ -1455,6 +1713,10 @@ if (prRoot) {
       : `radial-gradient(circle at 32% 28%, #fff5, transparent 55%), ${v.swatch}`;
     s.setAttribute('aria-label', v.name);
     s.addEventListener('click', () => selectColor(i, true));
+    /* the hero is showing one product at a time: picking a blender colourway
+       here always brings the hero back to the blender (the card is a no-op
+       when it is already on that colourway, so the hero is told separately) */
+    s.addEventListener('click', () => heroBackToBlender());
     prSwatches.appendChild(s);
   });
 

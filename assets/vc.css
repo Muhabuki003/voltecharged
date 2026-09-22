@@ -699,6 +699,37 @@ footer small{display:block;font-size:11px;line-height:1.9;opacity:.5}
 /* the coffee card is the third product in the drop: keep its colour rows calm */
 .nd.coffee .pr-swatches{padding-left:0}
 
+/* ---- HERO product selector (owner, 2026-09-22) — the row lives directly
+   beneath .hero .swatches inside the bottom-left HUD and switches the hero
+   between the store's three products. Same visual language as .swatch (small,
+   rounded, an active ring drawn in currentColor), but a product cut-out
+   thumbnail instead of a flat colour dot. The HUD is a bottom-anchored
+   absolutely-positioned block, so nothing else on the hero moves: the block
+   simply grows upward by this row's height. ------------------------------- */
+.hero .propsel{display:flex;gap:12px;margin-top:14px}
+.hero .pchip{
+  width:32px;height:32px;border-radius:10px;flex:none;overflow:hidden;position:relative;
+  border:2px solid rgba(255,255,255,.6);background:rgba(255,255,255,.22);
+  display:flex;align-items:center;justify-content:center;
+  transition:transform .2s,border-color .2s,background-color .2s;
+}
+.hero .pchip img{width:100%;height:100%;object-fit:contain;padding:2px;-webkit-user-drag:none;user-select:none}
+.hero .pchip:hover{transform:scale(1.12)}
+.hero .pchip.on{border-color:#fff;background:rgba(255,255,255,.45)}
+.hero .pchip.on::after{
+  content:'';position:absolute;inset:-5px;border-radius:14px;
+  border:1.5px solid currentColor;
+}
+/* Very narrow phones (<=380px): the row is trimmed so it never gets closer to
+   the bottom-right CTA than the colour swatch row above it already does — the
+   hud-bl / hud-br collision at that width predates this row (the live site's
+   3rd swatch dot already reaches the CTA), so this row must not widen it. */
+@media(max-width:380px){
+  .hero .propsel{gap:8px;margin-top:12px}
+  .hero .pchip{width:26px;height:26px;border-radius:8px}
+  .hero .pchip.on::after{inset:-4px;border-radius:11px}
+}
+
 /* ============================================================================
    VOLTECHARGED — SHARED ADDITIONS
    Appended to assets/vc.css AND pasted at the end of index.html's inline
