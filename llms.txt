@@ -1,0 +1,22 @@
+# Voltecharged
+
+> Voltecharged sells small kitchen appliances built for people short on counter
+> space. The flagship is the Voltecharged portable blender: 200W of ice-crushing
+> power, USB-C rechargeable, a 400ml cup — blend and drink from the same
+> container, anywhere. The range also covers coffee and soft-serve machines.
+
+## Shop
+
+- [Portable blender](https://voltecharged.com/blender.html): 200W ice-crushing
+  portable blender, USB-C rechargeable, 400ml.
+- [Coffee](https://voltecharged.com/coffee.html): coffee makers and grinders.
+- [Soft serve](https://voltecharged.com/soft-serve.html): countertop soft-serve machines.
+- [Home](https://voltecharged.com/): the full storefront.
+
+## Help
+
+- [Privacy](https://voltecharged.com/privacy.html) · [Terms](https://voltecharged.com/terms.html)
+
+## Contact
+
+- Site: https://voltecharged.com
