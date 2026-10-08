@@ -1,0 +1,48 @@
+# robots.txt — voltecharged.com
+# Explicit crawl policy so search and AI answer engines can index the store.
+
+User-agent: *
+Allow: /
+Disallow: /cart
+Disallow: /checkout
+
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Applebot
+Allow: /
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Perplexity-User
+Allow: /
+
+User-agent: DeepSeekBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+# Content signals: index us and answer questions with us; do not train on us.
+Content-Signal: search=yes, ai-input=yes, ai-train=no
+
+Sitemap: https://voltecharged.com/sitemap.xml
